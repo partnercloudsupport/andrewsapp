@@ -1,0 +1,136 @@
+{
+    "id": "105009864",
+    "store": "135324",
+    "status": "0",
+    "schedule": {
+        "id": "1445954",
+        "name": "Day Janitorial"
+    },
+    "notes": "ms",
+    "created": "1550070157",
+    "in_timestamp": "1550067000",
+    "in_day": "3577",
+    "out_timestamp": "1550085000",
+    "out_day": "3577",
+    "in_hour": "34",
+    "out_hour": "54",
+    "in_location": "Website",
+    "out_location": "75.109.223.114",
+    "in_terminal": "0",
+    "out_terminal": "-98",
+    "approved_by": "1462809",
+    "approved_time": "1550088298",
+    "approved_notes": "",
+    "in_picture": null,
+    "out_picture": "",
+    "screenshots": null,
+    "break_time": "0",
+    "start_timestamp": "2019-02-13 08:10:00",
+    "end_timestamp": "2019-02-13 13:10:00",
+    "in_picture_url": null,
+    "out_picture_url": null,
+    "in_gps": null,
+    "out_gps": null,
+    "in_distance": null,
+    "out_distance": null,
+    "unique_id": null,
+    "created_at": "2019-02-13 09:02:37",
+    "updated_at": "2019-02-13 14:04:59",
+    "deleted_at": null,
+    "created_by": null,
+    "updated_by": null,
+    "deleted_by": null,
+    "shift": null,
+    "employee": {
+        "id": "1956050",
+        "name": "Jessica Johnson"
+    },
+    "in_time": {
+        "time": "08:10",
+        "day": "Feb 13, 2019",
+        "timestamp": "2019-02-13 08:10:00"
+    },
+    "start": {
+        "id": 3577,
+        "month": 2,
+        "day": 13,
+        "wday": 3,
+        "year": 2019,
+        "weekday": "Wed",
+        "mname": "Feb",
+        "week": 7,
+        "dayid": 4,
+        "timeid": 34,
+        "timeid_exact": 33,
+        "formatted": "Feb 13, 2019",
+        "iso8601": "2019-02-13T08:10:00-0600",
+        "time": "08:10",
+        "timestamp": 1550067000,
+        "hours": 8,
+        "minutes": 10,
+        "seconds": 0,
+        "date": "2019-02-13 08:10:00",
+        "day_of_year": "43",
+        "week_adjusted": 7,
+        "sp_wday": 4
+    },
+    "length": {
+        "hours": 5,
+        "mins": 0,
+        "total_hours": "5.00"
+    },
+    "out_time": {
+        "time": "13:10",
+        "day": "Feb 13, 2019",
+        "timestamp": "2019-02-13 13:10:00"
+    },
+    "end": {
+        "id": 3577,
+        "month": 2,
+        "day": 13,
+        "wday": 3,
+        "year": 2019,
+        "weekday": "Wed",
+        "mname": "Feb",
+        "week": 7,
+        "dayid": 4,
+        "timeid": 54,
+        "timeid_exact": 53,
+        "formatted": "Feb 13, 2019",
+        "iso8601": "2019-02-13T13:10:00-0600",
+        "time": "13:10",
+        "timestamp": 1550085000,
+        "hours": 13,
+        "minutes": 10,
+        "seconds": 0,
+        "date": "2019-02-13 13:10:00",
+        "day_of_year": "43",
+        "week_adjusted": 7,
+        "sp_wday": 4
+    },
+    "current_length": {
+        "hours": 22,
+        "mins": 27,
+        "total_hours": "22.44"
+    },
+    "events": [
+        {
+            "id": "151846940",
+            "type": "3",
+            "timestamp": "2019-02-13 08:10:00",
+            "clock_time": "105009864",
+            "data": {
+                "notes": "ms"
+            }
+        },
+        {
+            "id": "151846942",
+            "type": "6",
+            "timestamp": "2019-02-13 08:10:00",
+            "clock_time": "105009864",
+            "data": {
+                "position": 1445954
+            }
+        }
+    ]
+}
