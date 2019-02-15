@@ -2,27 +2,43 @@ import 'dart:convert';
 import 'package:meta/meta.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:jaguar_serializer/jaguar_serializer.dart';
+import 'package:taskist/model/employee.dart';
+import 'package:taskist/model/device.dart';
+import 'package:uuid/uuid.dart';
+import 'package:location/location.dart';
 
 part 'timesheet.jser.dart';
 
+class Note {
+  Note({
+    this.text,
+    this.type,
+  });
+
+  final String text;
+  final String type;
+}
 
 class Timesheet {
   String id;
   String store;
   String status;
-  String notes;
-  String created;
+  List<Note> notes;
+  DateTime created;
   String employeeId;
-  String inTimestamp;
-  String inDay;
+  int inTimestamp;
+  int inDay;
   String outTimestamp;
   String outDay;
-  String inHour;
+  int inHour;
+  bool isValid;
   String outHour;
-  String inLocation;
+  @pass
+  GeoPoint inLocation;
   String outLocation;
-  String inTerminal;
+  String inDevice;
   String outTerminal;
+  String fbemployeeid;
   String approvedBy;
   String prettyInDay;
   String prettyInTime;
@@ -31,106 +47,85 @@ class Timesheet {
   String approvedTime;
   String approvedNotes;
   String outPicture;
-  String cell_phone;
   String breakTime;
-  String startTimestamp;
   String endTimestamp;
-  String createdAt;
   String updatedAt;
 
-  Timesheet(
-      {this.id,
-      this.cell_phone,
-      this.store,
-      this.status,
-      this.notes,
-      this.created,
-      this.inTimestamp,
-      this.inDay,
-      this.employeeId,
-      this.outTimestamp,
-      this.outDay,
-      this.inHour,
-      this.outHour,
-      this.prettyInTime,
-      this.prettyInDay,
-  this.prettyOutTime,
-      this.prettyOutDay,
-      this.inLocation,
-      this.outLocation,
-      this.inTerminal,
-      this.outTerminal,
-      this.approvedBy,
-      this.approvedTime,
-      this.approvedNotes,
-      this.outPicture,
-      this.breakTime,
-      this.startTimestamp,
-      this.endTimestamp,
-      this.createdAt,
-      this.updatedAt,
-      });
-
-  Timesheet.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    store = json['store'];
-    status = json['status'];
-    notes = json['notes'];
-    created = json['created'];
-    employeeId = json['employeeId'];
-    inTimestamp = json['in_timestamp'];
-    outTimestamp = json['out_timestamp'];
-    outDay = json['out_day'];
-    inHour = json['in_hour'];
-    inDay = json['in_day'];
-
-    outHour = json['out_hour'];
-    inLocation = json['in_location'];
-    outLocation = json['out_location'];
-    inTerminal = json['in_terminal'];
-    outTerminal = json['out_terminal'];
-    approvedBy = json['approved_by'];
-    approvedTime = json['approved_time'];
-    approvedNotes = json['approved_notes'];
-    outPicture = json['out_picture'];
-    breakTime = json['break_time'];
-    startTimestamp = json['start_timestamp'];
-    endTimestamp = json['end_timestamp'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['store'] = this.store;
-    data['status'] = this.status;
-    data['notes'] = this.notes;
-    data['created'] = this.created;
-    data['in_timestamp'] = this.inTimestamp;
-    data['in_day'] = this.inDay;
-    data['out_timestamp'] = this.outTimestamp;
-    data['out_day'] = this.outDay;
-    data['in_hour'] = this.inHour;
-    data['out_hour'] = this.outHour;
-    data['in_location'] = this.inLocation;
-    data['out_location'] = this.outLocation;
-
-    data['in_terminal'] = this.inTerminal;
-    data['out_terminal'] = this.outTerminal;
-    data['approved_by'] = this.approvedBy;
-    data['approved_time'] = this.approvedTime;
-    data['approved_notes'] = this.approvedNotes;
-    data['out_picture'] = this.outPicture;
-    data['break_time'] = this.breakTime;
-    data['start_timestamp'] = this.startTimestamp;
-    data['end_timestamp'] = this.endTimestamp;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    return data;
-  }
+  Timesheet({
+    this.id,
+    this.store,
+    this.status,
+    this.notes,
+    this.created,
+    this.inTimestamp,
+    this.inDay,
+    this.employeeId,
+    this.outTimestamp,
+    this.outDay,
+    this.inHour,
+    this.outHour,
+    this.prettyInTime,
+    this.prettyInDay,
+    this.isValid,
+    this.prettyOutTime,
+    this.prettyOutDay,
+    this.inLocation,
+    this.outLocation,
+    this.fbemployeeid,
+    this.outTerminal,
+    this.approvedBy,
+    this.inDevice,
+    this.approvedTime,
+    this.approvedNotes,
+    this.outPicture,
+    this.breakTime,
+    this.endTimestamp,
+    this.updatedAt,
+  });
 }
 
+Timesheet createNewTimesheet(Employee employee, Device device) {
+  Timesheet newSheet = new Timesheet();
+  DateTime now = new DateTime.now();
+  int timestamp = new DateTime.now().millisecondsSinceEpoch;
+
+  now.day;
+  newSheet.id = "0";
+  newSheet.isValid = false;
+  newSheet.store = "0";
+  newSheet.status = "1";
+  newSheet.notes = new List<Note>();
+  newSheet.created = now;
+  newSheet.inTimestamp = timestamp;
+  newSheet.inDay = now.day;
+  newSheet.employeeId = employee.id;
+  newSheet.fbemployeeid = employee.fbemployeeid;
+  newSheet.outTimestamp = "0";
+  newSheet.outDay = "0";
+  newSheet.inHour = now.hour;
+  newSheet.outHour = "0";
+  newSheet.prettyInTime = "0";
+  newSheet.prettyInDay = "0";
+  newSheet.prettyOutTime = "0";
+  newSheet.prettyOutDay = "0";
+  newSheet.inLocation = device.currentPosition;
+  newSheet.outLocation = "0";
+  newSheet.inDevice = device.androidId;
+  newSheet.outTerminal = "0";
+  newSheet.approvedBy = "0";
+  newSheet.approvedTime = "0";
+  newSheet.approvedNotes = "0";
+  newSheet.outPicture = "0";
+  newSheet.breakTime = "0";
+  newSheet.endTimestamp = "0";
+  newSheet.updatedAt = "0";
+
+  return newSheet;
+}
 
 @GenSerializer()
-class TimesheetSerializer extends Serializer<Timesheet> with _$TimesheetSerializer {}
+class NoteSerializer extends Serializer<Note> with _$NoteSerializer {}
+
+@GenSerializer()
+class TimesheetSerializer extends Serializer<Timesheet>
+    with _$TimesheetSerializer {}

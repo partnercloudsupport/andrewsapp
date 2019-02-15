@@ -19,7 +19,9 @@ dependencies:
   image:
   cloud_firestore: 0.9.0
   strings:
+  uuid:
   # fast_qr_reader_view:
+  location:
   carousel_slider:
   cloud_functions:
   firestore_helpers:

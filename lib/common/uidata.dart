@@ -93,6 +93,14 @@ class UIData {
     Colors.blueGrey.shade800,
     Colors.black87,
   ];
+  static List<Color> kitGradientsGreen = [
+    // new Color.fromRGBO(103, 218, 255, 1.0),
+    // new Color.fromRGBO(3, 169, 244, 1.0),
+    // new Color.fromRGBO(0, 122, 193, 1.0),
+    Colors.green.shade100,
+
+    Colors.blue.shade900
+  ];
   static List<Color> kitGradients2 = [
     Colors.cyan.shade600,
     Colors.blue.shade900
@@ -100,9 +108,8 @@ class UIData {
   static List<Color> kitGradients3 = [
     Colors.blue.shade900,
     Colors.cyan.shade900,
-   
+
     // Colors.blue.shade800,
-   
   ];
   //randomcolor
   static final Random _random = new Random();
