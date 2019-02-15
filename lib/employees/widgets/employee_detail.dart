@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:taskist/model/employee.dart';
 import 'package:taskist/model/device.dart';
-import 'package:taskist/model/timesheet.dart';
+import 'package:taskist/model/device.dart';
+import 'package:taskist/common/uidata.dart';
+import 'package:taskist/employees/widgets/employee_footer.dart';
 import 'package:firestore_helpers/firestore_helpers.dart';
 import 'employeeCard.dart';
 import '../dbService.dart';
@@ -17,9 +19,9 @@ class Style {
       fontSize: 14.0,
       fontWeight: FontWeight.w400);
   static final titleTextStyle = baseTextStyle.copyWith(
-      color: Colors.white, fontSize: 18.0, fontWeight: FontWeight.w600);
+      color: Colors.green, fontSize: 18.0, fontWeight: FontWeight.w600);
   static final headerTextStyle = baseTextStyle.copyWith(
-      color: Colors.white, fontSize: 20.0, fontWeight: FontWeight.w400);
+      color: Colors.green, fontSize: 20.0, fontWeight: FontWeight.w400);
 }
 
 class EmployeeDetail extends StatefulWidget {
@@ -37,10 +39,11 @@ class _EmployeeDetailState extends State<EmployeeDetail> {
   Device device;
   int _clockButtonState = 0;
   bool _clockedIn;
-
   @override
   void initState() {
     super.initState();
+    _clockedIn = widget.employee.clockedIn;
+
     this.employee = widget.employee;
     this.device = widget.device;
   }
@@ -50,55 +53,56 @@ class _EmployeeDetailState extends State<EmployeeDetail> {
     return new Scaffold(
       body: new Container(
         constraints: new BoxConstraints.expand(),
-        color: Colors.green.shade900,
+        // color: Colors.green.shade900,
         child: new Stack(children: <Widget>[
           _getBackground(),
           _getGradient(),
           _getContent(),
           _getToolbar(context),
-          new Container(
-            padding: new EdgeInsets.fromLTRB(32.0, 600.0, 0.0, 32.0),
-            child: new Center(
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: <Widget>[
-                  new Text(
-                    'TIME SHEETS',
-                    style: Style.headerTextStyle,
-                  ),
-                  Expanded(
-                    child: StreamBuilder<List<Timesheet>>(
-                      stream: dbService.getTimesheets(constraints: [
-                        new QueryConstraint(
-                            field: "empId", isEqualTo: employee.id)
-                      ]),
-                      builder: (context, snapShot) {
-                        if (!snapShot.hasData || snapShot.data.isEmpty) {
-                          return Center(child: Text('No Data'));
-                        } else {
-                          return ListView.separated(
-                              separatorBuilder: (context, index) => Divider(
-                                    color: Colors.black,
-                                  ),
-                              itemCount: snapShot.data.length,
-                              itemBuilder: (context, index) {
-                                var item = snapShot.data[index];
-                                // return EmployeeCard(item);
-                                return ListTile(
-                                  leading: const Icon(Icons.access_time),
-                                  title: Text(
-                                      '${item.prettyInDay}, ${item.prettyInTime}'),
-                                  subtitle: Text(
-                                      '${item.prettyOutDay}, ${item.prettyOutTime}'),
-                                );
-                              });
-                        }
-                      },
-                    ),
-                  ),
-                ])),
-          )
+
+          // new Container(
+          //   padding: new EdgeInsets.fromLTRB(32.0, 600.0, 0.0, 32.0),
+          //   child: new Center(
+          //       child: Column(
+          //           mainAxisAlignment: MainAxisAlignment.start,
+          //           crossAxisAlignment: CrossAxisAlignment.stretch,
+          //           children: <Widget>[
+          //         new Text(
+          //           'TIME SHEETS',
+          //           style: Style.headerTextStyle,
+          //         ),
+          //         Expanded(
+          //           child: StreamBuilder<List<Timesheet>>(
+          //             stream: dbService.getTimesheets(constraints: [
+          //               new QueryConstraint(
+          //                   field: "empId", isEqualTo: employee.id)
+          //             ]),
+          //             builder: (context, snapShot) {
+          //               if (!snapShot.hasData || snapShot.data.isEmpty) {
+          //                 return Center(child: Text('No Data'));
+          //               } else {
+          //                 return ListView.separated(
+          //                     separatorBuilder: (context, index) => Divider(
+          //                           color: Colors.black,
+          //                         ),
+          //                     itemCount: snapShot.data.length,
+          //                     itemBuilder: (context, index) {
+          //                       var item = snapShot.data[index];
+          //                       // return EmployeeCard(item);
+          //                       return ListTile(
+          //                         leading: const Icon(Icons.access_time),
+          //                         title: Text(
+          //                             '${item.prettyInDay}, ${item.prettyInTime}'),
+          //                         subtitle: Text(
+          //                             '${item.prettyOutDay}, ${item.prettyOutTime}'),
+          //                       );
+          //                     });
+          //               }
+          //             },
+          //           ),
+          //         ),
+          //       ])),
+          // )
         ]),
       ),
     );
@@ -113,10 +117,13 @@ class _EmployeeDetailState extends State<EmployeeDetail> {
 // );
   Container _getBackground() {
     return new Container(
-      child: new Image.asset(
-        'assets/images/profile_header_background2.png',
-        fit: BoxFit.cover,
-        height: 300.0,
+      child: Opacity(
+        opacity: .5,
+        child: new Image.asset(
+          'assets/images/profile_header_background2.png',
+          fit: BoxFit.cover,
+          height: 300.0,
+        ),
       ),
       constraints: new BoxConstraints.expand(height: 300.0),
     );
@@ -126,15 +133,15 @@ class _EmployeeDetailState extends State<EmployeeDetail> {
     return new Container(
       margin: new EdgeInsets.only(top: 190.0),
       height: 110.0,
-      decoration: new BoxDecoration(
-        gradient: new LinearGradient(
-          // colors: UIData.kitGradientsGreen,
-          colors: <Color>[Colors.green.shade100, Colors.green.shade900],
-          stops: [0.0, 0.9],
-          begin: const FractionalOffset(0.0, 0.0),
-          end: const FractionalOffset(0.0, 1.0),
-        ),
-      ),
+      // decoration: new BoxDecoration(
+      //   gradient: new LinearGradient(
+      //     // colors: UIData.kitGradientsGreen,
+      //     colors: <Color>[Colors.green.shade100, Colors.green.shade900],
+      //     stops: [0.0, 0.9],
+      //     begin: const FractionalOffset(0.0, 0.0),
+      //     end: const FractionalOffset(0.0, 1.0),
+      //   ),
+      // ),
     );
   }
 
@@ -169,7 +176,7 @@ class _EmployeeDetailState extends State<EmployeeDetail> {
                     Expanded(
                       child: _createClockButton(
                         clockString,
-                        textColor: Colors.white,
+                        textColor: Colors.green.shade900,
                         backgroundColor:
                             (employee.clockedIn) ? Colors.red : Colors.green,
                       ),
@@ -192,6 +199,8 @@ class _EmployeeDetailState extends State<EmployeeDetail> {
                 ),
                 new Separator(),
                 _contentTable(),
+                EmployeeDetailFooter(employee),
+
                 // (employee.address != null && employee.address != "")
                 //     ? new Text(employee.getPretty(),
                 //         style: Style.commonTextStyle)
@@ -214,7 +223,7 @@ class _EmployeeDetailState extends State<EmployeeDetail> {
   Widget _createCheckOutButton(
     String text, {
     Color backgroundColor = Colors.transparent,
-    Color textColor = Colors.white70,
+    Color textColor = Colors.green,
   }) {
     return new ClipRRect(
       // borderRadius: new BorderRadius.circular(30.0),
@@ -234,6 +243,9 @@ class _EmployeeDetailState extends State<EmployeeDetail> {
   }
 
   _clockEmployee() async {
+    String clockString;
+    (employee.clockedIn == null) ? employee.clockedIn = false : null;
+    (employee.clockedIn) ? clockString = 'CLOCK OUT' : clockString = 'CLOCK IN';
     setState(() {
       _clockButtonState = 1;
     });
@@ -246,6 +258,12 @@ class _EmployeeDetailState extends State<EmployeeDetail> {
     setState(() {
       _clockedIn = !_clockedIn;
     });
+    clockString;
+    employee.clockedIn = !employee.clockedIn;
+    (employee.clockedIn == null) ? employee.clockedIn = false : null;
+    (employee.clockedIn) ? clockString = 'CLOCK OUT' : clockString = 'CLOCK IN';
+
+    _createClockButton(clockString);
   }
 
   // void animateClockButton() {
@@ -263,7 +281,7 @@ class _EmployeeDetailState extends State<EmployeeDetail> {
   Widget _createClockButton(
     String clockString, {
     Color backgroundColor = Colors.transparent,
-    Color textColor = Colors.white70,
+    Color textColor = Colors.green,
   }) {
     // if (employee.clockedIn && employee.currentDeviceId == widget.device.serial) {
     if (_clockButtonState == 0) {
@@ -288,10 +306,10 @@ class _EmployeeDetailState extends State<EmployeeDetail> {
       );
     } else if (_clockButtonState == 1) {
       return CircularProgressIndicator(
-        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+        valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
       );
     } else {
-      return Icon(Icons.check, color: Colors.white);
+      return Icon(Icons.check, color: Colors.green);
     }
   }
 
@@ -299,7 +317,7 @@ class _EmployeeDetailState extends State<EmployeeDetail> {
 
   Widget _contentTable() {
     return Table(
-      // border: TableBorder.all(width: 2.0, color: Colors.white),
+      // border: TableBorder.all(width: 2.0, color: Colors.green),
       defaultColumnWidth: FixedColumnWidth(280),
       defaultVerticalAlignment: TableCellVerticalAlignment.bottom,
 // Full Name:	Ash Downing
@@ -318,13 +336,13 @@ class _EmployeeDetailState extends State<EmployeeDetail> {
               children: <Widget>[
                 new Text('Full Name:',
                     style: TextStyle(
-                      color: Colors.white70,
+                      color: Colors.green,
                       fontSize: 18,
                       fontWeight: FontWeight.normal,
                     )),
                 new Text(employee.name,
                     style: TextStyle(
-                      color: Colors.white,
+                      color: Colors.green,
                       fontSize: 18,
                       fontWeight: FontWeight.normal,
                     )),
@@ -339,13 +357,13 @@ class _EmployeeDetailState extends State<EmployeeDetail> {
               children: <Widget>[
                 new Text('Mobile:',
                     style: TextStyle(
-                      color: Colors.white70,
+                      color: Colors.green,
                       fontSize: 18,
                       fontWeight: FontWeight.normal,
                     )),
                 new Text(employee.cell_phone,
                     style: TextStyle(
-                      color: Colors.white,
+                      color: Colors.green,
                       fontSize: 18,
                       fontWeight: FontWeight.normal,
                     )),
@@ -360,13 +378,13 @@ class _EmployeeDetailState extends State<EmployeeDetail> {
               children: <Widget>[
                 new Text('ID:',
                     style: TextStyle(
-                      color: Colors.white70,
+                      color: Colors.green,
                       fontSize: 18,
                       fontWeight: FontWeight.normal,
                     )),
                 new Text(employee.id,
                     style: TextStyle(
-                      color: Colors.white,
+                      color: Colors.green,
                       fontSize: 18,
                       fontWeight: FontWeight.normal,
                     )),
@@ -381,13 +399,13 @@ class _EmployeeDetailState extends State<EmployeeDetail> {
               children: <Widget>[
                 new Text('Email:',
                     style: TextStyle(
-                      color: Colors.white70,
+                      color: Colors.green,
                       fontSize: 18,
                       fontWeight: FontWeight.normal,
                     )),
                 new Text((employee.email != null) ? employee.email : 'N/A',
                     style: TextStyle(
-                      color: Colors.white,
+                      color: Colors.green,
                       fontSize: 18,
                       fontWeight: FontWeight.normal,
                     )),
@@ -402,13 +420,13 @@ class _EmployeeDetailState extends State<EmployeeDetail> {
               children: <Widget>[
                 new Text('Birthday:',
                     style: TextStyle(
-                      color: Colors.white70,
+                      color: Colors.green,
                       fontSize: 18,
                       fontWeight: FontWeight.normal,
                     )),
                 new Text(employee.getPrettyBirthDay(),
                     style: TextStyle(
-                      color: Colors.white,
+                      color: Colors.green,
                       fontSize: 18,
                       fontWeight: FontWeight.normal,
                     )),

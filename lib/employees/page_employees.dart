@@ -6,15 +6,15 @@ import 'package:taskist/model/device.dart';
 import 'package:taskist/common/assetsApi.dart';
 import 'dbService.dart';
 import './widgets/employeeCard.dart';
+import 'package:taskist/common/common_scaffold.dart';
 
 class EmployeeList extends StatefulWidget {
   @override
- _EmployeesListPageState createState() => new _EmployeesListPageState();
+  _EmployeesListPageState createState() => new _EmployeesListPageState();
 }
 
-class _EmployeesListPageState  extends State<EmployeeList>
-    {
-Device _device;
+class _EmployeesListPageState extends State<EmployeeList> {
+  Device _device;
   @override
   void initState() {
     super.initState();
@@ -24,18 +24,28 @@ Device _device;
       DeviceOrientation.portraitDown,
     ]);
   }
- void _setDevice() async {
+
+  void _setDevice() async {
     _device = await getDevice();
     // this.device = await getDevice();
   }
- 
+
+  final _scaffoldState = GlobalKey<ScaffoldState>();
 
   final DatabaseService dbService = new DatabaseService();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-   
-      body: Center(
+    return CommonScaffold(
+      backGroundColor: Colors.grey.shade100,
+      actionFirstIcon: null,
+      appTitle: "Employee List",
+      showFAB: true,
+      scaffoldKey: _scaffoldState,
+      showDrawer: false,
+      centerDocked: true,
+      floatingIcon: Icons.add,
+      showBottomNav: true,
+      bodyData: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -62,23 +72,14 @@ Device _device;
                 },
               ),
             ),
-         
           ],
         ),
       ),
     );
   }
 
-
   @override
   void dispose() {
     super.dispose();
   }
-
-
- 
-
-  }
-
-  
-
+}

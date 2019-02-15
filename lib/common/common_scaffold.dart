@@ -9,11 +9,10 @@ import 'package:taskist/common/profile_tile.dart';
 import 'package:taskist/model/menu.dart';
 import 'dart:async';
 
-
 class CommonScaffold extends StatelessWidget {
   final appTitle;
   final Widget bodyData;
-  final showFAB;  
+  final showFAB;
   final showDrawer;
   final callback;
   final backGroundColor;
@@ -44,7 +43,7 @@ class CommonScaffold extends StatelessWidget {
       this.floatingIcon,
       this.elevation = 4.0});
 
- Widget menuStack(BuildContext context, Menu menu) => InkWell(
+  Widget menuStack(BuildContext context, Menu menu) => InkWell(
         onTap: () => _showModalBottomSheet(context, menu),
         splashColor: Colors.orange,
         child: Card(
@@ -95,7 +94,6 @@ class CommonScaffold extends StatelessWidget {
         ],
       );
 
-
 //  Widget bodySliverList() {
 //     MenuBloc menuBloc = MenuBloc();
 //     return StreamBuilder<List<Menu>>(
@@ -114,8 +112,7 @@ class CommonScaffold extends StatelessWidget {
   Widget header() => Ink(
         decoration: BoxDecoration(
             // gradient: LinearGradient(colors: UIData.kitGradients2)
-            color: Colors.blue.shade900
-            ),
+            color: Colors.blue.shade900),
         child: Padding(
           padding: const EdgeInsets.all(10.0),
           child: Row(
@@ -138,13 +135,11 @@ class CommonScaffold extends StatelessWidget {
         ),
       );
 
-void _showModalBottomSheet(BuildContext context, Menu menu) {
-
+  void _showModalBottomSheet(BuildContext context, Menu menu) {
     // MenuBloc menuBloc = MenuBloc();
-MenuViewModel menu = MenuViewModel();
+    MenuViewModel menu = MenuViewModel();
 
     showModalBottomSheet(
-      
         context: context,
         builder: (context) => Material(
             clipBehavior: Clip.antiAlias,
@@ -169,10 +164,10 @@ MenuViewModel menu = MenuViewModel();
                                 menu.menuItems[i].title,
                               ),
                               onTap: () {
-                               callback(2);
-                                // Navigator.pop(context);
-                                // Navigator.pushNamed(
-                                //     context, "/${menu.menuItems[i].title}");
+                                //  callback(2);
+                                Navigator.pop(context);
+                                Navigator.pushNamed(
+                                    context, "/${menu.menuItems[i].title}");
                               }),
                         ),
                   ),
@@ -187,14 +182,12 @@ MenuViewModel menu = MenuViewModel();
         elevation: 3,
         shape: CircularNotchedRectangle(),
         child: Ink(
-          height: 50.0,
-          
+          height: 70.0,
           decoration: new BoxDecoration(
             color: Colors.blue.shade900,
-              // gradient: new LinearGradient(colors: UIData.kitGradients3)
-              ),
+            // gradient: new LinearGradient(colors: UIData.kitGradients3)
+          ),
           child: new Row(
-            
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
@@ -203,7 +196,7 @@ MenuViewModel menu = MenuViewModel();
                 child: new InkWell(
                   radius: 10.0,
                   splashColor: Colors.grey,
-                onTap: () => _showModalBottomSheet(context,  menu),
+                  onTap: () => _showModalBottomSheet(context, menu),
                   child: Center(
                     widthFactor: 3,
                     child: new Icon(Icons.menu, color: Colors.white),

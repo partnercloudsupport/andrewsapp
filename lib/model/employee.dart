@@ -32,6 +32,7 @@ class Employee {
     @required this.work_start_date,
     this.email,
     this.fbemployeeid,
+    this.firstname,
     // this.address,
     this.currentDeviceId,
   });
@@ -42,6 +43,7 @@ class Employee {
   int clockTimestamp;
   String city;
   String state;
+  String firstname;
   String fbemployeeid;
   String address;
   String zip;

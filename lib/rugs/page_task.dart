@@ -2,10 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:taskist/model/element.dart';
 import 'package:taskist/rugs/models/job.dart';
-import 'package:taskist/rugs/models/serviceItem.dart';
 import 'package:taskist/rugs/page_detail.dart';
 import 'package:taskist/common/common_scaffold.dart';
 import 'package:dio/dio.dart';
@@ -26,22 +23,22 @@ class RugPage extends StatefulWidget {
 class _TaskPageState extends State<RugPage>
     with SingleTickerProviderStateMixin {
   int index = 1;
-final _scaffoldState = GlobalKey<ScaffoldState>();
-  
+  final _scaffoldState = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     return CommonScaffold(
-           // backGroundColor: Colors.grey.shade100,
-        backGroundColor: Colors.white,
-        actionFirstIcon: null,
-        appTitle: "Product Detail",
-        showFAB: true,
-        scaffoldKey: _scaffoldState,
-        showDrawer: false,
-        centerDocked: true,
-        floatingIcon: Icons.add,
-        // bodyData: bodyData(productBloc.productItems),
-    showBottomNav: true,
+      // backGroundColor: Colors.grey.shade100,
+      backGroundColor: Colors.white,
+      actionFirstIcon: null,
+      appTitle: "Product Detail",
+      showFAB: true,
+      scaffoldKey: _scaffoldState,
+      showDrawer: false,
+      centerDocked: true,
+      floatingIcon: Icons.add,
+      // bodyData: bodyData(productBloc.productItems),
+      showBottomNav: true,
       bodyData: ListView(
         children: <Widget>[
           _getToolbar(context),

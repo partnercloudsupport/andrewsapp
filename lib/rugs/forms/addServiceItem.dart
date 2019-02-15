@@ -71,7 +71,7 @@ class _AddServiceItemsState extends State<AddServiceItems> {
       print('Has focus: $_focusNode.hasFocus');
     });
 
-    _currentItem.pictures.add('https://picsum.photos/200/300');
+    // _currentItem.pictures.add('https://picsum.photos/200/300');
 
     twentyOnedaysFromNow = today.add(new Duration(days: 21));
   }
@@ -243,29 +243,34 @@ class _AddServiceItemsState extends State<AddServiceItems> {
           if (snapshot.connectionState == ConnectionState.done &&
               snapshot.data != null) {
             uploadImage(snapshot.data);
-            return new Column(children: <Widget>[
+
+            Column(children: <Widget>[
               //   ListView(
               //       physics: const BouncingScrollPhysics(),
               //       padding: EdgeInsets.only(left: 40.0, right: 40.0),
               //       scrollDirection: Axis.horizontal,
               //       children:
               //  getPictureList(_currentItem.pictures) as List<Widget>),
-              new CarouselSlider(
-                items: _currentItem.pictures.map((url) {
-                  return Container(
-                      margin: EdgeInsets.all(5.0),
-                      child: ClipRRect(
-                          borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                          child: Image.network(
-                            url.toString(),
-                            fit: BoxFit.cover,
-                            width: 800.0,
-                          )));
-                }).toList(),
-                viewportFraction: 0.9,
-                aspectRatio: 2.0,
-                height: 250,
-                autoPlay: false,
+              Opacity(
+                opacity: 0.0,
+                child: new CarouselSlider(
+                  items: _currentItem.pictures.map((url) {
+                    return Container(
+                        margin: EdgeInsets.all(5.0),
+                        child: ClipRRect(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(5.0)),
+                            child: Image.network(
+                              url.toString(),
+                              fit: BoxFit.cover,
+                              width: 800.0,
+                            )));
+                  }).toList(),
+                  viewportFraction: 0.9,
+                  aspectRatio: 2.0,
+                  height: 250,
+                  autoPlay: false,
+                ),
               ),
               customerPanel(),
               Padding(

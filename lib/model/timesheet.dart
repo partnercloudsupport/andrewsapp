@@ -24,15 +24,17 @@ class Timesheet {
   String store;
   String status;
   List<Note> notes;
-  DateTime created;
+  String documentID;
   String employeeId;
-  int inTimestamp;
-  int inDay;
-  String outTimestamp;
-  String outDay;
-  int inHour;
   bool isValid;
-  String outHour;
+  int created;
+
+  int in_timestamp;
+  int inDay;
+  int out_timestamp;
+  int outDay;
+  int inHour;
+  int outHour;
   @pass
   GeoPoint inLocation;
   String outLocation;
@@ -48,7 +50,6 @@ class Timesheet {
   String approvedNotes;
   String outPicture;
   String breakTime;
-  String endTimestamp;
   String updatedAt;
 
   Timesheet({
@@ -57,10 +58,10 @@ class Timesheet {
     this.status,
     this.notes,
     this.created,
-    this.inTimestamp,
+    this.in_timestamp,
     this.inDay,
     this.employeeId,
-    this.outTimestamp,
+    this.out_timestamp,
     this.outDay,
     this.inHour,
     this.outHour,
@@ -79,7 +80,6 @@ class Timesheet {
     this.approvedNotes,
     this.outPicture,
     this.breakTime,
-    this.endTimestamp,
     this.updatedAt,
   });
 }
@@ -95,15 +95,15 @@ Timesheet createNewTimesheet(Employee employee, Device device) {
   newSheet.store = "0";
   newSheet.status = "1";
   newSheet.notes = new List<Note>();
-  newSheet.created = now;
-  newSheet.inTimestamp = timestamp;
+  newSheet.created = now.millisecondsSinceEpoch;
+  newSheet.in_timestamp = timestamp;
   newSheet.inDay = now.day;
   newSheet.employeeId = employee.id;
   newSheet.fbemployeeid = employee.fbemployeeid;
-  newSheet.outTimestamp = "0";
-  newSheet.outDay = "0";
+  newSheet.out_timestamp = 0;
+  newSheet.outDay = 0;
   newSheet.inHour = now.hour;
-  newSheet.outHour = "0";
+  newSheet.outHour = 0;
   newSheet.prettyInTime = "0";
   newSheet.prettyInDay = "0";
   newSheet.prettyOutTime = "0";
@@ -117,7 +117,6 @@ Timesheet createNewTimesheet(Employee employee, Device device) {
   newSheet.approvedNotes = "0";
   newSheet.outPicture = "0";
   newSheet.breakTime = "0";
-  newSheet.endTimestamp = "0";
   newSheet.updatedAt = "0";
 
   return newSheet;

@@ -64,6 +64,7 @@ abstract class _$EmployeeSerializer implements Serializer<Employee> {
     setMapValue(ret, 'clockTimestamp', model.clockTimestamp);
     setMapValue(ret, 'city', model.city);
     setMapValue(ret, 'state', model.state);
+    setMapValue(ret, 'firstname', model.firstname);
     setMapValue(ret, 'fbemployeeid', model.fbemployeeid);
     setMapValue(ret, 'address', model.address);
     setMapValue(ret, 'zip', model.zip);
@@ -94,6 +95,7 @@ abstract class _$EmployeeSerializer implements Serializer<Employee> {
     obj.clockTimestamp = map['clockTimestamp'] as int;
     obj.city = map['city'] as String;
     obj.state = map['state'] as String;
+    obj.firstname = map['firstname'] as String;
     obj.fbemployeeid = map['fbemployeeid'] as String;
     obj.address = map['address'] as String;
     obj.zip = map['zip'] as String;

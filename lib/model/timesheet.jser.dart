@@ -40,14 +40,15 @@ abstract class _$TimesheetSerializer implements Serializer<Timesheet> {
     setMapValue(ret, 'status', model.status);
     setMapValue(ret, 'notes',
         codeIterable(model.notes, (val) => _noteSerializer.toMap(val as Note)));
-    setMapValue(ret, 'created', dateTimeUtcProcessor.serialize(model.created));
+    setMapValue(ret, 'documentID', model.documentID);
     setMapValue(ret, 'employeeId', model.employeeId);
-    setMapValue(ret, 'inTimestamp', model.inTimestamp);
+    setMapValue(ret, 'isValid', model.isValid);
+    setMapValue(ret, 'created', model.created);
+    setMapValue(ret, 'in_timestamp', model.in_timestamp);
     setMapValue(ret, 'inDay', model.inDay);
-    setMapValue(ret, 'outTimestamp', model.outTimestamp);
+    setMapValue(ret, 'out_timestamp', model.out_timestamp);
     setMapValue(ret, 'outDay', model.outDay);
     setMapValue(ret, 'inHour', model.inHour);
-    setMapValue(ret, 'isValid', model.isValid);
     setMapValue(ret, 'outHour', model.outHour);
     setMapValue(ret, 'inLocation', _passProcessor.serialize(model.inLocation));
     setMapValue(ret, 'outLocation', model.outLocation);
@@ -63,7 +64,6 @@ abstract class _$TimesheetSerializer implements Serializer<Timesheet> {
     setMapValue(ret, 'approvedNotes', model.approvedNotes);
     setMapValue(ret, 'outPicture', model.outPicture);
     setMapValue(ret, 'breakTime', model.breakTime);
-    setMapValue(ret, 'endTimestamp', model.endTimestamp);
     setMapValue(ret, 'updatedAt', model.updatedAt);
     return ret;
   }
@@ -77,15 +77,16 @@ abstract class _$TimesheetSerializer implements Serializer<Timesheet> {
     obj.status = map['status'] as String;
     obj.notes = codeIterable<Note>(
         map['notes'] as Iterable, (val) => _noteSerializer.fromMap(val as Map));
-    obj.created = dateTimeUtcProcessor.deserialize(map['created'] as String);
+    obj.documentID = map['documentID'] as String;
     obj.employeeId = map['employeeId'] as String;
-    obj.inTimestamp = map['inTimestamp'] as int;
-    obj.inDay = map['inDay'] as int;
-    obj.outTimestamp = map['outTimestamp'] as String;
-    obj.outDay = map['outDay'] as String;
-    obj.inHour = map['inHour'] as int;
     obj.isValid = map['isValid'] as bool;
-    obj.outHour = map['outHour'] as String;
+    obj.created = map['created'] as int;
+    obj.in_timestamp = map['in_timestamp'] as int;
+    obj.inDay = map['inDay'] as int;
+    obj.out_timestamp = map['out_timestamp'] as int;
+    obj.outDay = map['outDay'] as int;
+    obj.inHour = map['inHour'] as int;
+    obj.outHour = map['outHour'] as int;
     obj.inLocation = _passProcessor.deserialize(map['inLocation']) as GeoPoint;
     obj.outLocation = map['outLocation'] as String;
     obj.inDevice = map['inDevice'] as String;
@@ -100,7 +101,6 @@ abstract class _$TimesheetSerializer implements Serializer<Timesheet> {
     obj.approvedNotes = map['approvedNotes'] as String;
     obj.outPicture = map['outPicture'] as String;
     obj.breakTime = map['breakTime'] as String;
-    obj.endTimestamp = map['endTimestamp'] as String;
     obj.updatedAt = map['updatedAt'] as String;
     return obj;
   }

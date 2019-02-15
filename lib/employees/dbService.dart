@@ -8,7 +8,7 @@ import 'dart:convert';
 
 class DatabaseService {
   final empCollection = Firestore.instance.collection("employees");
-  final timeSheetCollection = Firestore.instance.collection("timesheets");
+  final timeSheetCollection = Firestore.instance.collection("htimesheets");
 
   Future<String> getHumanityToken() async {
     // var data = new Map<String, dynamic>();
@@ -54,7 +54,9 @@ class DatabaseService {
     });
   }
 
-  Future<void> updateEmployee(employee, updatedStatus, docId) async {
+  Future<void> updateEmployeeTimesheetStatus(
+      employee, updatedStatus, docId) async {
+    DateTime now = new DateTime.now();
     final DocumentReference employeeRef =
         Firestore.instance.document('employees/' + employee.fbemployeeid);
     await Firestore.instance.runTransaction((Transaction tx) async {
@@ -62,7 +64,8 @@ class DatabaseService {
       if (empSnapshot.exists) {
         await tx.update(employeeRef, <String, dynamic>{
           'clockedIn': updatedStatus,
-          'currentTimesheetId': docId
+          'currentTimesheetId': docId,
+          'clockTimestamp': now.millisecondsSinceEpoch
         });
         EmployeeSerializer().fromMap(empSnapshot.data);
         // Navigator.pop(context);
@@ -82,7 +85,10 @@ class DatabaseService {
         mapper: (eventDoc) {
           var emp = EmployeeSerializer().fromMap(eventDoc.data);
           emp.fbemployeeid = eventDoc.documentID;
-          (emp.clockedIn == null) ? emp.clockedIn == false : null;
+          (emp.clockedIn == null) ? emp.clockedIn = false : null;
+          (emp.clockTimestamp == null)
+              ? emp.clockTimestamp = 9999999999999999
+              : null;
           return emp;
         },
         orderComparer: (emp1, emp2) =>
@@ -105,11 +111,24 @@ class DatabaseService {
 
         mapper: (eventDoc) {
           var sheet = TimesheetSerializer().fromMap(eventDoc.data);
-          sheet.id = eventDoc.documentID;
+          print(eventDoc.data['in_timestamp']);
+          // DateTime time = new DateTime.fromMicrosecondsSinceEpoch(1550216100);
+          var intime = new DateTime.fromMillisecondsSinceEpoch(
+              eventDoc.data['in_timestamp'] * 1000);
+          var outtime = new DateTime.fromMillisecondsSinceEpoch(
+              eventDoc.data['out_timestamp'] * 1000);
+          String sintime =
+              "${intime.year.toString()}-${intime.month.toString().padLeft(2, '0')}-${intime.day.toString().padLeft(2, '0')}";
+          String souttime =
+              "${outtime.year.toString()}-${outtime.month.toString().padLeft(2, '0')}-${outtime.day.toString().padLeft(2, '0')}";
+          Duration difference = outtime.difference(intime);
+          print(difference.inHours);
+
+          sheet.documentID = eventDoc.documentID;
           return sheet;
         },
-        orderComparer: (sheet1, sheet2) =>
-            sheet1.inTimestamp.compareTo(sheet2.inTimestamp),
+        // orderComparer: (sheet1, sheet2) =>
+        //     sheet1.inTimestamp.compareTo(sheet2.inTimestamp),
         //  clientSidefilters: (Timesheet sheet) => sheet.employeeId == '123';
       );
     } on Exception catch (ex) {
@@ -122,17 +141,17 @@ class DatabaseService {
 
   Future<bool> punchClock(Employee employee, Device device) async {
     bool result = false;
-    String token = await getHumanityToken();
+    String tokenx = await getHumanityToken();
     http.Response _clockResponse;
     (employee.clockedIn == null) ? employee.clockedIn = false : null;
     if (employee.clockedIn) {
       _clockResponse = await http.put(
           'https://www.humanity.com/api/v2/employees/${employee.id}/clockout?access_token=' +
-              token);
+              tokenx);
     } else {
       _clockResponse = await http.post(
           'https://www.humanity.com/api/v2/employees/${employee.id}/clockin?access_token=' +
-              token);
+              tokenx);
     }
 
     var decodedResponse =
@@ -156,7 +175,7 @@ class DatabaseService {
       await updateTimesheet(employee.currentTimesheetId);
       docId = "0";
     }
-    await updateEmployee(employee, updatedStatus, docId);
+    await updateEmployeeTimesheetStatus(employee, updatedStatus, docId);
 
     return result;
   }

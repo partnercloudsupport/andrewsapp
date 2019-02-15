@@ -84,6 +84,7 @@ class UIData {
   static const String coming_soon = "Coming Soon";
 
   static const MaterialColor ui_kit_color = Colors.grey;
+  static const MaterialColor andrews_green = Colors.green;
 
 //colors
   static List<Color> kitGradients = [

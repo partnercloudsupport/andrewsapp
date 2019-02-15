@@ -8,6 +8,7 @@ import 'package:taskist/model/device.dart';
 import 'package:taskist/rugs/page_task.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:taskist/employees/page_employees.dart';
+import 'package:taskist/employees/geekants/Screens/Login/index.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 const TRACKER_HOST = 'http://tracker.transistorsoft.com/locations/';
@@ -54,8 +55,6 @@ class _RootPageState extends State<RootPage> {
       }
     });
   }
-
-
 
   void _onLoggedIn() {
     _auth.currentUser().then((user) {
@@ -137,7 +136,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
-
   callback(newAbc) {
     setState(() {
       _currentIndex = newAbc;
@@ -150,13 +148,15 @@ class _HomePageState extends State<HomePage>
     });
   }
 
-  int _currentIndex = 1;
- 
+  int _currentIndex = 0;
+
   int newIndex;
 
   final List<Widget> _children = [
     RugPage(user: _currentUser),
     EmployeeList(),
+    AntsLoginScreen(),
+    // CallSample(),
     // TaskPage(),
     // TaskPage(
     //     // user: _currentUser,

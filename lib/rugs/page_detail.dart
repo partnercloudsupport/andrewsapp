@@ -16,14 +16,13 @@ class DetailPage extends StatefulWidget {
   final FirebaseUser user;
   // final int i;
   // final Map<String, List<JobModel>> jobPanel;
-  final  JobModel job;
+  final JobModel job;
 
   // final String color;
 
   // DetailPage({Key key, this.user, this.i, this.job, this.color})
   //     : super(key: key);
-  DetailPage({Key key, this.user, this.job })
-      : super(key: key);
+  DetailPage({Key key, this.user, this.job}) : super(key: key);
   factory DetailPage.forDesignTime() {
     // TODO: add arguments
     return new DetailPage();
@@ -35,40 +34,36 @@ class DetailPage extends StatefulWidget {
 
 class _DetailPageState extends State<DetailPage> {
   TextEditingController itemController = new TextEditingController();
-List<dynamic> serviceItems;
-
+  List<dynamic> serviceItems;
 
   void addServiceItemToFirebase() async {
-
-  bool isExist = false;
-      int length =  widget.job.serviceItems.length + 1;
-       List<dynamic> list = new List<dynamic>();
-       widget.job.serviceItems..forEach((v) {
-            list.add(v  );
-       });
-    try{
-       await Firestore.instance
-            .collection('service-items')
-            .document(widget.job.fbId + '_' + length.toString()) 
-            .setData({
-          "name": itemController.text.toString().trim(),
-          "isDone": true
-        });
+    bool isExist = false;
+    int length = widget.job.serviceItems.length + 1;
+    List<dynamic> list = new List<dynamic>();
+    widget.job.serviceItems
+      ..forEach((v) {
+        list.add(v);
+      });
+    try {
+      await Firestore.instance
+          .collection('service-items')
+          .document(widget.job.fbId + '_' + length.toString())
+          .setData(
+              {"name": itemController.text.toString().trim(), "isDone": true});
       List l = new List();
       l.add({"name": itemController.text.toString().trim(), "isDone": false});
-        widget.job.serviceItems.add({"name": itemController.text.toString().trim(), "isDone": false});
+      widget.job.serviceItems.add(
+          {"name": itemController.text.toString().trim(), "isDone": false});
 
-        await Firestore.instance
-            .collection("workorders")
-            .document(widget.job.fbId)
-            .updateData({
-         'serviceItems': FieldValue.arrayUnion(l)
-           });
-       } catch (e){
-print(e);
-            }
-        itemController.clear();
-        Navigator.of(context).pop();  
+      await Firestore.instance
+          .collection("workorders")
+          .document(widget.job.fbId)
+          .updateData({'serviceItems': FieldValue.arrayUnion(l)});
+    } catch (e) {
+      print(e);
+    }
+    itemController.clear();
+    Navigator.of(context).pop();
   }
 
   @override
@@ -106,63 +101,60 @@ print(e);
       ),
       floatingActionButton: DiamondFab(
         onPressed: () {
-         
-            Navigator.of(context).push(
-              new PageRouteBuilder(
-             pageBuilder: (_, __, ___) => new AddServiceItems(
-                      user: widget.user,
-                      currentJob: widget.job,
-                    )
-          // showDialog(
-          //   context: context,
-          //   builder: (BuildContext context) {
-          //     return AlertDialog(
-          //       content: Row(
-          //         children: <Widget>[
-          //           Expanded(
-          //             child: new TextField(
-          //               autofocus: true,
-          //               decoration: InputDecoration(
-          //                   border: new OutlineInputBorder(
-          //                       borderSide:
-          //                           new BorderSide(color: currentColor)),
-          //                   labelText: "Item",
-          //                   hintText: "Item",
-          //                   contentPadding: EdgeInsets.only(
-          //                       left: 16.0,
-          //                       top: 20.0,
-          //                       right: 16.0,
-          //                       bottom: 5.0)),
-          //               controller: itemController,
-          //               style: TextStyle(
-          //                 fontSize: 22.0,
-          //                 color: Colors.black,
-          //                 fontWeight: FontWeight.w500,
-          //               ),
-          //               keyboardType: TextInputType.text,
-          //               textCapitalization: TextCapitalization.sentences,
-          //             ),
-          //           )
-          //         ],
-          //       ),
-          //       actions: <Widget>[
-          //         ButtonTheme(
-          //           //minWidth: double.infinity,
-          //           child: RaisedButton(
-          //             elevation: 3.0,
-          //             onPressed: addServiceItemToFirebase,
-          //             // addServiceItem(),
-   
-          //             child: Text('Add'),
-          //             color: currentColor,
-          //             textColor: const Color(0xffffffff),
-          //           ),
-          //         )
-          //       ],
-          //     );
-          //   },
-          )
-            );
+          Navigator.of(context).push(new PageRouteBuilder(
+              pageBuilder: (_, __, ___) => new AddServiceItems(
+                    user: widget.user,
+                    currentJob: widget.job,
+                  )
+              // showDialog(
+              //   context: context,
+              //   builder: (BuildContext context) {
+              //     return AlertDialog(
+              //       content: Row(
+              //         children: <Widget>[
+              //           Expanded(
+              //             child: new TextField(
+              //               autofocus: true,
+              //               decoration: InputDecoration(
+              //                   border: new OutlineInputBorder(
+              //                       borderSide:
+              //                           new BorderSide(color: currentColor)),
+              //                   labelText: "Item",
+              //                   hintText: "Item",
+              //                   contentPadding: EdgeInsets.only(
+              //                       left: 16.0,
+              //                       top: 20.0,
+              //                       right: 16.0,
+              //                       bottom: 5.0)),
+              //               controller: itemController,
+              //               style: TextStyle(
+              //                 fontSize: 22.0,
+              //                 color: Colors.black,
+              //                 fontWeight: FontWeight.w500,
+              //               ),
+              //               keyboardType: TextInputType.text,
+              //               textCapitalization: TextCapitalization.sentences,
+              //             ),
+              //           )
+              //         ],
+              //       ),
+              //       actions: <Widget>[
+              //         ButtonTheme(
+              //           //minWidth: double.infinity,
+              //           child: RaisedButton(
+              //             elevation: 3.0,
+              //             onPressed: addServiceItemToFirebase,
+              //             // addServiceItem(),
+
+              //             child: Text('Add'),
+              //             color: currentColor,
+              //             textColor: const Color(0xffffffff),
+              //           ),
+              //         )
+              //       ],
+              //     );
+              //   },
+              ));
         },
         child: Icon(Icons.add),
         backgroundColor: currentColor,
@@ -174,14 +166,16 @@ print(e);
   void dispose() {
     super.dispose();
   }
+
   getExpenseItems(AsyncSnapshot<QuerySnapshot> snapshot) {
     List<JobModel> listElement = new List();
     int nbIsDone = 0;
     JobModel job;
-    if (widget.user.uid.isNotEmpty) {
-       snapshot.data.documents.forEach((f){
-          job = JobModel.fromSnapshot(f);
-       });
+    // if (widget.user.uid.isNotEmpty) {
+    if (true) {
+      snapshot.data.documents.forEach((f) {
+        job = JobModel.fromSnapshot(f);
+      });
       listElement.forEach((i) {
         if (i.isDone) {
           nbIsDone++;
@@ -201,7 +195,7 @@ print(e);
                     children: <Widget>[
                       new Text(
                         // widget.jobPanel.keys.elementAt(widget.i),
-                       widget.job.customer.accountName,
+                        widget.job.customer.accountName,
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 35.0),
                       ),
@@ -211,9 +205,8 @@ print(e);
                             context: context,
                             builder: (BuildContext context) {
                               return new AlertDialog(
-                                title: Text("Delete: " +
-                                    widget.job.id
-                                        .toString()),
+                                title:
+                                    Text("Delete: " + widget.job.id.toString()),
                                 content: Text(
                                   "Are you sure you want to delete this list?",
                                   style: TextStyle(fontWeight: FontWeight.w400),
@@ -239,7 +232,7 @@ print(e);
                                         // Firestore.instance
                                         //     .collection('workorders')
                                         //     .document(widget.job.id)
-                                               
+
                                         //     .delete();
                                         // Navigator.pop(context);
                                         // Navigator.of(context).pop();
@@ -270,8 +263,7 @@ print(e);
                       new Text(
                         nbIsDone.toString() +
                             " of " +
-
-                           widget.job.serviceItems.length.toString() +
+                            widget.job.serviceItems.length.toString() +
                             " tasks",
                         style: TextStyle(fontSize: 18.0, color: Colors.black54),
                       ),
@@ -320,9 +312,8 @@ print(e);
                                     // },
                                     child: Container(
                                       height: 50.0,
-                                      color:    widget.job.serviceItems
-                                    .elementAt(i)
-                                                ['isDone']
+                                      color: widget.job.serviceItems
+                                              .elementAt(i)['isDone']
                                           ? Color(0xFFF0F0F0)
                                           : Color(0xFFFCFCFC),
                                       child: Padding(
@@ -332,13 +323,12 @@ print(e);
                                               MainAxisAlignment.start,
                                           children: <Widget>[
                                             Icon(
-  widget.job.serviceItems
-                                    .elementAt(i)
-                                                ['isDone']                                                  ? FontAwesomeIcons.checkSquare
+                                              widget.job.serviceItems
+                                                      .elementAt(i)['isDone']
+                                                  ? FontAwesomeIcons.checkSquare
                                                   : FontAwesomeIcons.square,
-                                              color:  widget.job.serviceItems
-                                                      .elementAt(i)
-                                                      ['isDone']
+                                              color: widget.job.serviceItems
+                                                      .elementAt(i)['isDone']
                                                   ? currentColor
                                                   : Colors.black,
                                               size: 20.0,
@@ -349,13 +339,12 @@ print(e);
                                             ),
                                             Flexible(
                                               child: Text(
-                                               widget.job.serviceItems
-                                                        .elementAt(i)['name'],
+                                                widget.job.serviceItems
+                                                    .elementAt(i)['name'],
                                                 overflow: TextOverflow.ellipsis,
                                                 maxLines: 1,
-                                                style:    widget.job.serviceItems
-                                    .elementAt(i)
-                                                ['isDone']
+                                                style: widget.job.serviceItems
+                                                        .elementAt(i)['isDone']
                                                     ? TextStyle(
                                                         decoration:
                                                             TextDecoration
@@ -381,10 +370,13 @@ print(e);
                                       icon: Icons.delete,
                                       onTap: () {
                                         Firestore.instance
-                                            .collection(widget.user.uid)
+                                            .collection("workorders")
                                             .document(widget.job.id)
                                             .updateData({
-                                          listElement.elementAt(i).customer.accountName: ""
+                                          listElement
+                                              .elementAt(i)
+                                              .customer
+                                              .accountName: ""
                                         });
                                       },
                                     ),
@@ -407,14 +399,15 @@ print(e);
   @override
   void initState() {
     super.initState();
-     serviceItems = widget.job.serviceItems;
-switch (widget.job.status) {
-        case 'Active':
-currentColor = Colors.green[800];    break;
-  default:
-currentColor = Color.fromRGBO(66, 165, 245, 1.0);    break;
+    serviceItems = widget.job.serviceItems;
+    switch (widget.job.status) {
+      case 'Active':
+        currentColor = Colors.green[800];
+        break;
+      default:
+        currentColor = Color.fromRGBO(66, 165, 245, 1.0);
+        break;
     }
-   
   }
 
   Color pickerColor;
@@ -459,9 +452,8 @@ currentColor = Color.fromRGBO(66, 165, 245, 1.0);    break;
                       child: Text('Got it'),
                       onPressed: () {
                         Firestore.instance
-                            .collection(widget.user.uid)
-                            .document(
-                             widget.job.id)
+                            .collection("workorders")
+                            .document(widget.job.id)
                             .updateData(
                                 {"color": pickerColor.value.toString()});
 

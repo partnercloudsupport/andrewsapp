@@ -8,7 +8,10 @@ import 'package:taskist/employees/page_employees.dart';
 
 import 'package:taskist/rugs/page_task.dart';
 import 'package:taskist/root_page.dart';
+import 'package:taskist/employees/geekants/Screens/Home/index.dart';
+import 'package:taskist/employees/geekants/Screens/Login/index.dart';
 import 'package:taskist/tests/shopping_details/shopping_details_page.dart';
+
 final FirebaseAuth _auth = FirebaseAuth.instance;
 FirebaseUser _currentUser;
 
@@ -38,15 +41,17 @@ class TaskistApp extends StatelessWidget {
       debugShowCheckedModeBanner: true,
       showSemanticsDebugger: false,
       routes: {
-    // When we navigate to the "/" route, build the FirstScreen Widget
-    '/': (context) => RootPage( user: _currentUser),
-    // When we navigate to the "/second" route, build the SecondScreen Widget
-    // '/EmployeeList': (context) => EmployeeList( user: _currentUser),
-  },
+        // When we navigate to the "/" route, build the FirstScreen Widget
+        '/home': (context) => RootPage(user: _currentUser),
+        // '/home': (context) => AntsLoginScreen(),
+        // When we navigate to the "/second" route, build the SecondScreen Widget
+        '/EmployeeList': (context) => EmployeeList(),
+        // '/anthome': (context) => GeekyAntsHome(),
+      },
       title: "Andrews App",
-      // home: RootPage(
-      //   user: _currentUser,
-      // ),
+      home: RootPage(
+        user: _currentUser,
+      ),
       theme: new ThemeData(primarySwatch: Colors.blue),
     );
   }
