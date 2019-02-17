@@ -22,6 +22,7 @@ dependencies:
   uuid:
   # fast_qr_reader_view:
   location:
+  camera:
   carousel_slider:
   cloud_functions:
   firestore_helpers:

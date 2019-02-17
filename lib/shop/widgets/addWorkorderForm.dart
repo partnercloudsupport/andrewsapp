@@ -6,23 +6,23 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
-import 'package:taskist/rugs/models/job.dart';
-import 'package:taskist/rugs/forms/addServiceItem.dart';
+import 'package:taskist/model/workorder.dart';
+import 'package:taskist/shop/addServiceItem.dart';
 
 import 'package:connectivity/connectivity.dart';
 
 Dio dio;
 
-class NewJobPage extends StatefulWidget {
+class AddWorkorderForm extends StatefulWidget {
   final FirebaseUser user;
-  final JobModel newJob;
-  NewJobPage({Key key, this.user, this.newJob}) : super(key: key);
+  final Workorder newJob;
+  AddWorkorderForm({Key key, this.user, this.newJob}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _NewJobPageState();
 }
 
-class _NewJobPageState extends State<NewJobPage> {
+class _NewJobPageState extends State<AddWorkorderForm> {
   TextEditingController jobNotesController = new TextEditingController();
   GlobalKey<ScaffoldState> _scaffoldKey;
 
@@ -84,7 +84,7 @@ class _NewJobPageState extends State<NewJobPage> {
       await Firestore.instance.collection("workorders").document().setData({
         "notes": jobNotesController.text.toString().trim(),
         "date": DateTime.now().millisecondsSinceEpoch.toString(),
-        "customer": widget.newJob.customer.toJson(),
+        // "customer": widget.newJob.customer.toJson(),
         "author": widget.user.uid,
         "smId": widget.newJob.customer.smId,
         "status": "Active",

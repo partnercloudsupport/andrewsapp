@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'employee_detail.dart';
-import 'package:flutter/material.dart';
 import 'package:taskist/model/employee.dart';
 import 'package:taskist/model/device.dart';
 // import 'package:taskist/rugs/models/employeepanel.dart';
-import 'package:taskist/rugs/page_detail.dart';
 import 'package:taskist/employees/geekants/Screens/Home/index.dart';
 import 'package:url_launcher/url_launcher.dart';
 

@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:taskist/rugs/models/account.dart';
-import 'package:taskist/rugs/forms/addServiceItem.dart';
+import 'package:taskist/model/account.dart';
+import 'package:taskist/shop/addServiceItem.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:taskist/model/workorder.dart';
+import 'package:taskist/model/device.dart';
+import 'package:taskist/model/serviceItem.dart';
+import 'package:firestore_helpers/firestore_helpers.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'package:dio/dio.dart';
 
 Dio dio;
@@ -83,20 +89,23 @@ class _RegisterFormState extends State<LookupCustomerForm> {
         // if(c2.id == null){
         //   c2.id = querySnapshot.documents.first.documentID;
         // }
-        Account c = new Account.fromJson(querySnapshot.documents.first.data);
+        // Account c = new Account.fromJson(querySnapshot.documents.first.data);
+        Account c =
+            // AccountSerializer.fromMap(querySnapshot.documents.first.data);
+            AccountSerializer().fromMap(querySnapshot.documents.first.data);
         try {
           String name = c.lastName + ', ' + c.firstName;
-          var response = await dio.get("/accounts/", queryParameters: {
+          var smResponse = await dio.get("/accounts/", queryParameters: {
             "wValue": name,
             "wField": "accountName",
             "wOperator": "like"
           });
 
-          var data = response.data['items'][0];
+          var data = smResponse.data['items'][0];
           // data.smId = response.data['items'][0].accountId;
           // querySnapshot.documents.first.data['smId'] = response.data['items'][0]['accountID'];
-          c = new Account.fromJson(querySnapshot.documents.first.data);
-          c.smId = response.data['items'][0]['accountID'];
+          c = AccountSerializer().fromMap(querySnapshot.documents.first.data);
+          c.smId = smResponse.data['items'][0]['accountID'];
           print(c);
         } catch (e) {
           print(e);
@@ -141,7 +150,7 @@ class _RegisterFormState extends State<LookupCustomerForm> {
             String list = "";
             for (var i = 0; i < querySnapshot.documents.length; i++) {
               var x = querySnapshot.documents[i];
-              Account c = new Account.fromJson(x.data);
+              Account c = AccountSerializer().fromMap(x.data);
               print(c.toString());
               l.add(c.accountName);
               list += c.accountName;

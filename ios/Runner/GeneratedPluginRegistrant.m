@@ -5,6 +5,7 @@
 #import "GeneratedPluginRegistrant.h"
 #import <background_fetch/BackgroundFetchPlugin.h>
 #import <barcode_scan/BarcodeScanPlugin.h>
+#import <camera/CameraPlugin.h>
 #import <cloud_firestore/CloudFirestorePlugin.h>
 #import <cloud_functions/CloudFunctionsPlugin.h>
 #import <connectivity/ConnectivityPlugin.h>
@@ -28,6 +29,7 @@
 + (void)registerWithRegistry:(NSObject<FlutterPluginRegistry>*)registry {
   [BackgroundFetchPlugin registerWithRegistrar:[registry registrarForPlugin:@"BackgroundFetchPlugin"]];
   [BarcodeScanPlugin registerWithRegistrar:[registry registrarForPlugin:@"BarcodeScanPlugin"]];
+  [CameraPlugin registerWithRegistrar:[registry registrarForPlugin:@"CameraPlugin"]];
   [FLTCloudFirestorePlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTCloudFirestorePlugin"]];
   [CloudFunctionsPlugin registerWithRegistrar:[registry registrarForPlugin:@"CloudFunctionsPlugin"]];
   [FLTConnectivityPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTConnectivityPlugin"]];

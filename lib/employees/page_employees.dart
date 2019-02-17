@@ -54,21 +54,23 @@ class _EmployeesListPageState extends State<EmployeeList> {
               child: StreamBuilder<List<Employee>>(
                 stream: dbService.getEmployees(),
                 builder: (context, snapShot) {
-                  if (!snapShot.hasData || snapShot.data.isEmpty) {
-                    return Center(child: Text('No Data'));
-                  } else {
-                    return ListView.builder(
-                        itemCount: snapShot.data.length,
-                        itemBuilder: (context, index) {
-                          var item = snapShot.data[index];
-                          return EmployeeCard(item, _device);
-                          // return ListTile(
-                          //   title: Text(
-                          //       '${item.name}   (lat:${item.email})'),
-                          //   subtitle: Text('distance: ${item.id}'),
-                          // );
-                        });
-                  }
+                  if (!snapShot.hasData)
+                    return new Center(
+                        child: CircularProgressIndicator(
+                      backgroundColor: Colors.blue,
+                    ));
+
+                  return ListView.builder(
+                      itemCount: snapShot.data.length,
+                      itemBuilder: (context, index) {
+                        var item = snapShot.data[index];
+                        return EmployeeCard(item, _device);
+                        // return ListTile(
+                        //   title: Text(
+                        //       '${item.name}   (lat:${item.email})'),
+                        //   subtitle: Text('distance: ${item.id}'),
+                        // );
+                      });
                 },
               ),
             ),

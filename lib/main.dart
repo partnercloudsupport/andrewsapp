@@ -1,16 +1,9 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:taskist/rugs/page_done.dart';
 import 'package:taskist/employees/page_employees.dart';
 
-import 'package:taskist/rugs/page_task.dart';
 import 'package:taskist/root_page.dart';
-import 'package:taskist/employees/geekants/Screens/Home/index.dart';
-import 'package:taskist/employees/geekants/Screens/Login/index.dart';
-import 'package:taskist/tests/shopping_details/shopping_details_page.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 FirebaseUser _currentUser;

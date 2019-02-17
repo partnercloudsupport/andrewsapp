@@ -6,15 +6,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
-import 'package:taskist/rugs/forms/lookupCustomer.dart';
-import 'package:taskist/rugs/forms/addjob_form.dart';
-import 'package:taskist/rugs/models/job.dart';
-import 'package:taskist/rugs/models/account.dart';
+import 'package:taskist/shop/widgets/lookupCustomer.dart';
+import 'package:taskist/shop/widgets/addWorkorderForm.dart';
+import 'package:taskist/model/workorder.dart';
+import 'package:taskist/model/account.dart';
 import 'package:connectivity/connectivity.dart';
 
 class NewTaskPage extends StatefulWidget {
   final FirebaseUser user;
-
 
   NewTaskPage({Key key, this.user}) : super(key: key);
 
@@ -25,7 +24,7 @@ class NewTaskPage extends StatefulWidget {
 class _NewTaskPageState extends State<NewTaskPage> {
   TextEditingController listNameController = new TextEditingController();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  final JobModel newJob = new JobModel();
+  final Workorder newJob = new Workorder();
   Color pickerColor = Color(0xff6633ff);
   Color currentColor = Color(0xff6633ff);
 
@@ -59,73 +58,75 @@ class _NewTaskPageState extends State<NewTaskPage> {
     });
   }
 
-  void addToFirebase() async {
-    setState(() {
-      _saving = true;
-    });
+  // void addToFirebase() async {
+  //   setState(() {
+  //     _saving = true;
+  //   });
 
-    print(_connectionStatus);
+  //   print(_connectionStatus);
 
-    if(_connectionStatus == "ConnectivityResult.none"){
-      showInSnackBar("No internet connection currently available");
-      setState(() {
-        _saving = false;
-      });
-    } else {
+  //   if (_connectionStatus == "ConnectivityResult.none") {
+  //     showInSnackBar("No internet connection currently available");
+  //     setState(() {
+  //       _saving = false;
+  //     });
+  //   } else {
+  //     bool isExist = false;
 
-      bool isExist = false;
+  //     // QuerySnapshot query =
+  //     // await Firestore.instance.collection(widget.user.uid).getDocuments();
 
-      // QuerySnapshot query =
-      // await Firestore.instance.collection(widget.user.uid).getDocuments();
+  //     // query.documents.forEach((doc) {
+  //     //   if (listNameController.text.toString() == doc.documentID) {
+  //     //     isExist = true;
+  //     //   }
+  //     // });
 
-      // query.documents.forEach((doc) {
-      //   if (listNameController.text.toString() == doc.documentID) {
-      //     isExist = true;
-      //   }
-      // });
+  //     // if (isExist == false && listNameController.text.isNotEmpty) {
+  //     await Firestore.instance
+  //         .collection(widget.user.uid)
+  //         .document(listNameController.text.toString().trim())
+  //         .setData({
+  //       "notes": listNameController.text.toString().trim(),
+  //       "date": DateTime.now().millisecondsSinceEpoch,
+  //       "customer": newJob.customer
+  //     });
 
-      // if (isExist == false && listNameController.text.isNotEmpty) {
-        await Firestore.instance
-            .collection(widget.user.uid)
-            .document(listNameController.text.toString().trim())
-            .setData({
-          "notes": listNameController.text.toString().trim(),
-          "date": DateTime.now().millisecondsSinceEpoch,
-          "customer": newJob.customer
-        });
+  //     listNameController.clear();
 
-        listNameController.clear();
+  //     pickerColor = Color(0xff6633ff);
+  //     currentColor = Color(0xff6633ff);
 
-        pickerColor = Color(0xff6633ff);
-        currentColor = Color(0xff6633ff);
+  //     Navigator.of(context).pop();
+  //     // }
+  //     if (isExist == true) {
+  //       showInSnackBar("This list already exists");
+  //       setState(() {
+  //         _saving = false;
+  //       });
+  //     }
+  //     if (listNameController.text.isEmpty) {
+  //       showInSnackBar("Please enter a name");
+  //       setState(() {
+  //         _saving = false;
+  //       });
+  //     }
+  //   }
+  // }
 
-        Navigator.of(context).pop();
-      // }
-      if (isExist == true) {
-        showInSnackBar("This list already exists");
-        setState(() {
-          _saving = false;
-        });
-      }
-      if (listNameController.text.isEmpty) {
-        showInSnackBar("Please enter a name");
-        setState(() {
-          _saving = false;
-        });
-      }
-    }
+  setJobCustomer(Account c) {}
+  Widget _buildForm(context) {
+    return (newJob.customer == null)
+        ? LookupCustomerForm(
+            onCustomerSet: (Account c) {
+              setState(() {
+                newJob.customer = c;
+              });
+            },
+          )
+        : AddWorkorderForm(user: widget.user, newJob: newJob);
   }
 
-setJobCustomer(Account c){
-
-}
-Widget _buildForm(context){
-   return (newJob.customer == null) ? LookupCustomerForm( onCustomerSet: (Account c) {
-            setState(() {
-              newJob.customer = c;
-            });
-          },) : NewJobPage(user: widget.user, newJob: newJob);
-}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -184,7 +185,7 @@ Widget _buildForm(context){
                       child: new Column(
                         children: <Widget>[
                           _buildForm(context),
-                            // LookupCustomerForm(),
+                          // LookupCustomerForm(),
                           // new Padding(
                           //   padding: EdgeInsets.only(bottom: 10.0),
                           // ),
@@ -273,10 +274,10 @@ Widget _buildForm(context){
     initConnectivity();
     _connectivitySubscription =
         _connectivity.onConnectivityChanged.listen((ConnectivityResult result) {
-          setState(() {
-            _connectionStatus = result.toString();
-          });
-        });
+      setState(() {
+        _connectionStatus = result.toString();
+      });
+    });
   }
 
   void showInSnackBar(String value) {

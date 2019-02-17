@@ -126,7 +126,7 @@ class CommonScaffold extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: ProfileTile(
                   title: "Andrews App",
-                  subtitle: "mtechviral@gmail.com",
+                  subtitle: "(903) 926-9768 , (111) 111-1111 , (903) 344-1733 ",
                   textColor: Colors.white,
                 ),
               )
@@ -182,9 +182,11 @@ class CommonScaffold extends StatelessWidget {
         elevation: 3,
         shape: CircularNotchedRectangle(),
         child: Ink(
-          height: 70.0,
+          height: 60.0,
           decoration: new BoxDecoration(
-            color: Colors.blue.shade900,
+            // color: Colors.blue.shade900,
+            border: new Border.all(color: Colors.blue.shade900, width: 3),
+            // borderRadius: BorderRadius.all(Radius.circular(7.0)),
             // gradient: new LinearGradient(colors: UIData.kitGradients3)
           ),
           child: new Row(
@@ -198,8 +200,9 @@ class CommonScaffold extends StatelessWidget {
                   splashColor: Colors.grey,
                   onTap: () => _showModalBottomSheet(context, menu),
                   child: Center(
-                    widthFactor: 3,
-                    child: new Icon(Icons.menu, color: Colors.white),
+                    widthFactor: 2,
+                    child: new Icon(Icons.menu,
+                        size: 40, color: Colors.blue.shade900),
                     //  Text(
                     //   "ADD TO WISHLIST",
                     //   style: new TextStyle(
@@ -220,8 +223,9 @@ class CommonScaffold extends StatelessWidget {
                   // radius: 10.0,
                   // splashColor: Colors.grey,
                   child: Center(
-                    widthFactor: 3,
-                    child: new Icon(Icons.phone, color: Colors.white),
+                    widthFactor: 2,
+                    child: new Icon(Icons.phone,
+                        size: 37, color: Colors.blue.shade900),
                   ),
                 ),
               ),
@@ -271,7 +275,7 @@ class CommonScaffold extends StatelessWidget {
                     )
                   : null,
               icon: floatingIcon,
-              qrCallback: () {},
+              qrCallback: () => callback(),
             )
           : null,
       floatingActionButtonLocation: centerDocked
