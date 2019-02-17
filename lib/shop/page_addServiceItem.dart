@@ -10,13 +10,8 @@ import './page_orders.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:uuid/uuid.dart';
 import 'package:barcode_scan/barcode_scan.dart';
-import 'package:barcode_scan/barcode_scan.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:uuid/uuid.dart';
 
 class AddServiceItems extends StatefulWidget {
   final FirebaseUser user;
@@ -189,11 +184,19 @@ class _AddServiceItemsState extends State<AddServiceItems> {
     // setState(() => this.barcode = barcode);
     barcode = json.decode(_barcode);
     barcode['id'] = 'BCID-' + rng.nextInt(100).toString();
+    bool urine;
+    (barcode['tagColor'] == 'yellow') ? urine = true : urine = false;
+    int now = DateTime.now().microsecondsSinceEpoch;
 
     setState(() {
       this.currentItem = new ServiceItem(
-          id: uuid.v5(Uuid.NAMESPACE_OID, barcode['id']),
-          workOrderId: widget.currentJob.id,
+          // id: uuid.v5(Uuid.NAMESPACE_OID, barcode['id']),
+          id: widget.currentJob.id + barcode['id'],
+          serviceName: "Pitwash one rug",
+          createdAt: now,
+          hasUrine: urine,
+          workorderId: widget.currentJob.id,
+          smWorkorderId: widget.currentJob.smOrderId,
           tagColor: barcode['tagColor'],
           tagId: barcode['id'],
           pictures: new List(),

@@ -6,7 +6,30 @@ part of 'serviceItem.dart';
 // JaguarSerializerGenerator
 // **************************************************************************
 
+abstract class _$PictureSerializer implements Serializer<Picture> {
+  @override
+  Map<String, dynamic> toMap(Picture model) {
+    if (model == null) return null;
+    Map<String, dynamic> ret = <String, dynamic>{};
+    setMapValue(ret, 'id', model.id);
+    setMapValue(ret, 'url', model.url);
+    return ret;
+  }
+
+  @override
+  Picture fromMap(Map map) {
+    if (map == null) return null;
+    final obj = new Picture();
+    obj.id = map['id'] as String;
+    obj.url = map['url'] as String;
+    return obj;
+  }
+}
+
 abstract class _$ServiceItemSerializer implements Serializer<ServiceItem> {
+  Serializer<Picture> __pictureSerializer;
+  Serializer<Picture> get _pictureSerializer =>
+      __pictureSerializer ??= new PictureSerializer();
   @override
   Map<String, dynamic> toMap(ServiceItem model) {
     if (model == null) return null;
@@ -20,8 +43,9 @@ abstract class _$ServiceItemSerializer implements Serializer<ServiceItem> {
     setMapValue(ret, 'tagColor', model.tagColor);
     setMapValue(ret, 'intake_notes', model.intake_notes);
     setMapValue(ret, 'log', model.log);
-    setMapValue(ret, 'workOrderId', model.workOrderId);
+    setMapValue(ret, 'workorderId', model.workorderId);
     setMapValue(ret, 'quantity', model.quantity);
+    setMapValue(ret, 'smWorkorderId', model.smWorkorderId);
     setMapValue(ret, 'length', model.length);
     setMapValue(ret, 'width', model.width);
     setMapValue(ret, 'price', model.price);
@@ -30,7 +54,10 @@ abstract class _$ServiceItemSerializer implements Serializer<ServiceItem> {
         ret, 'dueDateTime', dateTimeUtcProcessor.serialize(model.dueDateTime));
     setMapValue(ret, 'isDone', model.isDone);
     setMapValue(
-        ret, 'pictures', codeIterable(model.pictures, (val) => val as String));
+        ret,
+        'pictures',
+        codeIterable(
+            model.pictures, (val) => _pictureSerializer.toMap(val as Picture)));
     return ret;
   }
 
@@ -41,13 +68,15 @@ abstract class _$ServiceItemSerializer implements Serializer<ServiceItem> {
         smGUID: map['smGUID'] as String ?? getJserDefault('smGUID'),
         serviceName:
             map['serviceName'] as String ?? getJserDefault('serviceName'),
+        smWorkorderId:
+            map['smWorkorderId'] as String ?? getJserDefault('smWorkorderId'),
         tagId: map['tagId'] as String ?? getJserDefault('tagId'),
         tagColor: map['tagColor'] as String ?? getJserDefault('tagColor'),
-        workOrderId:
-            map['workOrderId'] as String ?? getJserDefault('workOrderId'),
+        workorderId:
+            map['workorderId'] as String ?? getJserDefault('workorderId'),
         isDone: map['isDone'] as bool ?? getJserDefault('isDone'),
-        pictures: codeIterable<String>(
-                map['pictures'] as Iterable, (val) => val as String) ??
+        pictures: codeIterable<Picture>(map['pictures'] as Iterable,
+                (val) => _pictureSerializer.fromMap(val as Map)) ??
             getJserDefault('pictures'));
     obj.id = map['id'] as String;
     obj.smServiceItemId = map['smServiceItemId'] as String;

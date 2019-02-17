@@ -65,7 +65,7 @@ class ShopService {
         mapper: (eventDoc) {
           var workorder = WorkorderSerializer().fromMap(eventDoc.data);
 
-          workorder.documentID = eventDoc.documentID;
+          workorder.id = eventDoc.documentID;
           return workorder;
         },
         // orderComparer: (order1, order2) =>
@@ -90,7 +90,7 @@ class ShopService {
         mapper: (eventDoc) {
           var serviceItem = ServiceItemSerializer().fromMap(eventDoc.data);
 
-          serviceItem.documentID = eventDoc.documentID;
+          serviceItem.id = eventDoc.documentID;
           return serviceItem;
         },
         // orderComparer: (serviceItem1, serviceItem2) =>

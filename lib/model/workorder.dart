@@ -1,6 +1,4 @@
-import 'dart:convert';
 import 'package:meta/meta.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:jaguar_serializer/jaguar_serializer.dart';
 import 'package:flutter/material.dart';
 import './account.dart';
@@ -9,14 +7,12 @@ import './serviceItem.dart';
 part 'workorder.jser.dart';
 
 class Workorder {
-  @required
   String id;
-  String documentID;
   int createdAt;
   @required
   Account customer;
   @required
-  String author;
+  String createdBy;
   @required
   List<ServiceItem> serviceItems;
   @required
@@ -25,9 +21,9 @@ class Workorder {
   @required
   String status;
   @required
-  String fbId;
+  final String smOrderId;
 
-  Workorder({this.id, this.customer});
+  Workorder({this.customer, this.smOrderId});
 
   getColor() {
     if (this.status == 'Active') {

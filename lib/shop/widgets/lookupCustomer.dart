@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:taskist/model/account.dart';
-import 'package:taskist/shop/addServiceItem.dart';
+import 'package:taskist/shop/page_addServiceItem.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:taskist/model/workorder.dart';
@@ -80,7 +80,7 @@ class _RegisterFormState extends State<LookupCustomerForm> {
     QuerySnapshot querySnapshot = await Firestore.instance
         .collection("accounts_dev")
         // .where('phones', arrayContains: listPhoneController.text)
-        .where('phones', arrayContains: '(903) 926-9768')
+        .where('phones', arrayContains: '(111) 111-1111')
         .getDocuments();
     try {
       if (querySnapshot.documents.length == 1) {

@@ -7,31 +7,34 @@ part 'serviceItem.jser.dart';
 class ServiceItem {
   final String smGUID;
   String id;
-  String documentID;
   String smServiceItemId;
+  int createdAt;
   String notes;
   final String serviceName;
   final String tagId;
   final String tagColor;
   String intake_notes;
   String log;
-  final String workOrderId;
+  final String workorderId;
   int quantity;
+  final String smWorkorderId;
   int length;
   int width;
   int price;
   bool hasUrine;
   DateTime dueDateTime;
   final bool isDone;
-  final List<String> pictures;
+  final List<Picture> pictures;
 
   ServiceItem({
-    @required this.id,
+    this.id,
     @required this.smGUID,
+    @required this.createdAt,
     @required this.serviceName,
+    @required this.smWorkorderId,
     @required this.tagId,
     @required this.tagColor,
-    @required this.workOrderId,
+    @required this.workorderId,
     @required this.isDone,
     // @required this.smServiceItemId,
     // @required this.dueDateTime,
@@ -40,7 +43,7 @@ class ServiceItem {
     // @required this.log,
     // @required this.quantity,
     // @required this.price,
-    // @required this.hasUrine,
+    @required this.hasUrine,
     // @required this.isComplete,
     @required this.pictures,
     // @required this.length,
@@ -61,6 +64,16 @@ class ServiceItem {
         : this.price * this.getQuantity() * 1.5;
   }
 }
+
+class Picture {
+  String id;
+  String url;
+
+  Picture({this.id, this.url});
+}
+
+@GenSerializer()
+class PictureSerializer extends Serializer<Picture> with _$PictureSerializer {}
 
 @GenSerializer()
 class ServiceItemSerializer extends Serializer<ServiceItem>

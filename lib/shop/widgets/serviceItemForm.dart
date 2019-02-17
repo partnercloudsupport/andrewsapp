@@ -53,19 +53,45 @@ class _ServiceItemFormState extends State<ServiceItemForm> {
             var size = int.tryParse(lengthController.text) *
                 int.tryParse(widthController.text);
             currentItem.quantity = size;
-            print(currentItem.workOrderId);
-            // final DocumentReference postRef = Firestore.instance
-            //     .document('workorders/' + currentItem.workOrderId);
-            // Firestore.instance.runTransaction((Transaction tx) async {
-            //   DocumentSnapshot postSnapshot = await tx.get(postRef);
-            //   if (postSnapshot.exists) {
-            //     print(postSnapshot.data['serviceItems'].length);
-            //     // await tx.update(postRef, <String, dynamic>{'likesCount': postSnapshot.data['likesCount'] + 1});
-            //   }
-            // });
+            currentItem.length = int.tryParse(lengthController.text);
+            currentItem.width = int.tryParse(widthController.text);
 
-            Scaffold.of(_formKey.currentContext).showSnackBar(
-                SnackBar(content: Text(currentItem.workOrderId.toString())));
+            print(currentItem);
+            final DocumentReference postRef = Firestore.instance
+                .document('workorders/' + currentItem.workorderId);
+            Firestore.instance.runTransaction((Transaction tx) async {
+              DocumentSnapshot postSnapshot = await tx.get(postRef);
+              if (postSnapshot.exists) {
+                // print(postSnapshot.data['serviceItems'].length);
+                var workorder =
+                    WorkorderSerializer().fromMap(postSnapshot.data);
+                workorder.serviceItems.forEach((f) {
+                  if (f.tagId == currentItem.tagId) {
+                    Scaffold.of(_formKey.currentContext).showSnackBar(SnackBar(
+                        content: Text('error for ' + currentItem.workorderId)));
+                    return;
+                  }
+                  if (f.id == currentItem.id) {
+                    Scaffold.of(_formKey.currentContext).showSnackBar(SnackBar(
+                        content: Text('error for ' + currentItem.workorderId)));
+                    return;
+                  }
+                });
+                workorder.serviceItems.add(currentItem);
+                var sWorkorder = WorkorderSerializer().toMap(workorder);
+
+                await tx.update(postRef, <String, dynamic>{
+                  'serviceItems': sWorkorder['serviceItems']
+                });
+                Navigator.of(context).push(new PageRouteBuilder(
+                    pageBuilder: (_, __, ___) => new RugPage()));
+              }
+            });
+
+            Scaffold.of(_formKey.currentContext).showSnackBar(SnackBar(
+                content: Text(currentItem.id.toString() +
+                    ' ' +
+                    currentItem.workorderId)));
           }
         },
         label: new Text('Finish'));

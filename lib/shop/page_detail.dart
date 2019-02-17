@@ -9,11 +9,15 @@ import 'package:taskist/model/serviceItem.dart';
 import 'package:taskist/shop/widgets/serviceItemCard.dart';
 import 'package:taskist/common/common_scaffold.dart';
 import 'package:firestore_helpers/firestore_helpers.dart';
+import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
+import 'dart:convert';
 
-import 'package:taskist/shop/addServiceItem.dart';
+import 'package:taskist/shop/page_addServiceItem.dart';
 import 'package:taskist/shop/shopService.dart';
-// import 'package:taskist/rugs/forms/imagesListScreen.dart';
 
+// import 'package:taskist/rugs/forms/imagesListScreen.dart';
+Dio dio;
 // import 'package:taskist/model/serviceItemList.dart';
 
 class DetailPage extends StatefulWidget {
@@ -41,9 +45,12 @@ class _DetailPageState extends State<DetailPage> {
   List<dynamic> serviceItems;
   final _scaffoldState = GlobalKey<ScaffoldState>();
   ShopService shopService = new ShopService();
+  Workorder _currentWorkorder;
+
   @override
   void initState() {
     super.initState();
+    _currentWorkorder = widget.currentWorkorder;
     serviceItems = widget.currentWorkorder.serviceItems;
     switch (widget.currentWorkorder.status) {
       case 'Active':
@@ -85,6 +92,41 @@ class _DetailPageState extends State<DetailPage> {
     // Navigator.of(context).pop();
   }
 
+  void _callRestAPI(workorder) async {
+    BaseOptions options = new BaseOptions(
+      baseUrl: "https://ashdevtools.com/",
+      connectTimeout: 5000,
+      receiveTimeout: 3000,
+      // headers: {
+      //   'Authorization': 'Basic Sk5wbkZOelhxOnltMWM4cGU4QzNPNHM3bDBBVms=',
+      // }
+    );
+    dio = new Dio(options);
+    var serviceItem =
+        ServiceItemSerializer().toMap(_currentWorkorder.serviceItems[0]);
+    var ord = WorkorderSerializer().toMap(_currentWorkorder);
+    var data = {};
+    data['workOrder'] = ord;
+    data['serviceItem'] = serviceItem;
+    String jserviceItem = json.encode(serviceItem);
+    String sdata = json.encode(data);
+
+    try {
+      // var response = await dio.post("/api/v1/ruglist", data: jserviceItem);
+      var response = await dio.post("/ruglist", data: sdata);
+    } catch (e) {
+      print(e);
+    }
+
+    // var url = "http://ashdevtools.com/ruglist";
+    // http.post(url, body: {"name": "doodle", "color": "blue"}).then((response) {
+    //   print("Response status: ${response.statusCode}");
+    //   print("Response body: ${response.body}");
+    // });
+
+    // http.read("https://ashdevtools.com/ruglist").then(print);
+  }
+
   @override
   Widget build(BuildContext context) {
     return CommonScaffold(
@@ -107,7 +149,7 @@ class _DetailPageState extends State<DetailPage> {
               onNotification: (overscroll) {
                 overscroll.disallowGlow();
               },
-              child: getServiceItems(widget.currentWorkorder),
+              child: getServiceItems(_currentWorkorder),
               // child: new StreamBuilder<QuerySnapshot>(
               //     stream: Firestore.instance
               //         .collection("workorders")
@@ -181,22 +223,16 @@ class _DetailPageState extends State<DetailPage> {
         pageBuilder: (_, __, ___) => new AddServiceItems(
               //             // pageBuilder: (_, __, ___) => new ItemsListScreen(
               //             // user: widget.user,
-              currentJob: widget.currentWorkorder,
+              currentJob: _currentWorkorder,
             )));
   }
 
   // getServiceItems(AsyncSnapshot<QuerySnapshot> snapshot) {
-  getServiceItems(Workorder currentWorkorder) {
+  getServiceItems(Workorder _currentWorkorder) {
     List<ServiceItem> listElement = new List();
     int nbIsDone = 0;
-    // Workorder job;
-    // // if (widget.user.uid.isNotEmpty) {
-    // if (true) {
-    //   snapshot.data.documents.forEach((f) {
-    //     // job = Workorder.fromSnapshot(f);
-    //     Workorder workorder = WorkorderSerializer.fromMap(f);
-    //   });
-    currentWorkorder.serviceItems.forEach((i) {
+
+    _currentWorkorder.serviceItems.forEach((i) {
       if (i.isDone) {
         nbIsDone++;
       }
@@ -215,7 +251,7 @@ class _DetailPageState extends State<DetailPage> {
                   children: <Widget>[
                     new Text(
                       // widget.jobPanel.keys.elementAt(widget.i),
-                      currentWorkorder.customer.lastName,
+                      _currentWorkorder.customer.lastName,
                       style: TextStyle(
                           fontWeight: FontWeight.bold, fontSize: 35.0),
                     ),
@@ -226,7 +262,7 @@ class _DetailPageState extends State<DetailPage> {
                           builder: (BuildContext context) {
                             return new AlertDialog(
                               title: Text(
-                                  "Delete: " + currentWorkorder.id.toString()),
+                                  "Delete: " + _currentWorkorder.id.toString()),
                               content: Text(
                                 "Are you sure you want to delete this list?",
                                 style: TextStyle(fontWeight: FontWeight.w400),
@@ -249,6 +285,8 @@ class _DetailPageState extends State<DetailPage> {
                                   child: RaisedButton(
                                     elevation: 3.0,
                                     onPressed: () {
+                                      _callRestAPI(_currentWorkorder);
+
                                       // Firestore.instance
                                       //     .collection('workorders')
                                       //     .document(widget.job.id)
@@ -283,8 +321,8 @@ class _DetailPageState extends State<DetailPage> {
                     new Text(
                       nbIsDone.toString() +
                           " of " +
-                          currentWorkorder.serviceItems.length.toString() +
-                          " tasks",
+                          _currentWorkorder.serviceItems.length.toString() +
+                          " order items",
                       style: TextStyle(fontSize: 18.0, color: Colors.black54),
                     ),
                   ],
@@ -315,7 +353,7 @@ class _DetailPageState extends State<DetailPage> {
                         height: MediaQuery.of(context).size.height - 350,
                         child: ListView.builder(
                             physics: const BouncingScrollPhysics(),
-                            itemCount: currentWorkorder.serviceItems.length,
+                            itemCount: _currentWorkorder.serviceItems.length,
                             itemBuilder: (BuildContext ctxt, int i) {
                               return new Slidable(
                                 delegate: new SlidableBehindDelegate(),
@@ -332,7 +370,7 @@ class _DetailPageState extends State<DetailPage> {
                                   // },
                                   child: Container(
                                     height: 50.0,
-                                    color: currentWorkorder.serviceItems
+                                    color: _currentWorkorder.serviceItems
                                             .elementAt(i)
                                             .isDone
                                         ? Color(0xFFF0F0F0)
@@ -344,12 +382,13 @@ class _DetailPageState extends State<DetailPage> {
                                             MainAxisAlignment.start,
                                         children: <Widget>[
                                           Icon(
-                                            currentWorkorder.serviceItems
+                                            _currentWorkorder.serviceItems
                                                     .elementAt(i)
                                                     .isDone
                                                 ? FontAwesomeIcons.checkSquare
                                                 : FontAwesomeIcons.square,
-                                            color: currentWorkorder.serviceItems
+                                            color: _currentWorkorder
+                                                    .serviceItems
                                                     .elementAt(i)
                                                     .isDone
                                                 ? currentColor
@@ -358,16 +397,60 @@ class _DetailPageState extends State<DetailPage> {
                                           ),
                                           Padding(
                                             padding:
-                                                EdgeInsets.only(left: 30.0),
+                                                EdgeInsets.only(left: 20.0),
                                           ),
-                                          Flexible(
+                                          Container(
+                                            margin: const EdgeInsets.all(1.0),
+                                            padding: const EdgeInsets.all(6.0),
+                                            decoration: new BoxDecoration(
+                                                border: new Border.all(
+                                                    color: Colors.blueAccent)),
+                                            child: new Icon(
+                                              (_currentWorkorder.serviceItems
+                                                      .elementAt(i)
+                                                      .hasUrine)
+                                                  ? FontAwesomeIcons.restroom
+                                                  : FontAwesomeIcons.check,
+                                              color: (_currentWorkorder
+                                                      .serviceItems
+                                                      .elementAt(i)
+                                                      .hasUrine)
+                                                  ? Colors.yellow.shade700
+                                                  : Colors.white,
+                                              size: 12.0,
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding:
+                                                EdgeInsets.only(left: 20.0),
+                                          ),
+                                          Text(
+                                            _currentWorkorder.serviceItems
+                                                    .elementAt(i)
+                                                    .length
+                                                    .toString() +
+                                                ' x ' +
+                                                _currentWorkorder.serviceItems
+                                                    .elementAt(i)
+                                                    .width
+                                                    .toString(),
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 22.0,
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding:
+                                                EdgeInsets.only(left: 20.0),
+                                          ),
+                                          Expanded(
                                             child: Text(
-                                              currentWorkorder.serviceItems
+                                              _currentWorkorder.serviceItems
                                                   .elementAt(i)
                                                   .serviceName,
                                               overflow: TextOverflow.ellipsis,
                                               maxLines: 1,
-                                              style: currentWorkorder
+                                              style: _currentWorkorder
                                                       .serviceItems
                                                       .elementAt(i)
                                                       .isDone
@@ -383,6 +466,39 @@ class _DetailPageState extends State<DetailPage> {
                                                     ),
                                             ),
                                           ),
+                                          (_currentWorkorder.serviceItems
+                                                      .elementAt(i)
+                                                      .pictures[0]
+                                                      .url !=
+                                                  null)
+                                              ? SizedBox(
+                                                  height: 184.0,
+                                                  width: 184.0,
+                                                  child: Stack(
+                                                    children: <Widget>[
+                                                      Positioned.fill(
+                                                        child: Image.network(
+                                                            _currentWorkorder
+                                                                .serviceItems
+                                                                .elementAt(i)
+                                                                .pictures[0]
+                                                                .url),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                )
+                                              : SizedBox(
+                                                  height: 184.0,
+                                                  width: 184.0,
+                                                  child: Stack(
+                                                    children: <Widget>[
+                                                      Positioned.fill(
+                                                        child: Image.network(
+                                                            'https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg'),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                )
                                         ],
                                       ),
                                     ),
@@ -463,7 +579,7 @@ class _DetailPageState extends State<DetailPage> {
                       onPressed: () {
                         Firestore.instance
                             .collection("workorders")
-                            .document(widget.currentWorkorder.id)
+                            .document(_currentWorkorder.id)
                             .updateData(
                                 {"color": pickerColor.value.toString()});
 
@@ -476,7 +592,7 @@ class _DetailPageState extends State<DetailPage> {
               },
             );
           },
-          child: Text(widget.currentWorkorder.id),
+          child: Text(_currentWorkorder.id),
           color: currentColor,
           textColor: const Color(0xffffffff),
         ),

@@ -7,7 +7,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:taskist/model/workorder.dart';
-import 'package:taskist/shop/addServiceItem.dart';
+import 'package:taskist/model/account.dart';
+import 'package:taskist/shop/page_addServiceItem.dart';
 
 import 'package:connectivity/connectivity.dart';
 
@@ -79,13 +80,16 @@ class _NewJobPageState extends State<AddWorkorderForm> {
     } catch (e) {
       print(e);
     }
-
+    var customerMap =
+        // AccountSerializer.fromMap(querySnapshot.documents.first.data);
+        AccountSerializer().toMap(widget.newJob.customer);
+//TODO fix uid setting
     try {
       await Firestore.instance.collection("workorders").document().setData({
         "notes": jobNotesController.text.toString().trim(),
         "date": DateTime.now().millisecondsSinceEpoch.toString(),
-        // "customer": widget.newJob.customer.toJson(),
-        "author": widget.user.uid,
+        "customer": customerMap,
+        "author": "widget.user.uid",
         "smId": widget.newJob.customer.smId,
         "status": "Active",
         "serviceItems": [],
@@ -269,7 +273,9 @@ class _NewJobPageState extends State<AddWorkorderForm> {
                                 splashColor: Colors.deepPurple,
                                 onPressed: addToFirebase,
                               )
-                            : null
+                            : CircularProgressIndicator(
+                                backgroundColor: Colors.blue,
+                              )
                       ],
                     ),
                   ),

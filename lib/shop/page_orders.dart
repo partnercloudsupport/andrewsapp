@@ -146,6 +146,13 @@ class _TaskPageState extends State<RugPage>
     Workorder workorder = new Workorder();
     List<String> cardColor = new List();
 
+    snapshot.data.documents.forEach((f) {
+      Workorder thisOrder = WorkorderSerializer().fromMap(f.data);
+      thisOrder.id = f.documentID;
+      print(thisOrder.id);
+      orderList.add(thisOrder);
+    });
+
     if (true) {
       cardColor.clear();
 
@@ -174,14 +181,15 @@ class _TaskPageState extends State<RugPage>
         listElement.clear();
       }).toList();
 
-      return new List.generate(userMap.length, (int index) {
+      return new List.generate(orderList.length, (int index) {
         return new GestureDetector(
           onTap: () {
             Navigator.of(context).push(
               new PageRouteBuilder(
                 pageBuilder: (_, __, ___) => new DetailPage(
                       user: widget.user,
-                      currentWorkorder: userMap.keys.elementAt(index),
+                      // currentWorkorder: userMap.keys.elementAt(index),
+                      currentWorkorder: orderList.elementAt(index),
                       // i: index,
                       // currentList: userMap,
                       // color: cardColor.elementAt(index),

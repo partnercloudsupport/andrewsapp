@@ -18,7 +18,7 @@ class CustomFloat extends StatelessWidget {
       child: Ink(
         decoration: new BoxDecoration(
           color: Colors.white,
-          border: new Border.all(color: Colors.blue.shade900, width: 3),
+          border: new Border.all(color: Colors.blueAccent, width: 2),
           borderRadius: BorderRadius.all(Radius.circular(50.0)),
         ),
 
@@ -29,7 +29,7 @@ class CustomFloat extends StatelessWidget {
             Icon(
               icon,
               size: 37,
-              color: Colors.blue.shade900,
+              color: Colors.blueAccent,
             ),
             builder != null
                 ? Positioned(

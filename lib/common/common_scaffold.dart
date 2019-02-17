@@ -112,7 +112,7 @@ class CommonScaffold extends StatelessWidget {
   Widget header() => Ink(
         decoration: BoxDecoration(
             // gradient: LinearGradient(colors: UIData.kitGradients2)
-            color: Colors.blue.shade900),
+            color: Colors.blueAccent),
         child: Padding(
           padding: const EdgeInsets.all(10.0),
           child: Row(
@@ -184,8 +184,8 @@ class CommonScaffold extends StatelessWidget {
         child: Ink(
           height: 60.0,
           decoration: new BoxDecoration(
-            // color: Colors.blue.shade900,
-            border: new Border.all(color: Colors.blue.shade900, width: 3),
+            // color: Colors.blueAccent,
+            border: new Border.all(color: Colors.blueAccent, width: 2),
             // borderRadius: BorderRadius.all(Radius.circular(7.0)),
             // gradient: new LinearGradient(colors: UIData.kitGradients3)
           ),
@@ -202,7 +202,7 @@ class CommonScaffold extends StatelessWidget {
                   child: Center(
                     widthFactor: 2,
                     child: new Icon(Icons.menu,
-                        size: 40, color: Colors.blue.shade900),
+                        size: 40, color: Colors.blueAccent),
                     //  Text(
                     //   "ADD TO WISHLIST",
                     //   style: new TextStyle(
@@ -225,7 +225,7 @@ class CommonScaffold extends StatelessWidget {
                   child: Center(
                     widthFactor: 2,
                     child: new Icon(Icons.phone,
-                        size: 37, color: Colors.blue.shade900),
+                        size: 37, color: Colors.blueAccent),
                   ),
                 ),
               ),

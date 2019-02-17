@@ -201,7 +201,8 @@ class _CameraScreenState extends State<CameraScreen> {
       'serviceItemId': serviceItemId
     });
     print(id.documentID);
-    widget.currentItem.pictures.add(id.documentID);
+    Picture p = new Picture(id: id.documentID, url: downloadURL);
+    widget.currentItem.pictures.add(p);
     Navigator.push(
       context,
       MaterialPageRoute(
