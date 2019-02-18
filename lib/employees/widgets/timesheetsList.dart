@@ -35,7 +35,7 @@ class TimesheetList extends StatelessWidget {
                     return Center(
                         child: Text(
                       'No Datax',
-                      style: TextStyle(color: Colors.green),
+                      style: TextStyle(color: Colors.white),
                     ));
                   } else {
                     return ListView.builder(
@@ -54,7 +54,7 @@ class TimesheetList extends StatelessWidget {
                           return ListTile(
                             leading: new Icon(
                               Icons.access_time,
-                              color: Colors.black,
+                              color: Colors.white,
                               size: 26.0,
                             ),
                             title: Text(

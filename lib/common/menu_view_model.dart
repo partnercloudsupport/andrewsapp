@@ -9,8 +9,7 @@ class MenuViewModel {
 
   getMenuItems() {
     return menuItems = <Menu>[
-     
-       Menu(
+      Menu(
           title: "Dashboard",
           menuColor: Color(0xff261d33),
           icon: Icons.dashboard,
@@ -23,25 +22,29 @@ class MenuViewModel {
           image: UIData.loginImage,
           items: ["Login With OTP", "Login 2", "Sign Up", "Login 4"]),
       Menu(
-          title: "Rugs",
-          menuColor: Color(0xff7f5741),
+          title: "RugPage",
+
+          // menuColor: Color(0xff7f5741),
+          menuColor: Colors.black,
           icon: Icons.timeline,
-          image: UIData.timelineImage,
-          items: ["Feed", "Tweets", "Timeline 3", "Timeline 4"]),
-    
-           Menu(
-          title: "EmployeeList",
-          menuColor: Color(0xff050505),
-          icon: Icons.person,
-          image: UIData.profileImage,
-          items: ["View Profile", "Profile 2", "Profile 3", "Profile 4"]),
+          image: UIData.timelineImage),
+      // items: ["Feed", "Tweets", "Timeline 3", "Timeline 4"]
+
       Menu(
-          title: "Settings",
-          menuColor: Color(0xff2a8ccf),
-          icon: Icons.settings,
-          image: UIData.settingsImage,
-          items: ["Device Settings", "Settings 2", "Settings 3", "Settings 4"]),
- 
+        title: "EmployeeList",
+        menuColor: Color(0xff050505),
+        icon: Icons.person,
+        image: UIData.profileImage,
+      ),
+      // items: ["View Profile", "Profile 2", "Profile 3", "Profile 4"]
+
+      Menu(
+        title: "Settings",
+        menuColor: Color(0xff2a8ccf),
+        icon: Icons.settings,
+        image: UIData.settingsImage,
+        // items: ["Device Settings", "Settings 2", "Settings 3", "Settings 4"]
+      ),
     ];
   }
 }

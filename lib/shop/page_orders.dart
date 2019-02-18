@@ -23,11 +23,25 @@ class RugPage extends StatefulWidget {
 class _TaskPageState extends State<RugPage>
     with SingleTickerProviderStateMixin {
   int index = 1;
+  FirebaseUser currentUser;
+  ShopService shopService = new ShopService();
+  final _scaffoldState = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: ListView(
+    return CommonScaffold(
+      // backGroundColor: Colors.grey.shade100,
+      backGroundColor: Colors.grey.shade200,
+      actionFirstIcon: null,
+      appTitle: "Product Detail",
+      showFAB: true,
+      scaffoldKey: _scaffoldState,
+      callback: () => _addTaskPressed(),
+      showDrawer: false,
+      centerDocked: true,
+      floatingIcon: Icons.add,
+      showBottomNav: true,
+      bodyData: ListView(
         children: <Widget>[
           _getToolbar(context),
           new Column(
@@ -243,7 +257,7 @@ class _TaskPageState extends State<RugPage>
                 child: Column(
                   children: <Widget>[
                     Padding(
-                      padding: EdgeInsets.only(top: 20.0, bottom: 15.0),
+                      padding: EdgeInsets.only(top: 20.0, bottom: 5.0),
                       child: Container(
                         child: Text(
                           //  userMap.values.elementAt(index).length,
@@ -262,7 +276,7 @@ class _TaskPageState extends State<RugPage>
                           Expanded(
                             flex: 2,
                             child: Container(
-                              margin: EdgeInsets.only(left: 50.0),
+                              margin: EdgeInsets.only(left: 10.0, right: 10),
                               color: Colors.white,
                               height: 1.5,
                             ),
@@ -271,67 +285,74 @@ class _TaskPageState extends State<RugPage>
                       ),
                     ),
                     Padding(
-                      padding:
-                          EdgeInsets.only(top: 30.0, left: 15.0, right: 5.0),
-                      child: Column(
-                        children: <Widget>[
-                          SizedBox(
-                            height: 220.0,
-                            child: ListView.builder(
-                                //physics: const NeverScrollableScrollPhysics(),
-                                itemCount:
-                                    userMap.values.elementAt(index).length,
-                                itemBuilder: (BuildContext ctxt, int i) {
-                                  return Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: <Widget>[
-                                      Icon(
-                                        userMap.values
-                                                .elementAt(index)
-                                                .elementAt(i)
-                                                .isDone
-                                            ? FontAwesomeIcons.checkCircle
-                                            : FontAwesomeIcons.circle,
-                                        color: userMap.values
-                                                .elementAt(index)
-                                                .elementAt(i)
-                                                .isDone
-                                            ? Colors.white70
-                                            : Colors.white,
-                                        size: 14.0,
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.only(left: 10.0),
-                                      ),
-                                      Flexible(
-                                        child: Text(
-                                          userMap.values
-                                              .elementAt(index)
-                                              .elementAt(i)
-                                              .serviceName,
-                                          style: userMap.values
-                                                  .elementAt(index)
-                                                  .elementAt(i)
-                                                  .isDone
-                                              ? TextStyle(
-                                                  decoration: TextDecoration
-                                                      .lineThrough,
-                                                  color: Colors.white70,
-                                                  fontSize: 17.0,
-                                                )
-                                              : TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 17.0,
+                      padding: EdgeInsets.only(top: 20.0, left: 20),
+                      child:
+                          // Column(
+                          //   mainAxisSize: MainAxisSize.min,
+                          //   mainAxisAlignment: MainAxisAlignment.start,
+                          //   crossAxisAlignment: CrossAxisAlignment.stretch,
+                          //   children: <Widget>[
+                          StreamBuilder<List<ServiceItem>>(
+                              stream: shopService.getServiceItems(
+                                  workorderId: orderList.elementAt(index).id),
+                              builder: (context, snapShot) {
+                                if (!snapShot.hasData)
+                                  return const Text('Loading...');
+                                return ListView.builder(
+                                    shrinkWrap: true,
+                                    physics: const BouncingScrollPhysics(),
+                                    itemCount: snapShot.data.length,
+                                    itemBuilder: (BuildContext ctxt, int i) {
+                                      return Padding(
+                                          padding: EdgeInsets.only(top: 10.0),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: <Widget>[
+                                              Icon(
+                                                snapShot.data
+                                                        .elementAt(i)
+                                                        .isDone
+                                                    ? FontAwesomeIcons
+                                                        .checkCircle
+                                                    : FontAwesomeIcons.circle,
+                                                color: snapShot.data
+                                                        .elementAt(i)
+                                                        .isDone
+                                                    ? Colors.white70
+                                                    : Colors.white,
+                                                size: 14.0,
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    EdgeInsets.only(left: 10.0),
+                                              ),
+                                              Flexible(
+                                                child: Text(
+                                                  snapShot.data
+                                                      .elementAt(i)
+                                                      .serviceName,
+                                                  style: snapShot.data
+                                                          .elementAt(i)
+                                                          .isDone
+                                                      ? TextStyle(
+                                                          decoration:
+                                                              TextDecoration
+                                                                  .lineThrough,
+                                                          color: Colors.white70,
+                                                          fontSize: 17.0,
+                                                        )
+                                                      : TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 17.0,
+                                                        ),
                                                 ),
-                                        ),
-                                      ),
-                                    ],
-                                  );
-                                }),
-                          ),
-                        ],
-                      ),
-                    ),
+                                              ),
+                                            ],
+                                          ));
+                                    });
+                              }),
+                    )
                   ],
                 ),
               ),
@@ -345,7 +366,7 @@ class _TaskPageState extends State<RugPage>
   @override
   void initState() {
     super.initState();
-
+    this.currentUser = widget.user;
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
@@ -403,7 +424,7 @@ class _TaskPageState extends State<RugPage>
             width: 40.0,
             height: 40.0,
             fit: BoxFit.cover,
-            image: new AssetImage('assets/list.png')),
+            image: new AssetImage('assets/icon.png')),
       ]),
     );
   }

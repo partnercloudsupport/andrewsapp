@@ -3,7 +3,7 @@ import 'package:taskist/employees/widgets/timesheetsList.dart';
 import 'package:taskist/model/employee.dart';
 import 'package:taskist/employees/widgets/activity_log.dart';
 import 'package:taskist/employees/dbService.dart';
-import '../geekants/Components/ListViewContainer.dart';
+// import '../geekants/Components/ListViewContainer.dart';
 
 class EmployeeDetailFooter extends StatefulWidget {
   EmployeeDetailFooter(this.employee);
@@ -37,12 +37,12 @@ class _FriendShowcaseState extends State<EmployeeDetailFooter>
     ];
     _pages = [
       new TimesheetList(employee: employee),
-      new ListViewContent(
-        listSlideAnimation: listSlideAnimation,
-        listSlidePosition: listSlidePosition,
-        listTileWidth: listTileWidth,
-      ),
-      new ActivityLog(),
+      // new ListViewContent(
+      //   listSlideAnimation: listSlideAnimation,
+      //   listSlidePosition: listSlidePosition,
+      //   listTileWidth: listTileWidth,
+      // ),
+      new ActivityLog(employee: employee),
     ];
     _controller = new TabController(
       length: _tabs.length,

@@ -42,7 +42,7 @@ class DetailPage extends StatefulWidget {
 
 class _DetailPageState extends State<DetailPage> {
   TextEditingController itemController = new TextEditingController();
-  List<dynamic> serviceItems;
+  List<ServiceItem> serviceItems;
   final _scaffoldState = GlobalKey<ScaffoldState>();
   ShopService shopService = new ShopService();
   Workorder _currentWorkorder;
@@ -51,7 +51,8 @@ class _DetailPageState extends State<DetailPage> {
   void initState() {
     super.initState();
     _currentWorkorder = widget.currentWorkorder;
-    serviceItems = widget.currentWorkorder.serviceItems;
+    // serviceItems = widget.currentWorkorder.serviceItems;
+    // serviceItems = shopService.getServiceItems(widget.currentWorkorder.id);
     switch (widget.currentWorkorder.status) {
       case 'Active':
         currentColor = Colors.green[800];
@@ -144,92 +145,22 @@ class _DetailPageState extends State<DetailPage> {
       bodyData: Stack(
         children: <Widget>[
           _getToolbar(context),
-          Container(
-            child: NotificationListener<OverscrollIndicatorNotification>(
-              onNotification: (overscroll) {
-                overscroll.disallowGlow();
-              },
-              child: getServiceItems(_currentWorkorder),
-              // child: new StreamBuilder<QuerySnapshot>(
-              //     stream: Firestore.instance
-              //         .collection("workorders")
-              //         .where("fbId", isEqualTo: widget.job.fbId.toString())
-              //         .snapshots(),
-              //     builder: (BuildContext context,
-              //         AsyncSnapshot<QuerySnapshot> snapshot) {
-              //       if (!snapshot.hasData)
-              //         return new Center(
-              //             child: CircularProgressIndicator(
-              //           backgroundColor: currentColor,
-              //         ));
-              //       return new Container(
-              //         child: getServiceItems(snapshot),
-              //       );
-              //     }),
-              // getEvents(constraints: [new QueryConstraint(field: "creatorId", isEqualTo: _currentUser.id)]);
-
-              // child: StreamBuilder<List<Workorder>>(
-              //   stream: shopService.getWorkorders(constraints: [
-              //     new QueryConstraint(
-              //         field: "fbId", isEqualTo: widget.job.fbId.toString())
-              //   ]),
-              //   builder: (context, snapShot) {
-              //     if (!snapShot.hasData)
-              //       return new Center(
-              //           child: CircularProgressIndicator(
-              //         backgroundColor: Colors.blue,
-              //       ));
-              //     return ListView.builder(
-              //         itemCount: snapShot.data.length,
-              //         itemBuilder: (context, index) {
-              //           var item = snapShot.data[index];
-              //           return ServiceItemCard(item);
-              //           // return ListTile(
-              //           //   title: Text(
-              //           //       '${item.name}   (lat:${item.email})'),
-              //           //   subtitle: Text('distance: ${item.id}'),
-              //           // );
-              //         });
-              //     // return new Container(
-              //     //       child: getServiceItems(snapShot),
-              //     //     );
-              //     // return ListView.builder(
-              //     //     itemCount: snapShot.data.length,
-              //     //     itemBuilder: (context, index) {
-              //     //       var item = snapShot.data[index];
-              //     //       return EmployeeCard(item, _device);
-              //     //       // return ListTile(
-              //     //       //   title: Text(
-              //     //       //       '${item.name}   (lat:${item.email})'),
-              //     //       //   subtitle: Text('distance: ${item.id}'),
-              //     //       // );
-              //     //     });
-              //   },
-              // ),
-            ),
-          ),
+          getServiceItems(),
         ],
       ),
     );
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  navigateAddServiceItem() {
+  void navigateAddServiceItem() {
     Navigator.of(context).push(new PageRouteBuilder(
         pageBuilder: (_, __, ___) => new AddServiceItems(
-              //             // pageBuilder: (_, __, ___) => new ItemsListScreen(
-              //             // user: widget.user,
+              user: widget.user,
               currentJob: _currentWorkorder,
             )));
   }
 
-  // getServiceItems(AsyncSnapshot<QuerySnapshot> snapshot) {
-  getServiceItems(Workorder _currentWorkorder) {
-    List<ServiceItem> listElement = new List();
+  getServiceItems() {
+    // List<ServiceItem> listElement = new List();
     int nbIsDone = 0;
 
     _currentWorkorder.serviceItems.forEach((i) {
@@ -238,302 +169,415 @@ class _DetailPageState extends State<DetailPage> {
       }
     });
 
-    return Column(
-      children: <Widget>[
-        Padding(
-          padding: EdgeInsets.only(top: 150.0),
-          child: new Column(
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(top: 5.0, left: 50.0, right: 20.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    new Text(
-                      // widget.jobPanel.keys.elementAt(widget.i),
-                      _currentWorkorder.customer.lastName,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 35.0),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return new AlertDialog(
-                              title: Text(
-                                  "Delete: " + _currentWorkorder.id.toString()),
-                              content: Text(
-                                "Are you sure you want to delete this list?",
-                                style: TextStyle(fontWeight: FontWeight.w400),
+    // return Column(children: <Widget>[
+    //   // Padding(
+    //   //     padding: EdgeInsets.only(top: 120.0),
+    //   //     child:
+    //   //     Column(
+    //   //       children: <Widget>[
+
+    //   Row(
+    //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //     children: <Widget>[
+    //       new Text(
+    //         // widget.jobPanel.keys.elementAt(widget.i),
+    //         _currentWorkorder.customer.lastName,
+    //         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 35.0),
+    //       ),
+    //       GestureDetector(
+    //         onTap: () {
+    //           showDialog(
+    //             context: context,
+    //             builder: (BuildContext context) {
+    //               return new AlertDialog(
+    //                 title: Text("Delete: " + _currentWorkorder.id.toString()),
+    //                 content: Text(
+    //                   "Are you sure you want to delete this list?",
+    //                   style: TextStyle(fontWeight: FontWeight.w400),
+    //                 ),
+    //                 actions: <Widget>[
+    //                   ButtonTheme(
+    //                     //minWidth: double.infinity,
+    //                     child: RaisedButton(
+    //                       elevation: 3.0,
+    //                       onPressed: () {
+    //                         Navigator.pop(context);
+    //                       },
+    //                       child: Text('No'),
+    //                       color: currentColor,
+    //                       textColor: const Color(0xffffffff),
+    //                     ),
+    //                   ),
+    //                   ButtonTheme(
+    //                     //minWidth: double.infinity,
+    //                     child: RaisedButton(
+    //                       elevation: 3.0,
+    //                       onPressed: () {
+    //                         _callRestAPI(_currentWorkorder);
+    //                       },
+    //                       child: Text('YES'),
+    //                       color: currentColor,
+    //                       textColor: const Color(0xffffffff),
+    //                     ),
+    //                   ),
+    //                 ],
+    //               );
+    //             },
+    //           );
+    //         },
+    //         child: Icon(
+    //           FontAwesomeIcons.trash,
+    //           size: 25.0,
+    //           color: currentColor,
+    //         ),
+    //       ),
+    //     ],
+    //   ),
+    //   // ),
+    //   Padding(
+    //     padding: EdgeInsets.only(top: 5.0, left: 50.0),
+    //     child: Row(
+    //       children: <Widget>[
+    //         new Text(
+    //           nbIsDone.toString() +
+    //               " of " +
+    //               _currentWorkorder.serviceItems.length.toString() +
+    //               " order items",
+    //           style: TextStyle(fontSize: 18.0, color: Colors.black54),
+    //         ),
+    //       ],
+    //     ),
+    //   ),
+    //   Padding(
+    //     padding: EdgeInsets.only(top: 5.0),
+    //     child: Row(
+    //       children: <Widget>[
+    //         Expanded(
+    //           flex: 2,
+    //           child: Container(
+    //             margin: EdgeInsets.only(left: 50.0),
+    //             color: Colors.grey,
+    //             height: 1.5,
+    //           ),
+    //         ),
+    //       ],
+    //     ),
+    //   ),
+    //   // Center(
+    //   //     child:
+    //   // Column(
+    //   //     mainAxisAlignment: MainAxisAlignment.start,
+    //   //     crossAxisAlignment: CrossAxisAlignment.stretch,
+    //   //     children: <Widget>[
+    //   Column(
+    //       mainAxisAlignment: MainAxisAlignment.start,
+    //       crossAxisAlignment: CrossAxisAlignment.stretch,
+    //       children: <Widget>[
+    //         Expanded(
+    return Column(children: <Widget>[
+      Padding(
+          padding: EdgeInsets.only(top: 120.0),
+          child: new Column(children: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(top: 5.0, left: 30.0, right: 20.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  new Text(
+                    _currentWorkorder.customer.lastName,
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 35.0),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return new AlertDialog(
+                            //  _currentWorkorder.customer.lastName,
+                            title: Text(
+                                "Delete: " + _currentWorkorder.id.toString()),
+                            content: Text(
+                              "Are you sure you want to delete this list?",
+                              style: TextStyle(fontWeight: FontWeight.w400),
+                            ),
+                            actions: <Widget>[
+                              ButtonTheme(
+                                //minWidth: double.infinity,
+                                child: RaisedButton(
+                                  elevation: 3.0,
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text('No'),
+                                  color: currentColor,
+                                  textColor: const Color(0xffffffff),
+                                ),
                               ),
-                              actions: <Widget>[
-                                ButtonTheme(
-                                  //minWidth: double.infinity,
-                                  child: RaisedButton(
-                                    elevation: 3.0,
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                    child: Text('No'),
-                                    color: currentColor,
-                                    textColor: const Color(0xffffffff),
-                                  ),
+                              ButtonTheme(
+                                //minWidth: double.infinity,
+                                child: RaisedButton(
+                                  elevation: 3.0,
+                                  onPressed: () {
+                                    // Firestore.instance
+                                    //     .collection(widget.user.uid)
+                                    //     .document(widget.currentList.keys
+                                    //     .elementAt(widget.i))
+                                    //     .delete();
+                                    // Navigator.pop(context);
+                                    // Navigator.of(context).pop();
+                                  },
+                                  child: Text('YES'),
+                                  color: currentColor,
+                                  textColor: const Color(0xffffffff),
                                 ),
-                                ButtonTheme(
-                                  //minWidth: double.infinity,
-                                  child: RaisedButton(
-                                    elevation: 3.0,
-                                    onPressed: () {
-                                      _callRestAPI(_currentWorkorder);
-
-                                      // Firestore.instance
-                                      //     .collection('workorders')
-                                      //     .document(widget.job.id)
-
-                                      //     .delete();
-                                      // Navigator.pop(context);
-                                      // Navigator.of(context).pop();
-                                    },
-                                    child: Text('YES'),
-                                    color: currentColor,
-                                    textColor: const Color(0xffffffff),
-                                  ),
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                      },
-                      child: Icon(
-                        FontAwesomeIcons.trash,
-                        size: 25.0,
-                        color: currentColor,
-                      ),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                    child: Icon(
+                      FontAwesomeIcons.trash,
+                      size: 25.0,
+                      color: currentColor,
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-              Padding(
-                padding: EdgeInsets.only(top: 5.0, left: 50.0),
-                child: Row(
-                  children: <Widget>[
-                    new Text(
-                      nbIsDone.toString() +
-                          " of " +
-                          _currentWorkorder.serviceItems.length.toString() +
-                          " order items",
-                      style: TextStyle(fontSize: 18.0, color: Colors.black54),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 5.0, left: 30.0),
+              child: Row(
+                children: <Widget>[
+                  new Text(
+                    nbIsDone.toString() +
+                        " of " +
+                        _currentWorkorder.serviceItems.length.toString() +
+                        " order items",
+                    style: TextStyle(fontSize: 18.0, color: Colors.black54),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 5.0),
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    flex: 2,
+                    child: Container(
+                      margin: EdgeInsets.only(left: 30.0, right: 20),
+                      color: Colors.grey,
+                      height: 1.5,
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-              Padding(
-                padding: EdgeInsets.only(top: 5.0),
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      flex: 2,
-                      child: Container(
-                        margin: EdgeInsets.only(left: 50.0),
-                        color: Colors.grey,
-                        height: 1.5,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: 30.0),
-                child: Column(
-                  children: <Widget>[
-                    Container(
+            ),
+            Padding(
+                padding: EdgeInsets.only(top: 30.0, right: 20),
+                child: Column(children: <Widget>[
+                  Container(
                       color: Color(0xFFFCFCFC),
                       child: SizedBox(
-                        height: MediaQuery.of(context).size.height - 350,
-                        child: ListView.builder(
-                            physics: const BouncingScrollPhysics(),
-                            itemCount: _currentWorkorder.serviceItems.length,
-                            itemBuilder: (BuildContext ctxt, int i) {
-                              return new Slidable(
-                                delegate: new SlidableBehindDelegate(),
-                                actionExtentRatio: 0.25,
-                                child: GestureDetector(
-                                  // onTap: () {
-                                  //   Firestore.instance
-                                  //       .collection(widget.user.uid)
-                                  //       .document(widget.jobPanel.elementAt(widget.i).job.id)
-                                  //       .updateData({
-                                  //     listElement.elementAt(i).customer.accountName:
-                                  //         !listElement.elementAt(i).isDone
-                                  //   });
-                                  // },
-                                  child: Container(
-                                    height: 50.0,
-                                    color: _currentWorkorder.serviceItems
-                                            .elementAt(i)
-                                            .isDone
-                                        ? Color(0xFFF0F0F0)
-                                        : Color(0xFFFCFCFC),
-                                    child: Padding(
-                                      padding: EdgeInsets.only(left: 50.0),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: <Widget>[
-                                          Icon(
-                                            _currentWorkorder.serviceItems
+                          height: MediaQuery.of(context).size.height - 350,
+                          child: StreamBuilder<List<ServiceItem>>(
+                              stream: shopService.getServiceItems(
+                                  workorderId: _currentWorkorder.id),
+                              builder: (context, snapShot) {
+                                if (!snapShot.hasData)
+                                  return const Text('Loading...');
+                                return ListView.builder(
+                                    shrinkWrap: false,
+                                    physics: const BouncingScrollPhysics(),
+                                    itemCount: snapShot.data.length,
+                                    itemBuilder: (BuildContext ctxt, int i) {
+                                      return new Slidable(
+                                        delegate: new SlidableBehindDelegate(),
+                                        actionExtentRatio: 0.25,
+                                        child: GestureDetector(
+                                          child: Container(
+                                            // height: 80.0,
+                                            color: snapShot.data
                                                     .elementAt(i)
                                                     .isDone
-                                                ? FontAwesomeIcons.checkSquare
-                                                : FontAwesomeIcons.square,
-                                            color: _currentWorkorder
-                                                    .serviceItems
-                                                    .elementAt(i)
-                                                    .isDone
-                                                ? currentColor
-                                                : Colors.black,
-                                            size: 20.0,
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsets.only(left: 20.0),
-                                          ),
-                                          Container(
-                                            margin: const EdgeInsets.all(1.0),
-                                            padding: const EdgeInsets.all(6.0),
-                                            decoration: new BoxDecoration(
-                                                border: new Border.all(
-                                                    color: Colors.blueAccent)),
-                                            child: new Icon(
-                                              (_currentWorkorder.serviceItems
-                                                      .elementAt(i)
-                                                      .hasUrine)
-                                                  ? FontAwesomeIcons.restroom
-                                                  : FontAwesomeIcons.check,
-                                              color: (_currentWorkorder
-                                                      .serviceItems
-                                                      .elementAt(i)
-                                                      .hasUrine)
-                                                  ? Colors.yellow.shade700
-                                                  : Colors.white,
-                                              size: 12.0,
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsets.only(left: 20.0),
-                                          ),
-                                          Text(
-                                            _currentWorkorder.serviceItems
-                                                    .elementAt(i)
-                                                    .length
-                                                    .toString() +
-                                                ' x ' +
-                                                _currentWorkorder.serviceItems
-                                                    .elementAt(i)
-                                                    .width
-                                                    .toString(),
-                                            style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 22.0,
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsets.only(left: 20.0),
-                                          ),
-                                          Expanded(
-                                            child: Text(
-                                              _currentWorkorder.serviceItems
-                                                  .elementAt(i)
-                                                  .serviceName,
-                                              overflow: TextOverflow.ellipsis,
-                                              maxLines: 1,
-                                              style: _currentWorkorder
-                                                      .serviceItems
-                                                      .elementAt(i)
-                                                      .isDone
-                                                  ? TextStyle(
-                                                      decoration: TextDecoration
-                                                          .lineThrough,
-                                                      color: currentColor,
-                                                      fontSize: 27.0,
-                                                    )
-                                                  : TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 27.0,
+                                                ? Color(0xFFF0F0F0)
+                                                : Color(0xFFFCFCFC),
+                                            child: Padding(
+                                              padding:
+                                                  EdgeInsets.only(left: 30.0),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                children: <Widget>[
+                                                  Icon(
+                                                    snapShot.data
+                                                            .elementAt(i)
+                                                            .isDone
+                                                        ? FontAwesomeIcons
+                                                            .checkSquare
+                                                        : FontAwesomeIcons
+                                                            .square,
+                                                    color: snapShot.data
+                                                            .elementAt(i)
+                                                            .isDone
+                                                        ? currentColor
+                                                        : Colors.black,
+                                                    size: 20.0,
+                                                  ),
+                                                  Padding(
+                                                    padding: EdgeInsets.only(
+                                                        left: 10.0),
+                                                  ),
+                                                  Container(
+                                                    margin:
+                                                        const EdgeInsets.all(
+                                                            1.0),
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            6.0),
+                                                    decoration: new BoxDecoration(
+                                                        border: new Border.all(
+                                                            color: Colors
+                                                                .blueAccent)),
+                                                    child: new Icon(
+                                                      (snapShot.data
+                                                              .elementAt(i)
+                                                              .hasUrine)
+                                                          ? FontAwesomeIcons
+                                                              .restroom
+                                                          : FontAwesomeIcons
+                                                              .check,
+                                                      color: (snapShot.data
+                                                              .elementAt(i)
+                                                              .hasUrine)
+                                                          ? Colors
+                                                              .yellow.shade700
+                                                          : Colors.white,
+                                                      size: 12.0,
                                                     ),
+                                                  ),
+                                                  Padding(
+                                                    padding: EdgeInsets.only(
+                                                        left: 10.0),
+                                                  ),
+                                                  Text(
+                                                    snapShot.data
+                                                            .elementAt(i)
+                                                            .length
+                                                            .toString() +
+                                                        ' x ' +
+                                                        snapShot.data
+                                                            .elementAt(i)
+                                                            .width
+                                                            .toString(),
+                                                    style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 18.0,
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding: EdgeInsets.only(
+                                                        left: 20.0),
+                                                  ),
+                                                  Expanded(
+                                                    child: Text(
+                                                      snapShot.data
+                                                          .elementAt(i)
+                                                          .serviceName,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      maxLines: 1,
+                                                      style: snapShot.data
+                                                              .elementAt(i)
+                                                              .isDone
+                                                          ? TextStyle(
+                                                              decoration:
+                                                                  TextDecoration
+                                                                      .lineThrough,
+                                                              color:
+                                                                  currentColor,
+                                                              fontSize: 22.0,
+                                                            )
+                                                          : TextStyle(
+                                                              color:
+                                                                  Colors.black,
+                                                              fontSize: 22.0,
+                                                            ),
+                                                    ),
+                                                  ),
+                                                  (snapShot.data
+                                                              .elementAt(i)
+                                                              .pictures[0]
+                                                              .url !=
+                                                          null)
+                                                      ? SizedBox(
+                                                          height: 184.0,
+                                                          width: 184.0,
+                                                          child: Stack(
+                                                            children: <Widget>[
+                                                              Positioned.fill(
+                                                                child: Image.network(
+                                                                    snapShot
+                                                                        .data
+                                                                        .elementAt(
+                                                                            i)
+                                                                        .pictures[
+                                                                            0]
+                                                                        .url),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        )
+                                                      : SizedBox(
+                                                          height: 184.0,
+                                                          width: 184.0,
+                                                          child: Stack(
+                                                            children: <Widget>[
+                                                              Positioned.fill(
+                                                                child: Image
+                                                                    .network(
+                                                                        'https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg'),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        )
+                                                ],
+                                              ),
                                             ),
                                           ),
-                                          (_currentWorkorder.serviceItems
-                                                      .elementAt(i)
-                                                      .pictures[0]
-                                                      .url !=
-                                                  null)
-                                              ? SizedBox(
-                                                  height: 184.0,
-                                                  width: 184.0,
-                                                  child: Stack(
-                                                    children: <Widget>[
-                                                      Positioned.fill(
-                                                        child: Image.network(
-                                                            _currentWorkorder
-                                                                .serviceItems
-                                                                .elementAt(i)
-                                                                .pictures[0]
-                                                                .url),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                )
-                                              : SizedBox(
-                                                  height: 184.0,
-                                                  width: 184.0,
-                                                  child: Stack(
-                                                    children: <Widget>[
-                                                      Positioned.fill(
-                                                        child: Image.network(
-                                                            'https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg'),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                )
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                secondaryActions: <Widget>[
-                                  // new IconSlideAction(
-                                  //   caption: 'Delete',
-                                  //   color: Colors.red,
-                                  //   icon: Icons.delete,
-                                  //   onTap: () {
-                                  //     Firestore.instance
-                                  //         .collection("workorders")
-                                  //         .document(currentWorkorder.id)
-                                  //         .updateData({
-                                  //       listElement
-                                  //           .elementAt(i)
-                                  //           .customer
-                                  //           .accountName: ""
-                                  //     });
-                                  //   },
-                                  // ),
-                                ],
-                              );
-                            }),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
+                                        ),
+                                        // secondaryActions: <Widget>[
+                                        //   new IconSlideAction(
+                                        //     caption: 'Delete',
+                                        //     color: Colors.red,
+                                        //     icon: Icons.delete,
+                                        //     onTap: () {
+                                        //       Firestore.instance
+                                        //           .collection("workorders")
+                                        //           .document(currentWorkorder.id)
+                                        //           .updateData({
+                                        //         listElement
+                                        //             .elementAt(i)
+                                        //             .customer
+                                        //             .accountName: ""
+                                        //       });
+                                        //     },
+                                        //   ),
+                                        // ],
+                                      );
+                                    });
+                              })
+                          // ],
+                          ))
+                ]))
+          ])
+          // ],
+          // )
+          // ]);
+          )
+    ]);
   }
 
   Color pickerColor;
@@ -547,7 +591,7 @@ class _DetailPageState extends State<DetailPage> {
 
   Padding _getToolbar(BuildContext context) {
     return new Padding(
-      padding: EdgeInsets.only(top: 50.0, left: 20.0, right: 12.0),
+      padding: EdgeInsets.only(top: 40.0, left: 20.0, right: 12.0),
       child:
           new Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
         new Image(
@@ -555,47 +599,47 @@ class _DetailPageState extends State<DetailPage> {
             height: 35.0,
             fit: BoxFit.cover,
             image: new AssetImage('assets/list.png')),
-        RaisedButton(
-          elevation: 3.0,
-          onPressed: () {
-            pickerColor = currentColor;
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: const Text('Pick a color!'),
-                  content: SingleChildScrollView(
-                    child: ColorPicker(
-                      pickerColor: pickerColor,
-                      onColorChanged: changeColor,
-                      enableLabel: true,
-                      colorPickerWidth: 1000.0,
-                      pickerAreaHeightPercent: 0.7,
-                    ),
-                  ),
-                  actions: <Widget>[
-                    FlatButton(
-                      child: Text('Got it'),
-                      onPressed: () {
-                        Firestore.instance
-                            .collection("workorders")
-                            .document(_currentWorkorder.id)
-                            .updateData(
-                                {"color": pickerColor.value.toString()});
+        // RaisedButton(
+        //   elevation: 3.0,
+        //   onPressed: () {
+        //     pickerColor = currentColor;
+        //     showDialog(
+        //       context: context,
+        //       builder: (BuildContext context) {
+        //         return AlertDialog(
+        //           title: const Text('Pick a color!'),
+        //           content: SingleChildScrollView(
+        //             child: ColorPicker(
+        //               pickerColor: pickerColor,
+        //               onColorChanged: changeColor,
+        //               enableLabel: true,
+        //               colorPickerWidth: 1000.0,
+        //               pickerAreaHeightPercent: 0.7,
+        //             ),
+        //           ),
+        //           actions: <Widget>[
+        //             FlatButton(
+        //               child: Text('Got it'),
+        //               onPressed: () {
+        //                 Firestore.instance
+        //                     .collection("workorders")
+        //                     .document(_currentWorkorder.id)
+        //                     .updateData(
+        //                         {"color": pickerColor.value.toString()});
 
-                        setState(() => currentColor = pickerColor);
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                  ],
-                );
-              },
-            );
-          },
-          child: Text(_currentWorkorder.id),
-          color: currentColor,
-          textColor: const Color(0xffffffff),
-        ),
+        //                 setState(() => currentColor = pickerColor);
+        //                 Navigator.of(context).pop();
+        //               },
+        //             ),
+        //           ],
+        //         );
+        //       },
+        //     );
+        //   },
+        //   child: Text(_currentWorkorder.id),
+        //   color: currentColor,
+        //   textColor: const Color(0xffffffff),
+        // ),
         GestureDetector(
           onTap: () {
             Navigator.of(context).pop();

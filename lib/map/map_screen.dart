@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/services.dart';
-import 'package:taskist/services/auth.dart';
+// import 'package:taskist/services/auth.dart';
 // import 'package:taskist/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:unicorndial/unicorndial.dart';
 import './map_view.dart';
 
-Auth _auth = new Auth();
+// Auth _auth = new Auth();
 
 class MapScreen extends StatefulWidget {
   @override
@@ -185,9 +185,9 @@ class ChoiceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (_auth.getCurrentUser() == null) {
-      // return new LoginScreen();
-    }
+    // if (_auth.getCurrentUser() == null) {
+    //   // return new LoginScreen();
+    // }
     final TextStyle textStyle = Theme.of(context).textTheme.display1;
     return Card(
       color: Colors.white,

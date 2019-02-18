@@ -72,6 +72,17 @@ class CommonDrawer extends StatelessWidget {
             ),
           ),
           Divider(),
+          // new ListTile(
+          //   title: Text(
+          //     "Logout",
+          //     style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18.0),
+          //   ),
+          //   leading: Icon(
+          //     Icons.exit_to_app,
+          //     color: Colors.brown,
+          //   ),
+          // ),
+          // Divider(),
           MyAboutTile()
         ],
       ),

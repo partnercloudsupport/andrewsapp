@@ -3,23 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/android.iml" filepath="$PROJECT_DIR$/android.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/background_fetch-0.1.1/android/background_fetch.iml" filepath="$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/background_fetch-0.1.1/android/background_fetch.iml" />
-      <module fileurl="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/barcode_scan-0.0.8/android/barcode_scan.iml" filepath="$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/barcode_scan-0.0.8/android/barcode_scan.iml" />
-      <module fileurl="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/cloud_firestore-0.9.0/android/cloud_firestore.iml" filepath="$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/cloud_firestore-0.9.0/android/cloud_firestore.iml" />
-      <module fileurl="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/connectivity-0.3.2/android/connectivity.iml" filepath="$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/connectivity-0.3.2/android/connectivity.iml" />
-      <module fileurl="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/device_info-0.4.0+1/android/device_info.iml" filepath="$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/device_info-0.4.0+1/android/device_info.iml" />
-      <module fileurl="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/firebase_analytics-2.0.0/android/firebase_analytics.iml" filepath="$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/firebase_analytics-2.0.0/android/firebase_analytics.iml" />
-      <module fileurl="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/firebase_auth-0.8.0+3/android/firebase_auth.iml" filepath="$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/firebase_auth-0.8.0+3/android/firebase_auth.iml" />
-      <module fileurl="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/firebase_core-0.3.0+1/android/firebase_core.iml" filepath="$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/firebase_core-0.3.0+1/android/firebase_core.iml" />
-      <module fileurl="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/firebase_storage-2.0.1/android/firebase_storage.iml" filepath="$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/firebase_storage-2.0.1/android/firebase_storage.iml" />
-      <module fileurl="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/flutter_background_geolocation-0.3.3/android/flutter_background_geolocation.iml" filepath="$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/flutter_background_geolocation-0.3.3/android/flutter_background_geolocation.iml" />
-      <module fileurl="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/image_picker-0.5.0+3/android/image_picker.iml" filepath="$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/image_picker-0.5.0+3/android/image_picker.iml" />
-      <module fileurl="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/launch_review-1.0.1/android/launch_review.iml" filepath="$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/launch_review-1.0.1/android/launch_review.iml" />
-      <module fileurl="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/path_provider-0.4.1/android/path_provider.iml" filepath="$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/path_provider-0.4.1/android/path_provider.iml" />
-      <module fileurl="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/share-0.5.3/android/share.iml" filepath="$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/share-0.5.3/android/share.iml" />
-      <module fileurl="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/shared_preferences-0.4.3/android/shared_preferences.iml" filepath="$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/shared_preferences-0.4.3/android/shared_preferences.iml" />
-      <module fileurl="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/url_launcher-3.0.3/android/url_launcher.iml" filepath="$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/url_launcher-3.0.3/android/url_launcher.iml" />
     </modules>
   </component>
 </project>

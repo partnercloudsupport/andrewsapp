@@ -27,8 +27,8 @@ dependencies:
   cloud_functions:
   firestore_helpers:
   jaguar_serializer:
-  googleapis:
-  googleapis_auth:
+  flutter_sparkline:
+  flutter_staggered_grid_view:
 
   scoped_model:
   font_awesome_flutter: ^8.0.1

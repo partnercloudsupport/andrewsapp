@@ -57,36 +57,48 @@ class _ServiceItemFormState extends State<ServiceItemForm> {
             currentItem.width = int.tryParse(widthController.text);
 
             print(currentItem);
-            final DocumentReference postRef = Firestore.instance
-                .document('workorders/' + currentItem.workorderId);
-            Firestore.instance.runTransaction((Transaction tx) async {
-              DocumentSnapshot postSnapshot = await tx.get(postRef);
-              if (postSnapshot.exists) {
-                // print(postSnapshot.data['serviceItems'].length);
-                var workorder =
-                    WorkorderSerializer().fromMap(postSnapshot.data);
-                workorder.serviceItems.forEach((f) {
-                  if (f.tagId == currentItem.tagId) {
-                    Scaffold.of(_formKey.currentContext).showSnackBar(SnackBar(
-                        content: Text('error for ' + currentItem.workorderId)));
-                    return;
-                  }
-                  if (f.id == currentItem.id) {
-                    Scaffold.of(_formKey.currentContext).showSnackBar(SnackBar(
-                        content: Text('error for ' + currentItem.workorderId)));
-                    return;
-                  }
-                });
-                workorder.serviceItems.add(currentItem);
-                var sWorkorder = WorkorderSerializer().toMap(workorder);
+            try {
+              Firestore.instance
+                  .collection('workorders')
+                  .document(currentItem.workorderId)
+                  .collection('serviceItems')
+                  .document()
+                  .setData(ServiceItemSerializer().toMap(currentItem));
+            } catch (e) {
+              print(e);
+            }
+            currentItem = null;
 
-                await tx.update(postRef, <String, dynamic>{
-                  'serviceItems': sWorkorder['serviceItems']
-                });
-                Navigator.of(context).push(new PageRouteBuilder(
-                    pageBuilder: (_, __, ___) => new RugPage()));
-              }
-            });
+            // final DocumentReference postRef = Firestore.instance
+            //     .document('workorders/' + currentItem.workorderId);
+            // Firestore.instance.runTransaction((Transaction tx) async {
+            //   DocumentSnapshot postSnapshot = await tx.get(postRef);
+            //   if (postSnapshot.exists) {
+            //     // print(postSnapshot.data['serviceItems'].length);
+            //     var workorder =
+            //         WorkorderSerializer().fromMap(postSnapshot.data);
+            //     workorder.serviceItems.forEach((f) {
+            //       if (f.tagId == currentItem.tagId) {
+            //         Scaffold.of(_formKey.currentContext).showSnackBar(SnackBar(
+            //             content: Text('error for ' + currentItem.workorderId)));
+            //         return;
+            //       }
+            //       if (f.id == currentItem.id) {
+            //         Scaffold.of(_formKey.currentContext).showSnackBar(SnackBar(
+            //             content: Text('error for ' + currentItem.workorderId)));
+            //         return;
+            //       }
+            //     });
+            //     workorder.serviceItems.add(currentItem);
+            //     var sWorkorder = WorkorderSerializer().toMap(workorder);
+
+            //     await tx.update(postRef, <String, dynamic>{
+            //       'serviceItems': sWorkorder['serviceItems']
+            //     });
+            Navigator.of(context).push(new PageRouteBuilder(
+                pageBuilder: (_, __, ___) => new RugPage()));
+            //   }
+            // });
 
             Scaffold.of(_formKey.currentContext).showSnackBar(SnackBar(
                 content: Text(currentItem.id.toString() +

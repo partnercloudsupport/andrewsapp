@@ -7,15 +7,13 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class ShopService {
-  final serviceItemCollection = Firestore.instance.collection("service_items");
-
   final workOrderCollection = Firestore.instance.collection("workorders");
 
-  Future<String> uploadServiceItem(ServiceItem serviceItem) async {
-    DocumentReference docRef = await serviceItemCollection
-        .add(ServiceItemSerializer().toMap(serviceItem));
-    return docRef.documentID;
-  }
+  // Future<String> uploadServiceItem(ServiceItem serviceItem) async {
+  //   DocumentReference docRef = await serviceItemCollection
+  //       .add(ServiceItemSerializer().toMap(serviceItem));
+  //   return docRef.documentID;
+  // }
 
   Future<void> updateServiceItem(serviceItemId) async {
     DateTime now = new DateTime.now();
@@ -79,8 +77,13 @@ class ShopService {
 
 // getEvents(constraints: [new QueryConstraint(field: "creatorId", isEqualTo: _currentUser.id)]);
   Stream<List<ServiceItem>> getServiceItems(
-      {List<QueryConstraint> constraints}) {
+      {List<QueryConstraint> constraints, workorderId}) {
     try {
+      CollectionReference serviceItemCollection = Firestore.instance
+          .collection("workorders")
+          .document(workorderId)
+          .collection('serviceItems');
+
       Query query = buildQuery(
           collection: serviceItemCollection, constraints: constraints);
 

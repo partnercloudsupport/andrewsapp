@@ -2,14 +2,25 @@
   <library name="Flutter Plugins" type="FlutterPluginsLibraryType">
     <CLASSES>
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/share-0.5.3" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/firebase_analytics-2.0.1" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/firebase_ml_vision-0.5.1+1" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/flutter_background_geolocation-0.3.4" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/image_picker-0.5.0+3" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/location-2.0.0" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/firebase_storage-1.1.0" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/cloud_firestore-0.9.0" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/cloud_functions-0.1.0+1" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/connectivity-0.3.2" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/path_provider-0.4.1" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/firebase_auth-0.8.1+1" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/url_launcher-3.0.3" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/launch_review-1.0.1" />
-      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/fast_qr_reader_view-0.1.5" />
-      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/connectivity-0.3.2" />
-      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/firebase_core-0.2.5+1" />
-      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/cloud_firestore-0.8.2+3" />
-      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/firebase_analytics-1.2.0" />
-      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/firebase_auth-0.8.0" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/device_info-0.4.0+1" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/background_fetch-0.1.1" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/barcode_scan-0.0.8" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/camera-0.4.0+1" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/shared_preferences-0.4.3" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/firebase_core-0.3.0+2" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

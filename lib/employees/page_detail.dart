@@ -5,7 +5,9 @@
 // import 'package:flutter_slidable/flutter_slidable.dart';
 // import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 // import 'package:taskist/utils/diamond_fab.dart';
-// import 'package:taskist/shop/addServiceItem.dart';
+// import 'package:taskist/shop/page_addServiceItem.dart';
+// import 'package:taskist/model/workorder.dart';
+// import 'package:taskist/model/employee.dart';
 
 // // import 'package:taskist/model/serviceItemList.dart';
 
@@ -13,7 +15,7 @@
 //   final FirebaseUser user;
 //   // final int i;
 //   // final Map<String, List<JobModel>> jobPanel;
-//   final JobModel job;
+//   final Employee job;
 
 //   // final String color;
 
@@ -165,12 +167,12 @@
 //   }
 
 //   getExpenseItems(AsyncSnapshot<QuerySnapshot> snapshot) {
-//     List<JobModel> listElement = new List();
+//     List<Workorder> listElement = new List();
 //     int nbIsDone = 0;
-//     JobModel job;
+//     Workorder job;
 //     if (widget.user.uid.isNotEmpty) {
 //       snapshot.data.documents.forEach((f) {
-//         job = JobModel.fromSnapshot(f);
+//         job = WorkorderSerializer().fromMap(f.data);
 //       });
 //       listElement.forEach((i) {
 //         if (i.isDone) {

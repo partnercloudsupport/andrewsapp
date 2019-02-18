@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:dio/dio.dart';
 import '../model/device.dart';
+import '../model/employee.dart';
 import 'package:flutter/foundation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -25,14 +26,17 @@ Device parseDevice(String responseBody) {
   final parsed = json.decode(responseBody).cast<Map<String, dynamic>>();
   Map resopnse = new Map<String, dynamic>();
 
-  return parsed.map<Device>((json) => Device.fromJson(json)).toList();
+  return parsed.map<Device>((json) => Device.fromMap(json)).toList();
 }
 
 Future<Device> getDevice() async {
-     AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+  AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
 
-  DocumentSnapshot result = await Firestore.instance.collection('devices').document(androidInfo.androidId).get();
-  Device d = Device.fromDocument(result);
+  DocumentSnapshot result = await Firestore.instance
+      .collection('devices')
+      .document(androidInfo.androidId)
+      .get();
+  Device d = Device.fromMap(result.data);
   print(d.androidId);
   return d;
 }
@@ -51,32 +55,50 @@ class Assets {
   Future<Device> getHardwareByAndroidId(androidId) async {
     var resp = await dio.get('/hardware/byserial/' + androidId);
     Map data = resp.data['rows'][0];
-    Device _thisDevice = Device.fromJson(data);
+    Device _thisDevice = Device.fromMap(data);
     print(_thisDevice.androidId);
     return _thisDevice;
   }
 
-
-Future<Device> fetchPost() async {
-  final response = await http.get(
-    'https://jsonplaceholder.typicode.com/posts/1',
-    headers: {HttpHeaders.authorizationHeader: "Basic your_api_token_here"},
-  );
-  final responseJson = json.decode(response.body);
-  return compute(parseDevice, response.body);
-}
-
-
-}
-  Future<FirebaseUser> customLogin(email, password) async {
-     AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-      final response = await http.post("https://us-central1-andrewsgrowth-app.cloudfunctions.net/auth", body:{"email":email,"password":password, "deviceId": androidInfo.androidId});
-      var res = json.decode(response.body);
-      final int statusCode = response.statusCode;
-      if (statusCode < 200 || statusCode > 400 || res == null) {
-        throw new Exception("Error while fetching data");
-      }
-
-     FirebaseUser user = await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
-      return user;
+  Future<Device> fetchPost() async {
+    final response = await http.get(
+      'https://jsonplaceholder.typicode.com/posts/1',
+      headers: {HttpHeaders.authorizationHeader: "Basic your_api_token_here"},
+    );
+    final responseJson = json.decode(response.body);
+    return compute(parseDevice, response.body);
   }
+}
+
+Future<Employee> customLogin(email, password, userId) async {
+  AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+  // final response = await http.post("https://us-central1-andrewsgrowth-app.cloudfunctions.net  ", body:{"email":email,"password":password, "deviceId": androidInfo.androidId});
+  //http://localhost:5000/andrewsgrowth-app/us-central1/auth
+  //https://ashdevtools.com/auth
+  // http://localhost:5000/andrewsgrowth-app/us-central1/sign_in
+
+  final response = await http.post(
+      "https://api.ashdevtools.com/andrewsgrowth-app/us-central1/customAuth",
+      body: {
+        "userId": userId,
+        "snipeId": "2",
+        "email": email,
+        "password": password,
+        // "deviceId": androidInfo.androidId,
+        "deviceId": androidInfo.androidId,
+      });
+  print(response.body);
+  // var res = json.decode(response.body);
+  final int statusCode = response.statusCode;
+  if (statusCode < 200 || statusCode > 400) {
+    throw new Exception("Error while fetching data");
+  }
+
+  FirebaseUser user = await FirebaseAuth.instance
+      .signInWithEmailAndPassword(email: email, password: password);
+     DocumentSnapshot result = await Firestore.instance
+      .collection('employees').document(userId).get();
+     var employee =  EmployeeSerializer().fromMap(result.data);
+
+  return employee;
+}

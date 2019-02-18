@@ -7,35 +7,15 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class WorkorderCard extends StatelessWidget {
   final Workorder currentOrder;
-  // final List serviceItemsList;
-
   WorkorderCard(
     @required this.currentOrder,
-    // @required this.serviceItemsList,
   );
 
   @override
   Widget build(BuildContext context) {
-    // RawMaterialButton _buildFavoriteButton() {
-    //   return RawMaterialButton(
-    //     constraints: const BoxConstraints(minWidth: 50.0, minHeight: 40.0),
-    //     elevation: 0,
-    //     fillColor: Theme.of(context).buttonColor,
-    //     shape: CircleBorder(),
-    //   );
-    // }
-
     return new GestureDetector(
         child: Padding(
             padding: EdgeInsets.only(bottom: 80.0),
-
-            // child: new IconButton(
-            //   icon: new Icon(Icons.camera),
-            //   onPressed: () {
-            //     _onImageButtonPressed(ImageSource.camera);
-            //   },
-            //   iconSize: 30.0,
-            // ),
             child: new Container(
               margin: const EdgeInsets.all(15.0),
               padding: const EdgeInsets.all(3.0),
@@ -47,9 +27,6 @@ class WorkorderCard extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(8.0)),
                 ),
-                // color: (currentOrder.status == 'Active')
-                //     ? Colors.green
-                //     : Colors.grey,
                 child: new Container(
                   width: 220.0,
                   //height: 100.0,

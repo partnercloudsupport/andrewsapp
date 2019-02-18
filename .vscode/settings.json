@@ -1,3 +1,31 @@
 {
-    "java.configuration.updateBuildConfiguration": "automatic"
+  "java.configuration.updateBuildConfiguration": "automatic",
+  "workbench.iconTheme": "material-icon-theme",
+  "editor.fontLigatures": true,
+  "files.exclude": {
+    "*.unit.js": true,
+    "**/.unit.js": true,
+    "**/.unit*": true,
+    "**/*.log": true,
+    "**/*.log*": true,
+    "**/*.unit.js": true,
+    "**/coverage": true,
+    "**/dist": true,
+    "**/.idea": true,
+    "**/ios": true,
+    "**/build": true,
+    "*.iml": true,
+    "pubspec.lock": true,
+    ".directory": true,
+    ".gitignore": true,
+    ".flutter-plugins": true,
+    ".packages": true,
+
+    "**/.dart_tool": true,
+    "**/unit.js": true,
+    "/platforms": true
+  }
+  // "files.associations": {
+  //   ".markdownlintrc": "jsonc"
+  // },
 }

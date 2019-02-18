@@ -37,6 +37,7 @@ abstract class _$ServiceItemSerializer implements Serializer<ServiceItem> {
     setMapValue(ret, 'smGUID', model.smGUID);
     setMapValue(ret, 'id', model.id);
     setMapValue(ret, 'smServiceItemId', model.smServiceItemId);
+    setMapValue(ret, 'createdAt', model.createdAt);
     setMapValue(ret, 'notes', model.notes);
     setMapValue(ret, 'serviceName', model.serviceName);
     setMapValue(ret, 'tagId', model.tagId);
@@ -80,6 +81,7 @@ abstract class _$ServiceItemSerializer implements Serializer<ServiceItem> {
             getJserDefault('pictures'));
     obj.id = map['id'] as String;
     obj.smServiceItemId = map['smServiceItemId'] as String;
+    obj.createdAt = map['createdAt'] as int;
     obj.notes = map['notes'] as String;
     obj.intake_notes = map['intake_notes'] as String;
     obj.log = map['log'] as String;

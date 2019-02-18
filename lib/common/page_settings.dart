@@ -2,12 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:taskist/tests/ponyform.dart';
-
+import 'package:taskist/common/common_scaffold.dart';
 import 'package:share/share.dart';
-import 'package:launch_review/launch_review.dart';
-
-import 'package:url_launcher/url_launcher.dart';
 
 class SettingsPage extends StatefulWidget {
   final FirebaseUser user;
@@ -20,30 +16,39 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage>
     with SingleTickerProviderStateMixin {
-
   sharePage() async {
     Share.share(
         "Toi aussi organise mieux tes journées avec #Taskist disponible sur Android et iOS");
   }
 
-  rateApp() async {
-    LaunchReview.launch(
-        androidAppId: "com.huextrat.taskist", iOSAppId: "1435481664");
-  }
+  // rateApp() async {
+  //   LaunchReview.launch(
+  //       // androidAppId: "com.huextrat.taskist", iOSAppId: "1435481664");
+  // }
 
   _launchURL() async {
-    const url = 'https://twitter.com/HugoExtrat';
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
+    // const url = 'https://twitter.com/HugoExtrat';
+    // if (await canLaunch(url)) {
+    //   await launch(url);
+    // } else {
+    //   throw 'Could not launch $url';
+    // }
   }
+  final _scaffoldState = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: ListView(
+    return CommonScaffold(
+      backGroundColor: Colors.grey.shade100,
+      actionFirstIcon: null,
+      appTitle: "Employee List",
+      showFAB: true,
+      scaffoldKey: _scaffoldState,
+      showDrawer: false,
+      centerDocked: true,
+      floatingIcon: Icons.add,
+      showBottomNav: true,
+      bodyData: ListView(
         children: <Widget>[
           new Column(
             children: <Widget>[
@@ -90,13 +95,13 @@ class _SettingsPageState extends State<SettingsPage>
               ),
             ],
           ),
-
-          Padding(padding: EdgeInsets.only(top: 50.0),),
+          Padding(
+            padding: EdgeInsets.only(top: 50.0),
+          ),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-
               Card(
                 color: Colors.white,
                 elevation: 2.0,
@@ -110,33 +115,33 @@ class _SettingsPageState extends State<SettingsPage>
                       title: Text("Version"),
                       trailing: Text("0.9.2"),
                     ),
-                    ListTile(
-                      onTap: _launchURL,
-                      leading: Icon(
-                        FontAwesomeIcons.twitter,
-                        color: Colors.blue,
-                      ),
-                      title: Text("Twitter"),
-                      trailing: Icon(Icons.arrow_right),
-                    ),
-                    ListTile(
-                      onTap: rateApp,
-                      leading: Icon(
-                        FontAwesomeIcons.star,
-                        color: Colors.blue,
-                      ),
-                      title: Text("Rate Taskist"),
-                      trailing: Icon(Icons.arrow_right),
-                    ),
-                    ListTile(
-                      onTap: sharePage,
-                      leading: Icon(
-                        FontAwesomeIcons.shareAlt,
-                        color: Colors.blue,
-                      ),
-                      title: Text("Share Taskist"),
-                      trailing: Icon(Icons.arrow_right),
-                    ),
+                    // ListTile(
+                    //   onTap: _launchURL,
+                    //   leading: Icon(
+                    //     FontAwesomeIcons.twitter,
+                    //     color: Colors.blue,
+                    //   ),
+                    //   title: Text("Twitter"),
+                    //   trailing: Icon(Icons.arrow_right),
+                    // ),
+                    // ListTile(
+                    //   onTap: rateApp,
+                    //   leading: Icon(
+                    //     FontAwesomeIcons.star,
+                    //     color: Colors.blue,
+                    //   ),
+                    //   title: Text("Rate Taskist"),
+                    //   trailing: Icon(Icons.arrow_right),
+                    // ),
+                    // ListTile(
+                    //   onTap: sharePage,
+                    //   leading: Icon(
+                    //     FontAwesomeIcons.shareAlt,
+                    //     color: Colors.blue,
+                    //   ),
+                    //   title: Text("Share Taskist"),
+                    //   trailing: Icon(Icons.arrow_right),
+                    // ),
                   ],
                 ),
               ),
@@ -165,14 +170,12 @@ class _SettingsPageState extends State<SettingsPage>
   Padding _getToolbar(BuildContext context) {
     return new Padding(
       padding: EdgeInsets.only(top: 50.0, left: 20.0, right: 20.0),
-      child:
-      new Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+      child: new Row(mainAxisAlignment: MainAxisAlignment.center, children: [
         new Image(
             width: 40.0,
             height: 40.0,
             fit: BoxFit.cover,
-            image: new AssetImage('assets/list.png')
-        ),
+            image: new AssetImage('assets/icon.png')),
       ]),
     );
   }

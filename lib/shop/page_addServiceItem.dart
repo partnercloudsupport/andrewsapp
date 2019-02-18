@@ -12,6 +12,7 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:uuid/uuid.dart';
 import 'package:barcode_scan/barcode_scan.dart';
+import 'package:flutter/services.dart';
 
 class AddServiceItems extends StatefulWidget {
   final FirebaseUser user;
@@ -177,53 +178,53 @@ class _AddServiceItemsState extends State<AddServiceItems> {
   var barcode;
 
   void _onImageButtonPressed(ImageSource source) async {
-    // try {
-    // String _barcode = await BarcodeScanner.scan();
-    var rng = new Random();
-    String _barcode = '{"id":"BCID-1233","tagColor":"yellow"}';
-    // setState(() => this.barcode = barcode);
-    barcode = json.decode(_barcode);
-    barcode['id'] = 'BCID-' + rng.nextInt(100).toString();
-    bool urine;
-    (barcode['tagColor'] == 'yellow') ? urine = true : urine = false;
-    int now = DateTime.now().microsecondsSinceEpoch;
+    try {
+      String _barcode = await BarcodeScanner.scan();
+      var rng = new Random();
+      // String _barcode = '{"id":"BCID-1233","tagColor":"yellow"}';
+      // setState(() => this.barcode = barcode);
+      barcode = json.decode(_barcode);
+      barcode['id'] = 'BCID-' + rng.nextInt(100).toString();
+      bool urine;
+      (barcode['tagColor'] == 'yellow') ? urine = true : urine = false;
+      int now = DateTime.now().microsecondsSinceEpoch;
 
-    setState(() {
-      this.currentItem = new ServiceItem(
-          // id: uuid.v5(Uuid.NAMESPACE_OID, barcode['id']),
-          id: widget.currentJob.id + barcode['id'],
-          serviceName: "Pitwash one rug",
-          createdAt: now,
-          hasUrine: urine,
-          workorderId: widget.currentJob.id,
-          smWorkorderId: widget.currentJob.smOrderId,
-          tagColor: barcode['tagColor'],
-          tagId: barcode['id'],
-          pictures: new List(),
-          isDone: false,
-          smGUID: 'asdf');
-    });
+      setState(() {
+        this.currentItem = new ServiceItem(
+            // id: uuid.v5(Uuid.NAMESPACE_OID, barcode['id']),
+            id: widget.currentJob.id + barcode['id'],
+            serviceName: "Pitwash one rug",
+            createdAt: now,
+            hasUrine: urine,
+            workorderId: widget.currentJob.id,
+            smWorkorderId: widget.currentJob.smOrderId,
+            tagColor: barcode['tagColor'],
+            tagId: barcode['id'],
+            pictures: new List(),
+            isDone: false,
+            smGUID: 'asdf');
+      });
 
-    Navigator.of(context).push(new PageRouteBuilder(
-        pageBuilder: (_, __, ___) => new ItemsListScreen(
-              //             // pageBuilder: (_, __, ___) => new ItemsListScreen(
-              //             // user: widget.user,
-              currentItem: this.currentItem,
-            )));
-    // } on PlatformException catch (e) {
-    //   if (e.code == BarcodeScanner.CameraAccessDenied) {
-    //     setState(() {
-    //       this.barcode = 'The user did not grant the camera permission!';
-    //     });
-    //   } else {
-    //     setState(() => this.barcode = 'Unknown error: $e');
-    //   }
-    // } on FormatException {
-    //   setState(() => this.barcode =
-    //       'null (User returned using the "back"-button before scanning anything. Result)');
-    // } catch (e) {
-    //   setState(() => this.barcode = 'Unknown error: $e');
-    // }
+      Navigator.of(context).push(new PageRouteBuilder(
+          pageBuilder: (_, __, ___) => new ItemsListScreen(
+                //             // pageBuilder: (_, __, ___) => new ItemsListScreen(
+                //             // user: widget.user,
+                currentItem: this.currentItem,
+              )));
+    } on PlatformException catch (e) {
+      if (e.code == BarcodeScanner.CameraAccessDenied) {
+        setState(() {
+          this.barcode = 'The user did not grant the camera permission!';
+        });
+      } else {
+        setState(() => this.barcode = 'Unknown error: $e');
+      }
+    } on FormatException {
+      setState(() => this.barcode =
+          'null (User returned using the "back"-button before scanning anything. Result)');
+    } catch (e) {
+      setState(() => this.barcode = 'Unknown error: $e');
+    }
   }
   // Navigator.of(context).push(new PageRouteBuilder(
   //     pageBuilder: (_, __, ___) => new ItemsListScreen(

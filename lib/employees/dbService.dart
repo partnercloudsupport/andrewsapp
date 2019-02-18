@@ -5,10 +5,25 @@ import 'package:taskist/model/timesheet.dart';
 import 'package:firestore_helpers/firestore_helpers.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:device_info/device_info.dart';
+
+final DeviceInfoPlugin deviceInfo = new DeviceInfoPlugin();
 
 class DatabaseService {
   final empCollection = Firestore.instance.collection("employees");
   final timeSheetCollection = Firestore.instance.collection("htimesheets");
+
+  Future<Device> getDevice() async {
+    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+
+    DocumentSnapshot result = await Firestore.instance
+        .collection('devices')
+        .document(androidInfo.androidId)
+        .get();
+    Device d = Device.fromMap(result.data);
+    print(d.androidId);
+    return d;
+  }
 
   Future<String> getHumanityToken() async {
     // var data = new Map<String, dynamic>();

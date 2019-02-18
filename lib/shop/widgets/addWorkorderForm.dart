@@ -89,7 +89,7 @@ class _NewJobPageState extends State<AddWorkorderForm> {
         "notes": jobNotesController.text.toString().trim(),
         "date": DateTime.now().millisecondsSinceEpoch.toString(),
         "customer": customerMap,
-        "author": "widget.user.uid",
+        "author": widget.user.uid,
         "smId": widget.newJob.customer.smId,
         "status": "Active",
         "serviceItems": [],
