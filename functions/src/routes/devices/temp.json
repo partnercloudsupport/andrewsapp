@@ -1,0 +1,93 @@
+{
+"id":9,
+"name":"",
+"asset_tag":"01",
+"serial":"bd81f0d6-ffb1-336c-a91e-0dc29e73df4d",
+"model":{
+"id":3,
+"name":"Surface"
+},
+"model_number":"4539538468442307",
+"eol":{
+"date":"2021-05-11",
+"formatted":"2021-05-11"
+},
+"status_label":{
+"id":1,
+"name":"Ready to Deploy",
+"status_type":"deployable",
+"status_meta":"deployed"
+},
+"category":{
+"id":1,
+"name":"Laptops"
+},
+"manufacturer":{
+"id":2,
+"name":"Microsoft"
+},
+"supplier":{
+"id":1,
+"name":"Schimmel-Keebler"
+},
+"notes":"Test",
+"order_number":"33940099",
+"company":"adf",
+"location":"dfdsf",
+"rtd_location":{
+"id":2,
+"name":"test"
+},
+"image":"https://snipe-local-test.s3.amazonaws.com/mah-bucket/snipe-dev-demo/assetmodels/surface.jpg",
+"assigned_to":{
+"id":1,
+"username":"admin",
+"name":"Default Admin",
+"first_name":"Default",
+"last_name":"Admin",
+"employee_number":"0394033",
+"type":"user"
+},
+"warranty_months":"NULL",
+"warranty_expires":"NULL",
+"created_at":{
+"datetime":"2018-09-29 22:42:47",
+"formatted":"2018-09-29 22:42"
+},
+"updated_at":{
+"datetime":"2019-02-03 08:50:59",
+"formatted":"2019-02-03 08:50"
+},
+"last_audit_date":{
+"datetime":"2018-10-25 01:04:40",
+"formatted":"2018-10-25 01:04"
+},
+"next_audit_date":{
+"date":"2019-10-25",
+"formatted":"2019-10-25"
+},
+"deleted_at":"fgfgf",
+"purchase_date":{
+"date":"2018-05-11",
+"formatted":"2018-05-11"
+},
+"last_checkout":{
+"datetime":"2019-01-26 10:30:48",
+"formatted":"2019-01-26 10:30"
+},
+"expected_checkin":"sdfdfdf",
+"purchase_cost":"1843.40",
+"checkin_counter":1,
+"checkout_counter":2,
+"requests_counter":0,
+"user_can_checkout":false,
+"custom_fields":[],
+"available_actions":{
+"checkout":true,
+"checkin":true,
+"clone":true,
+"restore":false,
+"update":true,
+"delete":false
+}
+}
