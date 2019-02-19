@@ -6,10 +6,11 @@ import 'package:taskist/shop/page_orders.dart';
 import 'package:taskist/dashboard/dashboard.dart';
 import 'package:taskist/employees/widgets/employee_detail.dart';
 import 'package:taskist/common/page_settings.dart';
-
-
+import 'package:flutter_stetho/flutter_stetho.dart';
 
 Future<Null> main() async {
+  Stetho.initialize();
+
   runApp(new TaskistApp());
 }
 
@@ -28,8 +29,7 @@ class TaskistApp extends StatelessWidget {
         '/Settings': (context) => SettingsPage(),
       },
       title: "Andrews App",
-      home: RootPage(
-      ),
+      home: RootPage(),
       theme: new ThemeData(primarySwatch: Colors.blue),
     );
   }

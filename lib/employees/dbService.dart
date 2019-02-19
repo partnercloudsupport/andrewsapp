@@ -20,7 +20,7 @@ class DatabaseService {
         .collection('devices')
         .document(androidInfo.androidId)
         .get();
-    Device d = Device.fromMap(result.data);
+    Device d = fromMap(result.data);
     print(d.androidId);
     return d;
   }

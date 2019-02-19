@@ -20,7 +20,7 @@ dependencies:
   cloud_firestore: 0.9.0
   strings:
   uuid:
-  # fast_qr_reader_view:
+  flutter_stetho: ^0.2.2
   location:
   camera:
   carousel_slider:

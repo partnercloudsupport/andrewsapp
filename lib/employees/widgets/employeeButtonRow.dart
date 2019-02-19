@@ -43,10 +43,10 @@ class _EmployeeButtonState extends State<EmployeeButtonRow> {
     ]);
   }
 
-  Widget _createCheckOutButton(
-    String text, {
+  Widget _createCheckOutButton({
     Color backgroundColor = Colors.transparent,
     Color textColor = Colors.green,
+    String text,
   }) {
     return new ClipRRect(
       // borderRadius: new BorderRadius.circular(30.0),

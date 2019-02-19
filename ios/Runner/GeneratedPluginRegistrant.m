@@ -16,6 +16,7 @@
 #import <firebase_ml_vision/FirebaseMlVisionPlugin.h>
 #import <firebase_storage/FirebaseStoragePlugin.h>
 #import <flutter_background_geolocation/FLTBackgroundGeolocationPlugin.h>
+#import <flutter_stetho/FlutterStethoPlugin.h>
 #import <image_picker/ImagePickerPlugin.h>
 #import <launch_review/LaunchReviewPlugin.h>
 #import <location/LocationPlugin.h>
@@ -40,6 +41,7 @@
   [FLTFirebaseMlVisionPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTFirebaseMlVisionPlugin"]];
   [FLTFirebaseStoragePlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTFirebaseStoragePlugin"]];
   [FLTBackgroundGeolocationPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTBackgroundGeolocationPlugin"]];
+  [FlutterStethoPlugin registerWithRegistrar:[registry registrarForPlugin:@"FlutterStethoPlugin"]];
   [FLTImagePickerPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTImagePickerPlugin"]];
   [LaunchReviewPlugin registerWithRegistrar:[registry registrarForPlugin:@"LaunchReviewPlugin"]];
   [LocationPlugin registerWithRegistrar:[registry registrarForPlugin:@"LocationPlugin"]];

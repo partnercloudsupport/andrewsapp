@@ -26,7 +26,7 @@ Device parseDevice(String responseBody) {
   final parsed = json.decode(responseBody).cast<Map<String, dynamic>>();
   Map resopnse = new Map<String, dynamic>();
 
-  return parsed.map<Device>((json) => Device.fromMap(json)).toList();
+  return parsed.map<Device>((json) => fromMap(json)).toList();
 }
 
 Future<Device> getDevice() async {
@@ -36,7 +36,7 @@ Future<Device> getDevice() async {
       .collection('devices')
       .document(androidInfo.androidId)
       .get();
-  Device d = Device.fromMap(result.data);
+  Device d = fromMap(result.data);
   print(d.androidId);
   return d;
 }
@@ -55,7 +55,7 @@ class Assets {
   Future<Device> getHardwareByAndroidId(androidId) async {
     var resp = await dio.get('/hardware/byserial/' + androidId);
     Map data = resp.data['rows'][0];
-    Device _thisDevice = Device.fromMap(data);
+    Device _thisDevice = fromMap(data);
     print(_thisDevice.androidId);
     return _thisDevice;
   }
@@ -96,9 +96,9 @@ Future<Employee> customLogin(email, password, userId) async {
 
   FirebaseUser user = await FirebaseAuth.instance
       .signInWithEmailAndPassword(email: email, password: password);
-     DocumentSnapshot result = await Firestore.instance
-      .collection('employees').document(userId).get();
-     var employee =  EmployeeSerializer().fromMap(result.data);
+  DocumentSnapshot result =
+      await Firestore.instance.collection('employees').document(userId).get();
+  var employee = EmployeeSerializer().fromMap(result.data);
 
   return employee;
 }

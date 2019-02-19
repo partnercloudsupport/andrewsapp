@@ -7,6 +7,7 @@ import 'package:taskist/common/uidata.dart';
 import 'package:taskist/common/menu_view_model.dart';
 import 'package:taskist/common/profile_tile.dart';
 import 'package:taskist/model/menu.dart';
+import 'package:taskist/model/employee.dart';
 import 'dart:async';
 
 class CommonScaffold extends StatelessWidget {
@@ -17,6 +18,7 @@ class CommonScaffold extends StatelessWidget {
   final callback;
   final backGroundColor;
   final List userList;
+  final Employee currentUser;
   final actionFirstIcon;
   final scaffoldKey;
   final showBottomNav;
@@ -29,6 +31,7 @@ class CommonScaffold extends StatelessWidget {
   CommonScaffold(
       {this.appTitle,
       this.bodyData,
+      this.currentUser,
       this.showFAB = true,
       this.callback,
       this.userList,
@@ -129,7 +132,10 @@ class CommonScaffold extends StatelessWidget {
                   subtitle: "(903) 926-9768 , (111) 111-1111 , (903) 344-1733 ",
                   textColor: Colors.white,
                 ),
-              )
+              ),
+              CircleAvatar(
+                  radius: 25.0,
+                  backgroundImage: NetworkImage(currentUser.avatar.small)),
             ],
           ),
         ),

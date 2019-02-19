@@ -6,7 +6,7 @@ import 'package:taskist/model/employee.dart';
 // import 'shop_items_page.dart';
 
 class Dashboard extends StatefulWidget {
-    Dashboard({
+  Dashboard({
     this.employee,
   });
 
@@ -252,6 +252,7 @@ class _MainPageState extends State<Dashboard> {
         // backGroundColor: Colors.grey.shade100,
         backGroundColor: Colors.grey.shade200,
         actionFirstIcon: null,
+        currentUser: employee,
         appTitle: "Product Detail",
         showFAB: true,
         scaffoldKey: _scaffoldState,

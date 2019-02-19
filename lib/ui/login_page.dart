@@ -111,13 +111,19 @@ class _RegisterPageState extends State<LoginPage> {
   }
 
   scan() async {
-    final _futureString = await BarcodeScanner.scan();
-    final _result = await jsonDecode(_futureString);
+    // var _futureString = await BarcodeScanner.scan();
+    // print(_futureString);
+    // _futureString = '{"asdf":"asdf"}';
 
-    Employee employee = await customLogin("asdf@asdf.com", "asdfasdf", "X5rXzRsiugC6G22D4BcL");
-    (employee is Employee)?
-         Navigator.of(context).push(new PageRouteBuilder(
-            pageBuilder: (_, __, ___) => new Dashboard(  employee: employee,   )))
+    // final _result = awa?it jsonDecode(_futureString);
+
+    Employee employee =
+        await customLogin("asdf@asdf.com", "asdfasdf", "X5rXzRsiugC6G22D4BcL");
+    (employee is Employee)
+        ? Navigator.of(context).push(new PageRouteBuilder(
+            pageBuilder: (_, __, ___) => new Dashboard(
+                  employee: employee,
+                )))
         : _wrong();
 
     // return await widget.auth.signIn(_result.email, _result.password);
