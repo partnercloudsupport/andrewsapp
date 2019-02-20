@@ -77,23 +77,23 @@ Future<Employee> customLogin(email, password, userId) async {
   //https://ashdevtools.com/auth
   // http://localhost:5000/andrewsgrowth-app/us-central1/sign_in
 
-  final response = await http.post(
-      "https://api.ashdevtools.com/andrewsgrowth-app/us-central1/customAuth",
-      body: {
-        "userId": userId,
-        "snipeId": "2",
-        "email": email,
-        "password": password,
-        // "deviceId": androidInfo.androidId,
-        "deviceId": androidInfo.androidId,
-      });
+  final response = await http.post("https://ashdevtools.com/customAuth", body: {
+    "userId": userId,
+    "snipeId": "2",
+    "email": email,
+    "password": password,
+    // "deviceId": androidInfo.androidId,
+    "deviceId": androidInfo.androidId,
+  });
   print(response.body);
   // var res = json.decode(response.body);
-  final int statusCode = response.statusCode;
-  if (statusCode < 200 || statusCode > 400) {
+  final String statusCode = response.body;
+  // if (statusCode < 200 || statusCode > 400) {
+  //   throw new Exception("Error while fetching data");
+  // }
+  if (statusCode == 'false') {
     throw new Exception("Error while fetching data");
   }
-
   FirebaseUser user = await FirebaseAuth.instance
       .signInWithEmailAndPassword(email: email, password: password);
   DocumentSnapshot result =

@@ -29,7 +29,7 @@ dependencies:
   jaguar_serializer:
   flutter_sparkline:
   flutter_staggered_grid_view:
-
+  shared_preferences:
   scoped_model:
   font_awesome_flutter: ^8.0.1
   flutter_colorpicker: ^0.0.7

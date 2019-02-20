@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "andrewsgrowth-app",
+  "private_key_id": "19313c83ca5f3dc3bf4838967bef7915012e431e",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCyj52AC1rVi9iZ\nbLvtyy8ljKt0VWoSJU732WTMUol6HytFBfCfW2lo4btE0zWBozs8Bqnj4pJC5Ek/\nQcmJnFLXIqBFU82eBYq825SxaOvpXr+DEPPubPNIp88F5cmWOi+QYpwH89+z4VMn\nKEvA1qeAnTeFjF5UO53bxoQBSliRwCm9Xx7VPB5/KIcHawmK4mfKooL2ItYCHnsg\nVFsFloLRik1jSOc6EinDWNae+9q16Mq5PrgKUMBMYGM9SMTPgBnNbrBEZmx+pxBi\n6IyPxiIekeninKZTm/lMhqkY9BcJMDnA+ihh7Y6lfKv7JEIfEf5k+Zi6bcrW6XMA\nujCTcos9AgMBAAECggEABiAjotAg6FkBD/hZNRXmkubxvc6tUhyKCjoguVqugSw/\nD4Hd6JWZ9uFhi4GkYQNgxZUj8F+mLVnIAn3HBGvCssMrFN3EXMKraQGuZuymxS19\nK+mhuKDvsqMhGL5yjS8HUTB00lgFKVZWRC5fdOjYO7MJA9GWLdUSvAaiIiozAiLz\nD1iPNa95Swttg6Qe1NrpVmUvg6jD6M+HGZTFvsuad+4x+U2140on3m9pnpDlqBTR\nOZ7rtdwEBd85ya34lBrNRkgX9UzJVPbDkzCUIA9gho/XOIkWrh4pwCF1vAjvSStx\n1VbCPvrpbv4RrCe2Z5DWQCzeirrKw1CIPBux6Z9a2QKBgQDapp0WY5yihGkHVpk/\nqEGEEvWCVSooiGBY/zAfJCtfQ5qmEQVd+5tbJBbvPBwNEzjbMgidVA+qZTF00tUe\nEqsgC8sEtvaHijEuBOhLsBS0phmkzfzPcSweB0mboXSz3cREge7W9AdXwzBukCy5\nlznkeGYDi99tQ188r8eCloGv2QKBgQDRD+mRFYM/dRnJwL7VPwgk9NkM8au5gh55\nc9n7/morYP9K60AvCIsdPIgf7F2vhTLnbBg0hxZ8BoZyp2XQzXhUpAVIgDqs4C5t\nvq866JMLRI/da1r0RFnzxnPsTcZYteKpzlWieZTAuuZW12jEQBSy9YehaUXrPgyy\nh0UsZoV8BQKBgF9ucQmgmHDmUeD+Dw0VpuK6U6V6/leKjmLJnns5EiUWIJ1yuGD4\nvCnfapMoLSYXya0B/XiNg/jfCeLvUk054K6v9wAryxYFXsmzIqBGTgM6q96eeUUh\nJBxHGf1vTrxigpNUEqaHA91uN+lJy/uE4aOyWPQbTH0n9p1KK0332sqhAoGBAND5\n3Pl/zZBTF5IKrzcuKI/4iDZeJM/sd1XkLlOsfqgZ71cOTTw2iAiTh2aRuRxIQxf9\nfzyShDE5vI9DMY1EtjG1Ouq78ur3tLFS2IpEDShIQp6MP4DICjqZdysQm2H1fjtK\n22LrsXvt122bKUhy3b39nLQGLTP29G5ItSaq3GeZAoGBAJaF9ago9UEUlwQwHIaC\n9zUqankUxvZkIO9UM/XoCB56p2varPVU0VsOWFPqCemBWmMtZhGjLiwo25dBnS1u\nv1XNtwhYF9Tezyk9rsDMEkxsF2XauAoi2b17/4iv/AQ/d6XOKBtbnVJejvs3/e45\ncWNEKJo/QbE+c3EOZKeJQSYd\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-4mvhi@andrewsgrowth-app.iam.gserviceaccount.com",
+  "client_id": "106593838726726746680",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-4mvhi%40andrewsgrowth-app.iam.gserviceaccount.com"
+}

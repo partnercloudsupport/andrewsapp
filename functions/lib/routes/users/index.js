@@ -34,4 +34,11 @@ router.put('/scope/:id', users_validator_1.default().changeScope(), auth_1.defau
 router.get('/email/:email', (req, res, next) => {
     users_controller_1.default().isEmailAvailable(req, res).catch(next);
 });
+router.get('/hif', (req, res, next) => {
+    users_controller_1.default().hi(req, res).catch(next);
+});
+router.post('/customAuth', (req, res, next) => {
+    users_controller_1.default().customAuth(req, res).catch(next);
+    // res.json({ "Asdf":"asdfdfd" });
+});
 exports.default = router;

@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -11,7 +11,112 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const admin = require("firebase-admin");
 const scope_1 = require("../../enums/scope");
 const Boom = require("boom");
+const devices_controller_1 = require("../devices/devices.controller");
+const utils_1 = require("./utils");
+const axios_1 = require("axios");
+const token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjY3ZTRkYjEzMjU4NzUzM2QxYjZjYjA3Y2U5OGJmNzZjMjhhMzM2Yjk0YzBmMzg0MzRiMTUxOTJlMDA2MDBjNDQ5MjQ3YzU0MjRmMmNmZmM0In0.eyJhdWQiOiIzIiwianRpIjoiNjdlNGRiMTMyNTg3NTMzZDFiNmNiMDdjZTk4YmY3NmMyOGEzMzZiOTRjMGYzODQzNGIxNTE5MmUwMDYwMGM0NDkyNDdjNTQyNGYyY2ZmYzQiLCJpYXQiOjE1NDk4NTM5MDgsIm5iZiI6MTU0OTg1MzkwOCwiZXhwIjoxNTgxMzg5OTA4LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.dml5K0kWint7BMjwlFXUEuL0bnGMFUuBGty06kHUgA_Wvq7P9yaITJuFcgSxsDDkg7c9npXUcTMiQBMObPHCPB9EOZD39jsOgCbGoKeZuH5VqbEGK8xP2fcpY4lDyozr3ldTsgctRNrjIlRLP9Y-fqN5jDez_wptymWoYVfNmuR_YV1tiOlTFYj2qbc7UEcbJj7VzPxSJGGFESGuOdXyhONTcR91lw08Judw9cMSkvHAmWueFoCFjM3lM95b07ojlkyVeVRzDbDkag-VPAYd6sIelpOcJamn84wk98id0x2ht422yTPPrCSa6Fpxu132gWONqg-JaazQWfVFr5_ClFftQnR6rXrJS60WSyGzX8_cvpPnX5Bru4vgLa0SD7e7k_azYP3dEjmZF2dkOt7ayyF4iRsq7jlfspczkkrD4y1pfGxKXfpeS2KKwqz74QUKRK98jXClHPCSGeBtxuKemxtUWilW9nt405fyZMFAUHANGTFg86XdIXm_ydpLDpjtp4x-hwBUJwUYJctHObjpd4r1tmyFALTWD47Y5DAz353VH-N3fmixU1wMCHOAR26EHftLTmSFL6hlGBQuORVpP_vmNvEXGJ5Toyrvtf3P4tsrRhN5AVrGc7o7Ea6IfhNvwvZHa7C3Pdw2fqdX5SrHVQWq0ei8LW3tR0A2BUqcCIk";
+const snipeit = axios_1.default.create({
+    baseURL: "http://47.219.174.153:8085/api/v1",
+    timeout: 2000,
+    headers: { Authorization: "Bearer " + token }
+});
+function _updateUserInFirestore(deviceId, userId) {
+    return __awaiter(this, void 0, void 0, function* () {
+        console.log(userId);
+        try {
+            admin
+                .firestore()
+                .collection("employees")
+                .doc(userId)
+                .update({
+                currentDevice: deviceId,
+                lastUpdateDate: Date.now()
+            });
+        }
+        catch (err) {
+            return false;
+        }
+        return true;
+    });
+}
+function _authenticate(deviceId, userId, snipeId) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let device = yield snipeit.get("/hardware/byserial/" + deviceId);
+        device = device.data.rows[0];
+        var did = device["id"];
+        console.log(did);
+        // console.log(device['status_label']['id']);
+        if (device["status_label"]["id"] !== "1")
+            yield devices_controller_1.default().checkinDevice(snipeId, device["id"]);
+        const checkoutResult = yield devices_controller_1.default().checkoutDevice(snipeId, device);
+        console.log(checkoutResult);
+        if (!checkoutResult)
+            return false;
+        const updateResult = yield devices_controller_1.default().updateDeviceInFirestore(deviceId, userId);
+        console.log(updateResult);
+        if (!updateResult)
+            return false;
+        const updateUser = yield _updateUserInFirestore(deviceId, userId);
+        if (!updateUser)
+            return false;
+        return true;
+    });
+}
+function _logOut(deviceId, userId, snipeId) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const checkInResult = yield devices_controller_1.default().checkinDevice(snipeId, deviceId);
+        console.log(checkInResult);
+        if (!checkInResult)
+            return false;
+        const updateResult = yield devices_controller_1.default().updateDeviceInFirestore(deviceId, null);
+        console.log(updateResult);
+        if (!updateResult)
+            return false;
+        const updateUser = yield _updateUserInFirestore(null, userId);
+        if (!updateUser)
+            return false;
+        return true;
+    });
+}
+function logOut(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const userId = req.body.userId;
+        const deviceId = req.body.deviceId;
+        const snipeId = req.body.snipeId;
+        if (!userId || !deviceId || !snipeId || req.method !== "POST") {
+            return res.sendStatus(300, "didnt have all yo  shit");
+        }
+        const device = yield devices_controller_1.default().getDeviceFromFirestore(deviceId);
+        let valid = yield utils_1.checkDistance(device);
+        if (!valid) {
+            return res.sendStatus(300, "couldnt get device"); // Invalid username/password
+        }
+        valid = yield _logOut(deviceId, userId, snipeId);
+        if (!valid) {
+            return res.sendStatus(401); // Invalid username/password
+        }
+        return res.sendStatus(200);
+    });
+}
 class UsersController {
+    customAuth(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const userId = req.body.userId;
+            const deviceId = req.body.deviceId;
+            const snipeId = req.body.snipeId;
+            if (!userId || !deviceId || !snipeId || req.method !== "POST") {
+                res.json(false);
+            }
+            const valid = yield _authenticate(deviceId, userId, snipeId);
+            if (!valid) {
+                res.json(valid); // Invalid username/password
+            }
+            // const firebaseToken = await admin.auth().createCustomToken(userId);
+            res.json(valid);
+            //return deviceId;
+            // res.json(deviceId) // Invalid username/password
+        });
+    }
     create(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const user = req.body;
@@ -19,9 +124,9 @@ class UsersController {
                 // Seta o escopo do usuário como user
                 user.scope = { admin: false, user: true };
                 // Remove máscara do cpf
-                user.cpf = user.cpf.replace(/\D/g, '');
+                user.cpf = user.cpf.replace(/\D/g, "");
                 // Remove máscara do telefone
-                user.telefone = user.telefone.replace(/\D/g, '');
+                user.telefone = user.telefone.replace(/\D/g, "");
                 // Cria o usuário no firebase authentication
                 const firebaseUser = yield admin.auth().createUser({
                     email: user.email,
@@ -42,14 +147,20 @@ class UsersController {
                     status: 1
                 };
                 // Cria o dado na storage
-                yield admin.firestore().collection('users').doc(firebaseUser.uid).create(data);
+                yield admin
+                    .firestore()
+                    .collection("users")
+                    .doc(firebaseUser.uid)
+                    .create(data);
                 // Cria o escopo do usuário no firebase
-                yield admin.auth().setCustomUserClaims(firebaseUser.uid, { scope: data.scope });
+                yield admin
+                    .auth()
+                    .setCustomUserClaims(firebaseUser.uid, { scope: data.scope });
                 res.json({ data });
             }
             catch (error) {
                 if (error.code === "auth/email-already-exists") {
-                    throw Boom.conflict('Usuário já existe');
+                    throw Boom.conflict("Usuário já existe");
                 }
                 if (error.code === "auth/invalid-password") {
                     throw Boom.badRequest(error.message);
@@ -63,7 +174,11 @@ class UsersController {
     }
     profile(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const user = yield admin.firestore().collection('users').doc(req.credentials.uid).get();
+            const user = yield admin
+                .firestore()
+                .collection("users")
+                .doc(req.credentials.uid)
+                .get();
             const data = user.data();
             // Remove o escopo da requisição
             delete data.scope;
@@ -74,30 +189,38 @@ class UsersController {
         return __awaiter(this, void 0, void 0, function* () {
             const uid = req.params.id;
             const user = req.body;
-            yield admin.firestore().collection('users').doc(uid).get();
+            yield admin
+                .firestore()
+                .collection("users")
+                .doc(uid)
+                .get();
             // Remove máscara do cpf
-            user.cpf = user.cpf.replace(/\D/g, '');
+            user.cpf = user.cpf.replace(/\D/g, "");
             // Remove máscara do telefone
-            user.telefone = user.telefone.replace(/\D/g, '');
+            user.telefone = user.telefone.replace(/\D/g, "");
             // Garantindo que só seja salvo no banco os dados que são necessários
             const data = {
                 nome: user.nome,
                 cpf: user.cpf,
                 data_nascimento: user.data_nascimento,
-                telefone: user.telefone,
+                telefone: user.telefone
             };
             // Atualiza email e/ou senha no firebase authentication, caso seja passado na requisição
             const toUpdateFirebase = {};
             if (user.email) {
                 toUpdateFirebase["email"] = user.email;
-                data['email'] = user.email;
+                data["email"] = user.email;
             }
             // Seta o dado no Firebase Auth
-            if (JSON.stringify(toUpdateFirebase) !== '{}') {
+            if (JSON.stringify(toUpdateFirebase) !== "{}") {
                 yield admin.auth().updateUser(uid, toUpdateFirebase);
             }
             // Seta o dado na storage
-            yield admin.firestore().collection('users').doc(uid).update(data);
+            yield admin
+                .firestore()
+                .collection("users")
+                .doc(uid)
+                .update(data);
             res.json({ data });
         });
     }
@@ -105,33 +228,41 @@ class UsersController {
         return __awaiter(this, void 0, void 0, function* () {
             const uid = req.credentials.uid;
             const user = req.body;
-            yield admin.firestore().collection('users').doc(uid).get();
+            yield admin
+                .firestore()
+                .collection("users")
+                .doc(uid)
+                .get();
             // Remove máscara do cpf
-            user.cpf = user.cpf.replace(/\D/g, '');
+            user.cpf = user.cpf.replace(/\D/g, "");
             // Remove máscara do telefone
-            user.telefone = user.telefone.replace(/\D/g, '');
+            user.telefone = user.telefone.replace(/\D/g, "");
             // Garantindo que só seja salvo no banco os dados que são necessários
             const data = {
                 nome: user.nome,
                 cpf: user.cpf,
                 data_nascimento: user.data_nascimento,
-                telefone: user.telefone,
+                telefone: user.telefone
             };
             // Atualiza email e/ou senha no firebase authentication, caso seja passado na requisição
             const toUpdateFirebase = {};
             if (user.email) {
                 toUpdateFirebase["email"] = user.email;
-                data['email'] = user.email;
+                data["email"] = user.email;
             }
             if (user.senha) {
                 toUpdateFirebase["password"] = user.senha;
             }
             // Seta o dado no Firebase Auth
-            if (JSON.stringify(toUpdateFirebase) !== '{}') {
+            if (JSON.stringify(toUpdateFirebase) !== "{}") {
                 yield admin.auth().updateUser(uid, toUpdateFirebase);
             }
             // Seta o dado na storage
-            yield admin.firestore().collection('users').doc(uid).update(data);
+            yield admin
+                .firestore()
+                .collection("users")
+                .doc(uid)
+                .update(data);
             res.json({ data });
         });
     }
@@ -139,14 +270,22 @@ class UsersController {
         return __awaiter(this, void 0, void 0, function* () {
             const uid = req.params.id;
             const body = req.body;
-            yield admin.firestore().collection('users').doc(uid).get();
+            yield admin
+                .firestore()
+                .collection("users")
+                .doc(uid)
+                .get();
             const toUpdateFirebase = {
                 disabled: body.status === 0 ? true : false
             };
             // Seta o status do usuário no firebase
             yield admin.auth().updateUser(uid, toUpdateFirebase);
             // Seta o status do usuário na storage
-            yield admin.firestore().collection('users').doc(uid).update({ status: body.status });
+            yield admin
+                .firestore()
+                .collection("users")
+                .doc(uid)
+                .update({ status: body.status });
             body.id = uid;
             res.json(body);
         });
@@ -167,13 +306,32 @@ class UsersController {
                     body.scope = { admin: false, user: false };
                     break;
             }
-            yield admin.firestore().collection('users').doc(uid).get();
+            yield admin
+                .firestore()
+                .collection("users")
+                .doc(uid)
+                .get();
             // Seta o scope do usuário no firebase
             yield admin.auth().setCustomUserClaims(uid, { scope: body.scope });
             // Seta o scope do usuário na storage
-            yield admin.firestore().collection('users').doc(uid).update({ scope: body.scope });
+            yield admin
+                .firestore()
+                .collection("users")
+                .doc(uid)
+                .update({ scope: body.scope });
             body.id = uid;
             res.json(body);
+        });
+    }
+    hi(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            admin
+                .firestore()
+                .collection("test")
+                .doc()
+                .set({ asdf: "asdf" });
+            console.log("test");
+            res.status(200).json({ hai2u: "uxxx" });
         });
     }
     isEmailAvailable(req, res) {
@@ -187,10 +345,10 @@ class UsersController {
             }
             catch (error) {
                 switch (error.code) {
-                    case 'auth/user-not-found':
+                    case "auth/user-not-found":
                         isAvailable = true;
                         break;
-                    case 'auth/invalid-email':
+                    case "auth/invalid-email":
                         throw Boom.badRequest(error.message);
                         break;
                     default:

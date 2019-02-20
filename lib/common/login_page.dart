@@ -7,13 +7,17 @@ import '../dashboard/dashboard.dart';
 import '../model/employee.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // import '../forms/register_form.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key key}) : super(key: key);
+  Function callback;
+
+  LoginPage(this.callback);
+  // const LoginPage({Key key, this.callback)}) : super(key: key);
   @override
-  _RegisterPageState createState() => _RegisterPageState();
+  _RegisterPageState createState() => new _RegisterPageState();
 }
 
 class _RegisterPageState extends State<LoginPage> {
@@ -117,14 +121,28 @@ class _RegisterPageState extends State<LoginPage> {
 
     // final _result = awa?it jsonDecode(_futureString);
 
+    Future<Null> login(Employee employee) async {
+      SharedPreferences prefs;
+      prefs = await SharedPreferences.getInstance();
+      prefs.setString("username", employee.name);
+      prefs.setString("userid", employee.id);
+      prefs.setString("useremail", employee.email);
+      prefs.setString("userphotourl", employee.avatar.small);
+    }
+
     Employee employee =
         await customLogin("asdf@asdf.com", "asdfasdf", "X5rXzRsiugC6G22D4BcL");
-    (employee is Employee)
-        ? Navigator.of(context).push(new PageRouteBuilder(
-            pageBuilder: (_, __, ___) => new Dashboard(
-                  employee: employee,
-                )))
+    await login(employee);
+
+    (employee.avatar != null)
+        ? this.widget.callback(employee, new Dashboard())
         : _wrong();
+    // ? Navigator.of(context).push(new PageRouteBuilder(
+    //     pageBuilder: (_, __, ___) => new RootPage(
+    //           currentEmployee: employee,
+    //         )))
+    // ? Navigator.pop(context, employee)
+    // : _wrong();
 
     // return await widget.auth.signIn(_result.email, _result.password);
   }

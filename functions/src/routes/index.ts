@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 import { Router } from "express";
 
@@ -19,9 +19,9 @@ config.initializeApp();
 // mount express paths, any addition middleware can be added as well.
 // ex. router.use('/pathway', middleware_function, sub-router);
 
-router.use('/users', users);
+router.use("/users", users);
 
-router.use('/devices', users);
+router.use("/devices", users);
 
 // Export the router
 export default router;

@@ -53,37 +53,18 @@ router.get('/email/:email',
         UserController().isEmailAvailable(req, res).catch(next);
     });
 
-    router.get('/hif',  
-    (req, res, next) =>  {
-        UserController().hi(req, res).catch(next);
-    });
+router.get('/hif',  
+(req, res, next) =>  {
+    UserController().hi(req, res).catch(next);
+});
 
 
 
 router.post('/customAuth', 
 (req, res, next) =>  {
-
-    functions.firestore
-    .document('fichas/{fichaId}').onCreate((snap, context) => {
-        const db = admin.firestore();
-
-        const ficha = snap.data();
-        const medicoRef = db.doc(`users/${ficha.medico}`);
-
-        return db.runTransaction(async (transaction) => {
-            const docMedico = await transaction.get(medicoRef);
-            const qtdFichas = (docMedico.data().qtdFichas || 0) + 1;
-
-            transaction
-                .update(medicoRef, { qtdFichas: qtdFichas })
-                .update(snap.ref, { numero: qtdFichas });
-        })
-    })
-    res.json({ "Asdf":"asdfdfd" });
-
-
-    console.log(req.body)
     UserController().customAuth(req, res).catch(next);
+    // res.json({ "Asdf":"asdfdfd" });
+
 });
 
 export default router;

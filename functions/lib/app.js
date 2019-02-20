@@ -35,9 +35,6 @@ class App {
     routes() {
         this.express.use('/', routes_1.default);
     }
-    routesx() {
-        this.express.use('/x', routes_1.default);
-    }
     // Configure error handler
     handler() {
         this.express.use(this.notFound);
@@ -47,6 +44,9 @@ class App {
     }
     // catch 404 and forward to error handler
     notFound(req, res, next) {
+        next(boom_1.notFound());
+    }
+    notFoundx(req, res, next) {
         next(boom_1.notFound());
     }
 }
