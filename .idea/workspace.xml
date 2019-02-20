@@ -4,95 +4,10 @@
     <list default="true" id="1ba3cf86-ee12-4409-bc39-71a1401dce39" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/taskist.iml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.vscode/settings.json" beforeDir="false" afterPath="$PROJECT_DIR$/.vscode/settings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/.idea/caches/build_file_checksums.ser" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/drawable/ic_launcher.png" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/res/drawable/ic_launcher.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/mipmap-hdpi/ic_launcher.png" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/res/mipmap-hdpi/ic_launcher.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/mipmap-mdpi/ic_launcher.png" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/res/mipmap-mdpi/ic_launcher.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/mipmap-xhdpi/ic_launcher.png" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/res/mipmap-xhdpi/ic_launcher.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/common/assetsApi.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/common/assetsApi.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/common/common_drawer.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/common/common_drawer.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/common/menu_view_model.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/common/menu_view_model.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/common/page_settings.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/common/page_settings.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/employees/dbService.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/employees/dbService.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/employees/geekants/Components/AddButton.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/employees/geekants/Components/Calender.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/employees/geekants/Components/CalenderCell.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/employees/geekants/Components/FadeContainer.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/employees/geekants/Components/Form.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/employees/geekants/Components/HomeTopView.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/employees/geekants/Components/InputFields.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/employees/geekants/Components/List.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/employees/geekants/Components/ListViewContainer.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/employees/geekants/Components/MonthView.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/employees/geekants/Components/Profile_Notification.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/employees/geekants/Components/SignInButton.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/employees/geekants/Components/SignUpLink.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/employees/geekants/Components/WhiteTick.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/employees/geekants/Components/employee_footer.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/employees/geekants/Components/profile_buttonRow.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/employees/geekants/Screens/Home/data.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/employees/geekants/Screens/Home/homeAnimation.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/employees/geekants/Screens/Home/index.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/employees/geekants/Screens/Home/styles.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/employees/geekants/Screens/Login/index.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/employees/geekants/Screens/Login/loginAnimation.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/employees/geekants/Screens/Login/styles.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/employees/page_detail.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/employees/page_detail.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/employees/page_employees.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/employees/page_employees.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/employees/page_settings.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/employees/widgets/activity_log.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/employees/widgets/activity_log.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/employees/widgets/employeeCard.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/employees/widgets/employeeCard.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/employees/widgets/employee_detail.2.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/employees/widgets/employee_detail.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/employees/widgets/employee_detail.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/employees/widgets/employee_footer.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/employees/widgets/employee_footer.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/employees/widgets/timesheetsList.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/employees/widgets/timesheetsList.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/employees_old/assets_activity.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/employees_old/currentStatus.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/employees_old/device.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/employees_old/diagonal_image.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/employees_old/employee_bloc.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/employees_old/employee_button_rowFB.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/employees_old/employee_detail_bodyFB.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/employees_old/employee_detail_footer.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/employees_old/employee_detail_headerFB.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/employees_old/employee_detail_pageFB.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/employees_old/employee_list.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/employees_old/employee_provider.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/employees_old/getimages.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/employees_old/post.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/employees_old/product_view_model.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/employees_old/state.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/employees_old/timeline_two_page.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/employees_old/timesheets_bloc.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/employees_old/timesheets_list.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/map/map_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/map/map_screen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/model/device.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/model/device.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/model/serviceItem.jser.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/model/serviceItem.jser.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/resources/firestore_provider.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/resources/repository.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/root_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/root_page.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/services/auth.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/shop/page_addServiceItem.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/shop/page_addServiceItem.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/shop/page_detail.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/shop/page_detail.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/shop/page_done.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/shop/page_orders.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/shop/page_orders.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/shop/shopService.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/shop/shopService.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/shop/widgets/addWorkorderForm.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/shop/widgets/addWorkorderForm.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/shop/widgets/serviceItemForm.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/shop/widgets/serviceItemForm.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/shop/widgets/workorderCard.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/shop/widgets/workorderCard.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ui/register_page.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/andrews_taskist.iml" beforeDir="false" afterPath="$PROJECT_DIR$/andrews_taskist.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/src/services/spreadsheet/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/functions/src/services/spreadsheet/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/dashboard/dashboard.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/dashboard/dashboard.dart" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -105,32 +20,55 @@
     <session id="1773278279">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="3" />
+          <entry key="project.closed" value="5" />
           <entry key="project.open.time.0" value="1" />
           <entry key="project.open.time.1" value="1" />
-          <entry key="project.open.time.6" value="1" />
-          <entry key="project.opened" value="3" />
+          <entry key="project.open.time.10" value="1" />
+          <entry key="project.open.time.6" value="2" />
+          <entry key="project.opened" value="5" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="dart" value="1" />
+          <entry key="dart" value="2" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="Dart" value="1" />
+          <entry key="Dart" value="2" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.edit">
+        <counts>
+          <entry key="dart" value="31" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.edit">
+        <counts>
+          <entry key="Dart" value="31" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/main.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="437">
-              <caret line="26" column="46" selection-start-line="26" selection-start-column="46" selection-end-line="26" selection-end-column="46" />
+            <state relative-caret-position="442">
+              <caret line="36" selection-start-line="36" selection-end-line="36" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/lib/dashboard/dashboard.dart">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="270">
+              <caret line="331" column="31" selection-start-line="331" selection-start-column="31" selection-end-line="331" selection-end-column="31" />
+              <folding>
+                <element signature="e#0#39#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -148,19 +86,25 @@
       </map>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="1920" />
-    <option name="y" value="260" />
-    <option name="width" value="1920" />
-    <option name="height" value="1044" />
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/lib/dashboard/dashboard.dart" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="1924" />
+    <option name="width" value="1272" />
+    <option name="height" value="692" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
+      <pane id="AndroidView" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -168,18 +112,29 @@
               <item name="andrews_taskist" type="b2602c69:ProjectViewProjectNode" />
               <item name="andrews_taskist" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="andrews_taskist" type="b2602c69:ProjectViewProjectNode" />
+              <item name="andrews_taskist" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="andrews_taskist" type="b2602c69:ProjectViewProjectNode" />
+              <item name="andrews_taskist" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
+              <item name="dashboard" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="AndroidView" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="android.sdk.path" value="/android/sdk" />
     <property name="dart.analysis.tool.window.force.activate" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="settings.editor.selected.configurable" value="AndroidSdkUpdater" />
+    <property name="settings.editor.selected.configurable" value="dart.settings" />
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
   <component name="RunDashboard">
@@ -271,10 +226,10 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1920" y="0" width="1920" height="1044" extended-state="6" />
+    <frame x="1924" y="0" width="1272" height="692" extended-state="0" />
     <layout>
       <window_info id="Captures" order="0" side_tool="true" weight="0.25" />
-      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.32995737" />
+      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.5" />
       <window_info id="Structure" order="2" side_tool="true" />
       <window_info id="Image Layers" order="3" />
       <window_info id="Designer" order="4" />
@@ -287,17 +242,17 @@
       <window_info anchor="bottom" id="Android Profiler" order="3" show_stripe_button="false" />
       <window_info anchor="bottom" id="Logcat" order="4" />
       <window_info anchor="bottom" id="Debug" order="5" />
-      <window_info anchor="bottom" id="Terminal" order="6" />
+      <window_info anchor="bottom" id="Terminal" order="6" visible="true" weight="0.5334507" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
       <window_info anchor="bottom" id="Flutter Performance" order="8" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="9" />
-      <window_info active="true" anchor="bottom" id="Messages" order="10" visible="true" weight="0.32934782" />
+      <window_info anchor="bottom" id="Messages" order="10" weight="0.32934782" />
       <window_info anchor="right" id="Device File Explorer" order="0" side_tool="true" />
       <window_info anchor="right" id="Capture Analysis" order="1" />
       <window_info anchor="right" id="Theme Preview" order="2" />
       <window_info anchor="right" id="Flutter Inspector" order="3" weight="0.32995737" />
       <window_info anchor="right" id="Assistant" order="4" visible="true" weight="0.32995737" />
-      <window_info anchor="right" id="Flutter Outline" order="5" visible="true" weight="0.32995737" />
+      <window_info anchor="right" id="Flutter Outline" order="5" visible="true" weight="0.5" />
       <window_info anchor="right" id="Palette&#9;" order="6" />
       <window_info anchor="right" id="AdbCommander" order="7" side_tool="true" />
     </layout>
@@ -308,8 +263,18 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/lib/main.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="437">
-          <caret line="26" column="46" selection-start-line="26" selection-start-column="46" selection-end-line="26" selection-end-column="46" />
+        <state relative-caret-position="442">
+          <caret line="36" selection-start-line="36" selection-end-line="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/dashboard/dashboard.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="331" column="31" selection-start-line="331" selection-start-column="31" selection-end-line="331" selection-end-column="31" />
+          <folding>
+            <element signature="e#0#39#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

@@ -329,17 +329,6 @@ class _MainPageState extends State<Dashboard> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                new CircleAvatar(
-                      // child: const Text('C'),
-                      foregroundColor: Colors.yellow,
-                      backgroundImage: NetworkImage(_currentUser.displayName)),
-                  width: 52.0,
-                  height: 52.0,
-                  padding: const EdgeInsets.all(2.0), // borde width
-                  decoration: new BoxDecoration(
-                    color: const Color(0xFFFFFFFF), // border color
-                    shape: BoxShape.circle,
-                  ),
                                 Text('Next Job',
                                     style: TextStyle(color: Colors.blueAccent)),
                                 Text('02:10',

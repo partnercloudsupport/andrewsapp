@@ -15,7 +15,7 @@ export class Spreadsheet {
     constructor() {
        
     }
-   private async _getCustomer(workorderId: string){
+   private async _getCustomer(workorderId: string){ 
     const doc = await admin
     .firestore()
     .collection("workorders")
@@ -24,6 +24,17 @@ export class Spreadsheet {
     var order = doc.data() as Workorder
     return order.customer;
    }
+   private async _getWorkorders(workorderId: string){
+    const doc = await admin
+    .firestore()
+    .collection("workorders")
+    .doc(workorderId)
+    .get() as any
+    var order = doc.data() as Workorder
+    return order.customer;
+   }
+
+
     async updateSpreadsheet(snap: DocumentSnapshot){
         let item = snap.data() as ServiceItem;
         item.id = snap.ref.id

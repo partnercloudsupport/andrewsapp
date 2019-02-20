@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:taskist/common/assetsApi.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../root_page.dart';
+import '../common/deviceApi.dart';
+import '../model/device.dart';
 import '../dashboard/dashboard.dart';
 import '../model/employee.dart';
 import 'package:barcode_scan/barcode_scan.dart';
@@ -121,22 +123,22 @@ class _RegisterPageState extends State<LoginPage> {
 
     // final _result = awa?it jsonDecode(_futureString);
 
-    Future<Null> login(Employee employee) async {
-      SharedPreferences prefs;
-      prefs = await SharedPreferences.getInstance();
-      prefs.setString("username", employee.name);
-      prefs.setString("userid", employee.id);
-      prefs.setString("useremail", employee.email);
-      prefs.setString("userphotourl", employee.avatar.small);
-    }
+    // Future<Null> login(Employee employee) async {
+    //   SharedPreferences prefs;
+    //   prefs = await SharedPreferences.getInstance();
+    //   prefs.setString("username", employee.name);
+    //   prefs.setString("userid", employee.id);
+    //   prefs.setString("useremail", employee.email);
+    //   prefs.setString("userphotourl", employee.avatar.small);
+    // }
 
-    Employee employee =
-        await customLogin("asdf@asdf.com", "asdfasdf", "X5rXzRsiugC6G22D4BcL");
-    await login(employee);
+    // Employee employee =
+    //     await customLogin("asdf@asdf.com", "asdfasdf", "X5rXzRsiugC6G22D4BcL");
+    // await login(employee);
 
-    (employee.avatar != null)
-        ? this.widget.callback(employee, new Dashboard())
-        : _wrong();
+    // (employee.avatar != null)
+    //     ? this.widget.callback(employee, new Dashboard())
+    //     : _wrong();
     // ? Navigator.of(context).push(new PageRouteBuilder(
     //     pageBuilder: (_, __, ___) => new RootPage(
     //           currentEmployee: employee,
@@ -145,5 +147,14 @@ class _RegisterPageState extends State<LoginPage> {
     // : _wrong();
 
     // return await widget.auth.signIn(_result.email, _result.password);
+    Devices devs = new Devices();
+    var device = await devs.getDeviceFromSnipeByAndroidId('d00be0f5253a5ea6');
+    var d = await devs.checkInDevice(device['id'].toString());
+    print(d);
+    // (device['assigned_to']['username'] !== null)?;
+    print(device['id']);
+
+    // var d = devs.checkOutDevice('2', device['id'].toString());
+    // print(d);
   }
 }
