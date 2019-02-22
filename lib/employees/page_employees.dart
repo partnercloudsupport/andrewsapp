@@ -53,10 +53,12 @@ class _EmployeesListPageState extends State<EmployeeList> {
       leading: new Hero(
         tag: index,
         child: new CircleAvatar(
-          backgroundImage: new NetworkImage(employee.avatar.small),
+          backgroundImage: (employee.avatarSmall != null)
+              ? NetworkImage(employee.avatarSmall)
+              : AssetImage('assets/images/icon.png'),
         ),
       ),
-      title: new Text(employee.firstname),
+      title: new Text(employee.fullname),
       subtitle: new Text(
           (employee.email != null) ? employee.email : "needs updating"),
     );

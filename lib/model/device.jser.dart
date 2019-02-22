@@ -16,7 +16,7 @@ abstract class _$DeviceSerializer implements Serializer<Device> {
     if (model == null) return null;
     Map<String, dynamic> ret = <String, dynamic>{};
     setMapValue(ret, 'androidId', model.androidId);
-    setMapValue(ret, 'owner', model.owner);
+    setMapValue(ret, 'ownerId', model.ownerId);
     setMapValue(
         ret,
         'employees',
@@ -34,8 +34,8 @@ abstract class _$DeviceSerializer implements Serializer<Device> {
         androidId: map['androidId'] as String ?? getJserDefault('androidId'),
         employees: codeIterable<Employee>(map['employees'] as Iterable,
                 (val) => _employeeSerializer.fromMap(val as Map)) ??
-            getJserDefault('employees'),
-        owner: map['owner'] as String ?? getJserDefault('owner'));
+            getJserDefault('employees'));
+    obj.ownerId = map['ownerId'] as String;
     obj.currentPosition =
         _passProcessor.deserialize(map['currentPosition']) as GeoPoint;
     return obj;

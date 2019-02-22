@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:card_settings/card_settings.dart';
 import '../../model/serviceItem.dart';
+import '../../model/current_user_model.dart';
 import 'package:taskist/model/workorder.dart';
 import '../widgets/imagesListScreen.dart';
 import '../widgets/customerCard.dart';
@@ -14,6 +15,7 @@ import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import '../page_orders.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 class ServiceItemForm extends StatefulWidget {
   final ServiceItem currentItem;
@@ -45,7 +47,7 @@ class _ServiceItemFormState extends State<ServiceItemForm> {
     currentItem = widget.currentItem;
   }
 
-  _siFab(context) {
+  _siFab(context, CurrentUserModel currentUserModel) {
     return FloatingActionButton.extended(
         icon: Icon(Icons.save),
         onPressed: () async {
@@ -60,12 +62,14 @@ class _ServiceItemFormState extends State<ServiceItemForm> {
             String formatted = formatter.format(now);
             currentItem.prettyCreatedAt = formatted;
             Duration dur = new Duration(days: 21);
+            currentItem.createdBy = currentUserModel.firebaseUser.uid;
             var due = now.add(dur);
             String dueFormatted = formatter.format(due);
             currentItem.prettyDueAt = dueFormatted;
             // currentItem.customerPhone =
             currentItem.status = 'Not Yet Started';
             currentItem.priority = 'Medium';
+            currentItem.isDone = false;
             currentItem.intake_notes = "Rug is highly urinated";
             currentItem.needsRepair = 'FALSE';
             print(currentItem.prettyDueAt);
@@ -81,13 +85,16 @@ class _ServiceItemFormState extends State<ServiceItemForm> {
             }
             // currentItem = null;
 
-            // Navigator.of(context).push(new PageRouteBuilder(
-            //     pageBuilder: (_, __, ___) => new RugPage()));
-
             Scaffold.of(_formKey.currentContext).showSnackBar(SnackBar(
                 content: Text(currentItem.id.toString() +
                     ' ' +
                     currentItem.workorderId)));
+            currentItem = null;
+
+            ;
+
+            Navigator.of(context).push(new PageRouteBuilder(
+                pageBuilder: (_, __, ___) => new RugPage()));
           }
         },
         label: new Text('Finish'));
@@ -96,6 +103,8 @@ class _ServiceItemFormState extends State<ServiceItemForm> {
   @override
   Widget build(BuildContext context) {
     //     key: _scaffoldKey,
+    var currentUserModel =
+        ScopedModel.of<CurrentUserModel>(context, rebuildOnChange: true);
     return Scaffold(
         body: Stack(children: <Widget>[
           _getToolbar(context),
@@ -216,7 +225,7 @@ class _ServiceItemFormState extends State<ServiceItemForm> {
             ]),
           )
         ]),
-        floatingActionButton: _siFab(context),
+        floatingActionButton: _siFab(context, currentUserModel),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat);
   }
 

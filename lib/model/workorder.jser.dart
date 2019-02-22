@@ -35,8 +35,7 @@ abstract class _$WorkorderSerializer implements Serializer<Workorder> {
   @override
   Workorder fromMap(Map map) {
     if (map == null) return null;
-    final obj = new Workorder(
-        smOrderId: map['smOrderId'] as String ?? getJserDefault('smOrderId'));
+    final obj = new Workorder();
     obj.id = map['id'] as String;
     obj.createdAt = map['createdAt'] as int;
     obj.customer = _accountSerializer.fromMap(map['customer'] as Map);
@@ -46,6 +45,7 @@ abstract class _$WorkorderSerializer implements Serializer<Workorder> {
         (val) => _serviceItemSerializer.fromMap(val as Map));
     obj.isDone = map['isDone'] as bool;
     obj.status = map['status'] as String;
+    obj.smOrderId = map['smOrderId'] as String;
     return obj;
   }
 }

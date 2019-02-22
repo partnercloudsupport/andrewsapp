@@ -1,160 +1,131 @@
-import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:taskist/common/assetsApi.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import '../root_page.dart';
-import '../common/deviceApi.dart';
-import '../model/device.dart';
-import '../dashboard/dashboard.dart';
-import '../model/employee.dart';
-import 'package:barcode_scan/barcode_scan.dart';
-import 'dart:convert';
-import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:flutter/material.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:taskist/employees/dbService.dart';
+// import '../common/deviceApi.dart';
+// import '../model/employee.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
+// import '../services/auth_service.dart';
+// import 'package:taskist/model/current_user_model.dart';
 
-// import '../forms/register_form.dart';
+// class LoginPage extends StatefulWidget {
+//   const LoginPage({Key key, @required this.auth}) : super(key: key);
+//   final AuthService auth;
 
-class LoginPage extends StatefulWidget {
-  Function callback;
+//   @override
+//   _RegisterFormState createState() => _RegisterFormState();
+// }
 
-  LoginPage(this.callback);
-  // const LoginPage({Key key, this.callback)}) : super(key: key);
-  @override
-  _RegisterPageState createState() => new _RegisterPageState();
-}
+// class _RegisterFormState extends State<LoginPage> {
+// // class LoginPage extends StatelessWidget {
+//   // LoginPage(this.database);
+//   // final Database database;
+//   AuthService auth;
+//   @override
+//   void initState() {
+//     String id = DateTime.now().toString();
+//     super.initState();
+//     auth = widget.auth;
+//   }
 
-class _RegisterPageState extends State<LoginPage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        body: Stack(
-          children: <Widget>[
-            // _getToolbar(context),
-            Container(
-              child: Column(children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(top: 40.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Expanded(
-                        flex: 1,
-                        child: Container(
-                          color: Colors.grey,
-                          height: 1.5,
-                        ),
-                      ),
-                      Expanded(
-                          flex: 2,
-                          child: new Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Text(
-                                'Checkout',
-                                style: new TextStyle(
-                                    fontSize: 30.0,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                'Device',
-                                style: new TextStyle(
-                                    fontSize: 28.0, color: Colors.grey),
-                              )
-                            ],
-                          )),
-                      Expanded(
-                        flex: 1,
-                        child: Container(
-                          color: Colors.grey,
-                          height: 1.5,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 40.0),
-                  child: Text("Please scan your id badge"),
-                )
-              ]),
-            )
-          ],
-        ),
-        floatingActionButton: _siFab(context),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat);
-  }
+//   final Map<String, String> _formData = <String, String>{
+//     'nickname': '',
+//     'fullName': '',
+//     'photoUrl': '',
+//   };
 
-  _siFab(context) {
-    return Padding(
-        padding: EdgeInsets.all(86.0),
-        child: FloatingActionButton.extended(
-            icon: Icon(FontAwesomeIcons.barcode),
-            onPressed: () async {
-              scan();
-            },
-            label: new Text('Scan')));
-  }
+//   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+//   FirebaseUser _firebaseUser;
+//   bool _agreedToTOS = true;
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//         appBar: AppBar(
+//           title: Text('Scoped model'),
+//           elevation: 1.0,
+//         ),
+//         body: new Column(children: <Widget>[
+//           Container(),
+//           FloatingActionButton.extended(
+//             onPressed: () => _scan(context),
+//             // icon: Image.asset('assets/google_g_logo.png', height: 24.0),
+//             label: const Text('Sign in with Google'),
+//           )
+//         ]));
+//   }
 
-  Widget _wrong() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 30.0),
-      child: Card(
-        elevation: 2.0,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              Text(
-                "Scan failure",
-                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20.0),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+//   Future<void> _scan(context) async {
+//     DatabaseService serv = new DatabaseService();
+//     serv.getEmployee("employeeId");
+//     Employee employee = await serv.getEmployee('1444044');
+//     // Employee employee = Employee.of(context);
 
-  scan() async {
-    // var _futureString = await BarcodeScanner.scan();
-    // print(_futureString);
-    // _futureString = '{"asdf":"asdf"}';
+//     Devices devs = new Devices();
+//     var snipeId = '2';
+//     var updatedDevice;
+//     var device = await devs.getDeviceFromSnipe();
+//     if (device['assigned_to'] == null) {
+//       var checkout =
+//           await devs.checkOutDevice(snipeId, device['id'].toString());
+//     } else {
+//       var checkin = await devs.checkInDevice(device['id'].toString());
+//       var cout = await devs.checkOutDevice(snipeId, device['id'].toString());
+//       print(cout);
+//     }
+//     if (device['assigned_to'] == null) {
+//       return false;
+//     }
+//     if (device['assigned_to']['id'] == int.parse(snipeId)) {
+//       updatedDevice = await devs.setDeviceOwner(employee.id);
+//     }
+//     SharedPreferences _prefs = await SharedPreferences.getInstance();
+//     await _prefs.setString('deviceOwner', employee.id);
+//     List<String> l = await _prefs.getStringList('deviceEmployeeList');
+//     if (l != null) {
+//       l.add(employee.id);
+//     } else {
+//       List<String> l = new List<String>();
+//       l.add(employee.id);
+//     }
+//     _handleSignIn(context);
+//     await _prefs.setStringList('deviceEmployeeList', l);
 
-    // final _result = awa?it jsonDecode(_futureString);
+//     _formData['fullName'] = employee.name;
+//     _formData['photoUrl'] = employee.avatar.small;
+//     _formData['nickname'] = employee.name;
+//     return true;
+//   }
 
-    // Future<Null> login(Employee employee) async {
-    //   SharedPreferences prefs;
-    //   prefs = await SharedPreferences.getInstance();
-    //   prefs.setString("username", employee.name);
-    //   prefs.setString("userid", employee.id);
-    //   prefs.setString("useremail", employee.email);
-    //   prefs.setString("userphotourl", employee.avatar.small);
-    // }
+//   bool _submittable() {
+//     return _agreedToTOS;
+//   }
 
-    // Employee employee =
-    //     await customLogin("asdf@asdf.com", "asdfasdf", "X5rXzRsiugC6G22D4BcL");
-    // await login(employee);
+//   String _initialNickname() {
+//     return 'fixme';
+//   }
 
-    // (employee.avatar != null)
-    //     ? this.widget.callback(employee, new Dashboard())
-    //     : _wrong();
-    // ? Navigator.of(context).push(new PageRouteBuilder(
-    //     pageBuilder: (_, __, ___) => new RootPage(
-    //           currentEmployee: employee,
-    //         )))
-    // ? Navigator.pop(context, employee)
-    // : _wrong();
+//   bool _existingUser() {
+//     return true;
+//   }
 
-    // return await widget.auth.signIn(_result.email, _result.password);
-    Devices devs = new Devices();
-    var device = await devs.getDeviceFromSnipeByAndroidId('d00be0f5253a5ea6');
-    var d = await devs.checkInDevice(device['id'].toString());
-    print(d);
-    // (device['assigned_to']['username'] !== null)?;
-    print(device['id']);
+//   Future<void> _handleSignIn(BuildContext context) async {
+//     final CurrentEmployeeModel currentUserModel =
+//         CurrentEmployeeModel.of(context);
+//     await currentUserModel.signIn();
+//     if (currentUserModel.status == Status.Authenticated) {
+//       final Employee user = currentUserModel.employee;
+//       _showSnackBar(context, 'Welcome ${user.name}');
+//     }
+//   }
 
-    // var d = devs.checkOutDevice('2', device['id'].toString());
-    // print(d);
-  }
-}
+//   void _showSnackBar(BuildContext context, String msg) {
+//     final SnackBar snackBar = SnackBar(content: Text(msg));
+
+//     Scaffold.of(context).showSnackBar(snackBar);
+//   }
+
+//   void _setAgreedToTOS(bool newValue) {
+//     setState(() {
+//       _agreedToTOS = newValue;
+//     });
+//   }
+// }

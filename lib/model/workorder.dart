@@ -21,7 +21,7 @@ class Workorder {
   @required
   String status;
   @required
-  final String smOrderId;
+  String smOrderId;
 
   Workorder({this.customer, this.smOrderId});
 

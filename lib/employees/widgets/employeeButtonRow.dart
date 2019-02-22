@@ -1,10 +1,21 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:taskist/model/employee.dart';
-import 'package:taskist/model/device.dart';
-import 'package:taskist/employees/widgets/employee_footer.dart';
-import 'package:taskist/employees/widgets/employee_detail_headerFB.dart';
-import 'package:taskist/employees/widgets/employeeDetailBodyFB.dart';
-import '../dbService.dart';
+import 'package:taskist/employees/dbService.dart';
+import '../../common/deviceApi.dart';
+import '../../model/employee.dart';
+import '../../model/device.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:taskist/model/current_user_model.dart';
+import '../../model/current_user_model.dart';
+import 'package:taskist/model/current_user_model.dart';
+import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:taskist/employees/dbService.dart';
+import '../../common/deviceApi.dart';
+import '../../model/employee.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../services/auth_service.dart';
+import 'package:taskist/model/current_user_model.dart';
 
 class EmployeeButtonRow extends StatefulWidget {
   EmployeeButtonRow({
@@ -25,22 +36,33 @@ class _EmployeeButtonState extends State<EmployeeButtonRow> {
   int _clockButtonState = 0;
 
   setDevice() async {
-    this.device = await dbService.getDevice();
+    Device _device = await dbService.getDevice();
+    setState(() {
+      this.device = _device;
+    });
   }
 
   @override
   void initState() {
     super.initState();
     setDevice();
-    (employee.clockedIn == null) ? _clockedIn = false : null;
+    this.employee = widget.employee;
+    setState(() {
+      (employee.clockedIn == null) ? _clockedIn = false : null;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Row(children: <Widget>[
-      _createClockButton(),
-      _createCheckOutButton(),
-    ]);
+    return (this.device != null)
+        ? Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+            _createClockButton(),
+            Container(width: 8),
+            _createCheckOutButton(),
+          ])
+        : CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
+          );
   }
 
   Widget _createCheckOutButton({
@@ -48,22 +70,50 @@ class _EmployeeButtonState extends State<EmployeeButtonRow> {
     Color textColor = Colors.green,
     String text,
   }) {
-    return new ClipRRect(
-      // borderRadius: new BorderRadius.circular(30.0),
-      borderRadius: new BorderRadius.vertical(),
-      child: new MaterialButton(
-        minWidth: 140.0,
-        color: backgroundColor,
-        textColor: textColor,
-        onPressed: () {
-          (employee.id == device.owner)
-              ? text = 'CHECK IN DEVICE'
-              : text = 'CHECK OUT DEVICE';
-        },
-        child: new Text(text),
-      ),
-    );
+    return (device != null)
+        ? ClipRRect(
+            // borderRadius: new BorderRadius.circular(30.0),
+            borderRadius: new BorderRadius.vertical(),
+            child: new MaterialButton(
+              minWidth: 140.0,
+              color: Colors.blueAccent,
+              textColor: Colors.white,
+              onPressed: () {
+                (employee.id == device.ownerId)
+                    ? checkInDevice()
+                    : checkOutDevice();
+              },
+              child: new Text((employee.id == device.ownerId)
+                  ? 'CHECK IN DEVICE'
+                  : 'CHECK OUT DEVICE'),
+            ),
+          )
+        : Container();
   }
+
+  void checkInDevice() async {
+    DatabaseService serv = new DatabaseService();
+
+    // serv.getEmployee("employeeId");
+    Employee employee = await serv.getEmployee(this.employee.id);
+    // Employee employee = Employee.of(context);
+
+    Devices devs = new Devices();
+    var snipeId = '2';
+    var updatedDevice;
+    var device = await devs.getDeviceFromSnipe();
+    if (device['assigned_to']['id'] == int.parse(employee.snipeId)) {
+      var checkin = await devs.checkInDevice(device['id'].toString());
+      updatedDevice = await devs.setDeviceOwner(null);
+      Scaffold.of(context).showSnackBar(
+          new SnackBar(content: new Text("Device successfully checked in")));
+    } else {
+      Scaffold.of(context).showSnackBar(
+          new SnackBar(content: new Text("Error checking in device")));
+    }
+  }
+
+  void checkOutDevice() {}
 
   Widget _createClockButton({
     Color backgroundColor = Colors.transparent,
@@ -79,8 +129,10 @@ class _EmployeeButtonState extends State<EmployeeButtonRow> {
         borderRadius: new BorderRadius.vertical(),
         child: new MaterialButton(
           minWidth: 140.0,
-          color: backgroundColor,
-          textColor: textColor,
+          color: (employee.clockedIn)
+              ? Colors.orange.shade900
+              : Colors.greenAccent,
+          textColor: Colors.white,
           onPressed: () {
             _clockEmployee();
           },

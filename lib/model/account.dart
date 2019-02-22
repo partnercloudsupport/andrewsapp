@@ -12,6 +12,11 @@ class Account {
   String smId;
   String lastName;
   Address address;
+  String address1;
+  String city;
+  String state;
+  String zip;
+
   String accountName;
   List<String> phones;
 
@@ -26,6 +31,7 @@ class Account {
 
 class Address {
   String streetAddress;
+  String address1;
   String city;
   String state;
   String zipcode;

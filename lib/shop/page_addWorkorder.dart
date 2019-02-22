@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'package:flutter/services.dart';
+import 'package:scoped_model/scoped_model.dart';
+import '../model/current_user_model.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -116,6 +118,8 @@ class _NewTaskPageState extends State<NewTaskPage> {
 
   setJobCustomer(Account c) {}
   Widget _buildForm(context) {
+    final currentUserModel =
+        ScopedModel.of<CurrentUserModel>(context, rebuildOnChange: true);
     return (newJob.customer == null)
         ? LookupCustomerForm(
             onCustomerSet: (Account c) {
@@ -124,7 +128,7 @@ class _NewTaskPageState extends State<NewTaskPage> {
               });
             },
           )
-        : AddWorkorderForm(user: widget.user, newJob: newJob);
+        : AddWorkorderForm(user: currentUserModel.firebaseUser, newJob: newJob);
   }
 
   @override

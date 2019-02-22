@@ -18,6 +18,10 @@ abstract class _$AccountSerializer implements Serializer<Account> {
     setMapValue(ret, 'smId', model.smId);
     setMapValue(ret, 'lastName', model.lastName);
     setMapValue(ret, 'address', _addressSerializer.toMap(model.address));
+    setMapValue(ret, 'address1', model.address1);
+    setMapValue(ret, 'city', model.city);
+    setMapValue(ret, 'state', model.state);
+    setMapValue(ret, 'zip', model.zip);
     setMapValue(ret, 'accountName', model.accountName);
     setMapValue(
         ret, 'phones', codeIterable(model.phones, (val) => val as String));
@@ -32,6 +36,10 @@ abstract class _$AccountSerializer implements Serializer<Account> {
     obj.smId = map['smId'] as String;
     obj.lastName = map['lastName'] as String;
     obj.address = _addressSerializer.fromMap(map['address'] as Map);
+    obj.address1 = map['address1'] as String;
+    obj.city = map['city'] as String;
+    obj.state = map['state'] as String;
+    obj.zip = map['zip'] as String;
     obj.accountName = map['accountName'] as String;
     obj.phones =
         codeIterable<String>(map['phones'] as Iterable, (val) => val as String);
@@ -45,6 +53,7 @@ abstract class _$AddressSerializer implements Serializer<Address> {
     if (model == null) return null;
     Map<String, dynamic> ret = <String, dynamic>{};
     setMapValue(ret, 'streetAddress', model.streetAddress);
+    setMapValue(ret, 'address1', model.address1);
     setMapValue(ret, 'city', model.city);
     setMapValue(ret, 'state', model.state);
     setMapValue(ret, 'zipcode', model.zipcode);
@@ -57,6 +66,7 @@ abstract class _$AddressSerializer implements Serializer<Address> {
     if (map == null) return null;
     final obj = new Address();
     obj.streetAddress = map['streetAddress'] as String;
+    obj.address1 = map['address1'] as String;
     obj.city = map['city'] as String;
     obj.state = map['state'] as String;
     obj.zipcode = map['zipcode'] as String;

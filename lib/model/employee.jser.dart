@@ -63,8 +63,13 @@ abstract class _$EmployeeSerializer implements Serializer<Employee> {
     setMapValue(ret, 'currentTimesheetId', model.currentTimesheetId);
     setMapValue(ret, 'clockTimestamp', model.clockTimestamp);
     setMapValue(ret, 'city', model.city);
+    setMapValue(ret, 'avatarSmall', model.avatarSmall);
+    setMapValue(ret, 'snipeId', model.snipeId);
+    setMapValue(ret, 'avatarLarge', model.avatarLarge);
     setMapValue(ret, 'state', model.state);
+    setMapValue(ret, 'fullname', model.fullname);
     setMapValue(ret, 'firstname', model.firstname);
+    setMapValue(ret, 'lastname', model.lastname);
     setMapValue(ret, 'fbemployeeid', model.fbemployeeid);
     setMapValue(ret, 'address', model.address);
     setMapValue(ret, 'zip', model.zip);
@@ -82,25 +87,28 @@ abstract class _$EmployeeSerializer implements Serializer<Employee> {
   @override
   Employee fromMap(Map map) {
     if (map == null) return null;
-    final obj = new Employee(
-        name: map['name'] as String ?? getJserDefault('name'),
-        work_start_date: map['work_start_date'] as String ??
-            getJserDefault('work_start_date'),
-        email: map['email'] as String ?? getJserDefault('email'),
-        currentDeviceId: map['currentDeviceId'] as String ??
-            getJserDefault('currentDeviceId'));
+    final obj = new Employee();
     obj.id = map['id'] as String;
     obj.avatar = _avatarSerializer.fromMap(map['avatar'] as Map);
     obj.currentTimesheetId = map['currentTimesheetId'] as String;
     obj.clockTimestamp = map['clockTimestamp'] as int;
     obj.city = map['city'] as String;
+    obj.avatarSmall = map['avatarSmall'] as String;
+    obj.snipeId = map['snipeId'] as String;
+    obj.avatarLarge = map['avatarLarge'] as String;
     obj.state = map['state'] as String;
+    obj.fullname = map['fullname'] as String;
     obj.firstname = map['firstname'] as String;
+    obj.lastname = map['lastname'] as String;
     obj.fbemployeeid = map['fbemployeeid'] as String;
     obj.address = map['address'] as String;
     obj.zip = map['zip'] as String;
+    obj.currentDeviceId = map['currentDeviceId'] as String;
+    obj.name = map['name'] as String;
     obj.birth_day = map['birth_day'] as String;
     obj.birth_month = map['birth_month'] as String;
+    obj.work_start_date = map['work_start_date'] as String;
+    obj.email = map['email'] as String;
     obj.cell_phone = map['cell_phone'] as String;
     obj.clockedIn = map['clockedIn'] as bool;
     return obj;

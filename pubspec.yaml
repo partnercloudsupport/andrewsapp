@@ -21,11 +21,14 @@ dependencies:
   strings:
   uuid:
   flutter_stetho: ^0.2.2
-  location:
+  flutter_background_geolocation:
+    git:
+      url: https://github.com/transistorsoft/flutter_background_geolocation
   camera:
   carousel_slider:
   cloud_functions:
   firestore_helpers:
+
   jaguar_serializer:
   flutter_sparkline:
   flutter_staggered_grid_view:
@@ -42,7 +45,6 @@ dependencies:
   flutter_map:
   datetime_picker_formfield:
   unicorndial: ^1.1.5
-  flutter_background_geolocation:
   launch_review: ^1.0.1
   modal_progress_hud: ^0.1.0
   connectivity: ^0.3.1

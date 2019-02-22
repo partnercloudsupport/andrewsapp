@@ -1,0 +1,179 @@
+{
+  "project_info": {
+    "project_number": "122622063566",
+    "firebase_url": "https://andrewsgrowth-app.firebaseio.com",
+    "project_id": "andrewsgrowth-app",
+    "storage_bucket": "andrewsgrowth-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:122622063566:android:2febc96356a386b3",
+        "android_client_info": {
+          "package_name": "com.andrews.andrewsapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "122622063566-md3apk4no9vi2hn36tl0bhn2k1if9vfj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCpoh9sMn1F5akKPROnknuzHot5DuRoDj8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:122622063566:android:4130d77a2c64829e",
+        "android_client_info": {
+          "package_name": "com.andrews.flutfire"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "122622063566-r7fvo5q6n08l885v0vpdveevjdal7pt2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.andrews.flutfire",
+            "certificate_hash": "3d920638dd0f1708ce423c973e88bf2db5afc30d"
+          }
+        },
+        {
+          "client_id": "122622063566-md3apk4no9vi2hn36tl0bhn2k1if9vfj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCpoh9sMn1F5akKPROnknuzHot5DuRoDj8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "122622063566-md3apk4no9vi2hn36tl0bhn2k1if9vfj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:122622063566:android:9099b9672cb6fd72",
+        "android_client_info": {
+          "package_name": "com.andrews.flutfire3"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "122622063566-md3apk4no9vi2hn36tl0bhn2k1if9vfj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCpoh9sMn1F5akKPROnknuzHot5DuRoDj8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:122622063566:android:e35450a2cfaa8a41",
+        "android_client_info": {
+          "package_name": "com.andrews.taskist"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "122622063566-md3apk4no9vi2hn36tl0bhn2k1if9vfj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCpoh9sMn1F5akKPROnknuzHot5DuRoDj8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:122622063566:android:1be960bc59c6ab97",
+        "android_client_info": {
+          "package_name": "io.flutter.plugins.geofencingexample"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "122622063566-md3apk4no9vi2hn36tl0bhn2k1if9vfj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCpoh9sMn1F5akKPROnknuzHot5DuRoDj8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

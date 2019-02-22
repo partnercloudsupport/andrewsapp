@@ -1,15 +1,18 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
 import 'package:flutter/services.dart';
 import 'package:taskist/model/workorder.dart';
 import 'package:taskist/model/serviceItem.dart';
 import 'package:taskist/shop/page_detail.dart';
-import 'package:taskist/common/common_scaffold.dart';
+import 'package:taskist/common/base_scaffold.dart';
 import 'page_addWorkorder.dart';
 import 'package:taskist/shop/widgets/workorderCard.dart';
 import 'package:taskist/shop/shopService.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../model/current_user_model.dart';
+import '../home/sign_in_page.dart';
 
 class RugPage extends StatefulWidget {
   final FirebaseUser user;
@@ -29,123 +32,132 @@ class _TaskPageState extends State<RugPage>
 
   @override
   Widget build(BuildContext context) {
-    return CommonScaffold(
-      // backGroundColor: Colors.grey.shade100,
-      backGroundColor: Colors.grey.shade200,
-      actionFirstIcon: null,
-      appTitle: "Product Detail",
-      showFAB: true,
-      scaffoldKey: _scaffoldState,
-      callback: () => _addTaskPressed(),
-      showDrawer: false,
-      centerDocked: true,
-      floatingIcon: Icons.add,
-      showBottomNav: true,
-      bodyData: ListView(
-        children: <Widget>[
-          _getToolbar(context),
-          new Column(
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(top: 50.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+    final currentUserModel =
+        ScopedModel.of<CurrentUserModel>(context, rebuildOnChange: true);
+    return (currentUserModel.user == null)
+        ? const SignInPage()
+        : BaseScaffold(
+            // backGroundColor: Colors.grey.shade100,
+            // backGroundColor: Colors.grey.shade200,
+            // actionFirstIcon: null,
+            appTitle: "Product Detail",
+            currentEmployee: currentUserModel.employee,
+
+            // showFAB: true,
+            scaffoldKey: _scaffoldState,
+            // callback: () => _addTaskPressed(),
+            // showDrawer: false,
+            // centerDocked: true,
+            // floatingIcon: Icons.add,
+            showBottomNav: true,
+            bodyData: ListView(
+              children: <Widget>[
+                _getToolbar(context),
+                new Column(
                   children: <Widget>[
-                    Expanded(
-                      flex: 1,
-                      child: Container(
-                        color: Colors.grey,
-                        height: 1.5,
-                      ),
-                    ),
-                    Expanded(
-                        flex: 2,
-                        child: new Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Text(
-                              'Shop',
-                              style: new TextStyle(
-                                  fontSize: 30.0, fontWeight: FontWeight.bold),
+                    Padding(
+                      padding: EdgeInsets.only(top: 50.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Expanded(
+                            flex: 1,
+                            child: Container(
+                              color: Colors.grey,
+                              height: 1.5,
                             ),
-                            Text(
-                              'Orders',
-                              style: new TextStyle(
-                                  fontSize: 28.0, color: Colors.grey),
-                            )
-                          ],
-                        )),
-                    Expanded(
-                      flex: 1,
-                      child: Container(
-                        color: Colors.grey,
-                        height: 1.5,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: 50.0),
-                child: new Column(
-                  children: <Widget>[
-                    new Container(
-                      width: 50.0,
-                      height: 50.0,
-                      decoration: new BoxDecoration(
-                          border: new Border.all(color: Colors.black38),
-                          borderRadius: BorderRadius.all(Radius.circular(7.0))),
-                      child: new IconButton(
-                        icon: new Icon(Icons.add),
-                        onPressed: _addTaskPressed,
-                        iconSize: 30.0,
+                          ),
+                          Expanded(
+                              flex: 2,
+                              child: new Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Text(
+                                    'Shop',
+                                    style: new TextStyle(
+                                        fontSize: 30.0,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                    'Orders',
+                                    style: new TextStyle(
+                                        fontSize: 28.0, color: Colors.grey),
+                                  )
+                                ],
+                              )),
+                          Expanded(
+                            flex: 1,
+                            child: Container(
+                              color: Colors.grey,
+                              height: 1.5,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: 10.0),
-                      child: Text('Add Workorder',
-                          style: TextStyle(color: Colors.black45)),
+                      padding: EdgeInsets.only(top: 50.0),
+                      child: new Column(
+                        children: <Widget>[
+                          new Container(
+                            width: 50.0,
+                            height: 50.0,
+                            decoration: new BoxDecoration(
+                                border: new Border.all(color: Colors.black38),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(7.0))),
+                            child: new IconButton(
+                              icon: new Icon(Icons.add),
+                              onPressed: _addTaskPressed,
+                              iconSize: 30.0,
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 10.0),
+                            child: Text('Add Workorder',
+                                style: TextStyle(color: Colors.black45)),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
-              ),
-            ],
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 50.0),
-            child: Container(
-              height: 360.0,
-              padding: EdgeInsets.only(bottom: 25.0),
-              child: NotificationListener<OverscrollIndicatorNotification>(
-                onNotification: (overscroll) {
-                  overscroll.disallowGlow();
-                },
-                child: new StreamBuilder<QuerySnapshot>(
-                    stream: Firestore.instance
-                        .collection('workorders')
-                        // .orderBy("date", descending: true)
-                        .snapshots(),
-                    builder: (BuildContext context,
-                        AsyncSnapshot<QuerySnapshot> snapshot) {
-                      if (!snapshot.hasData)
-                        return new Center(
-                            child: CircularProgressIndicator(
-                          backgroundColor: Colors.blue,
-                        ));
-                      return new ListView(
-                        physics: const BouncingScrollPhysics(),
-                        padding: EdgeInsets.only(left: 40.0, right: 40.0),
-                        scrollDirection: Axis.horizontal,
-                        children: getExpenseItems(snapshot),
-                      );
-                    }),
-              ),
+                Padding(
+                  padding: EdgeInsets.only(top: 50.0),
+                  child: Container(
+                    height: 360.0,
+                    padding: EdgeInsets.only(bottom: 25.0),
+                    child:
+                        NotificationListener<OverscrollIndicatorNotification>(
+                      onNotification: (overscroll) {
+                        overscroll.disallowGlow();
+                      },
+                      child: new StreamBuilder<QuerySnapshot>(
+                          stream: Firestore.instance
+                              .collection('workorders')
+                              // .orderBy("date", descending: true)
+                              .snapshots(),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<QuerySnapshot> snapshot) {
+                            if (!snapshot.hasData)
+                              return new Center(
+                                  child: CircularProgressIndicator(
+                                backgroundColor: Colors.blue,
+                              ));
+                            return new ListView(
+                              physics: const BouncingScrollPhysics(),
+                              padding: EdgeInsets.only(left: 40.0, right: 40.0),
+                              scrollDirection: Axis.horizontal,
+                              children: getExpenseItems(snapshot),
+                            );
+                          }),
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ),
-        ],
-      ),
-    );
+          );
   }
 
   @override

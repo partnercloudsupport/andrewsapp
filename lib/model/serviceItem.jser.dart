@@ -27,8 +27,6 @@ abstract class _$PictureSerializer implements Serializer<Picture> {
 }
 
 abstract class _$ServiceItemSerializer implements Serializer<ServiceItem> {
-  Serializer<Log> __logSerializer;
-  Serializer<Log> get _logSerializer => __logSerializer ??= new LogSerializer();
   Serializer<Picture> __pictureSerializer;
   Serializer<Picture> get _pictureSerializer =>
       __pictureSerializer ??= new PictureSerializer();
@@ -44,14 +42,13 @@ abstract class _$ServiceItemSerializer implements Serializer<ServiceItem> {
     setMapValue(ret, 'createdAt', model.createdAt);
     setMapValue(ret, 'prettyCreatedAt', model.prettyCreatedAt);
     setMapValue(ret, 'priority', model.priority);
+    setMapValue(ret, 'createdBy', model.createdBy);
     setMapValue(ret, 'prettyDueAt', model.prettyDueAt);
     setMapValue(ret, 'notes', model.notes);
     setMapValue(ret, 'serviceName', model.serviceName);
     setMapValue(ret, 'tagId', model.tagId);
     setMapValue(ret, 'tagColor', model.tagColor);
     setMapValue(ret, 'intake_notes', model.intake_notes);
-    setMapValue(ret, 'logs',
-        codeIterable(model.logs, (val) => _logSerializer.toMap(val as Log)));
     setMapValue(ret, 'workorderId', model.workorderId);
     setMapValue(ret, 'quantity', model.quantity);
     setMapValue(ret, 'smWorkorderId', model.smWorkorderId);
@@ -83,7 +80,6 @@ abstract class _$ServiceItemSerializer implements Serializer<ServiceItem> {
         tagColor: map['tagColor'] as String ?? getJserDefault('tagColor'),
         workorderId:
             map['workorderId'] as String ?? getJserDefault('workorderId'),
-        isDone: map['isDone'] as bool ?? getJserDefault('isDone'),
         pictures: codeIterable<Picture>(map['pictures'] as Iterable,
                 (val) => _pictureSerializer.fromMap(val as Map)) ??
             getJserDefault('pictures'));
@@ -94,11 +90,10 @@ abstract class _$ServiceItemSerializer implements Serializer<ServiceItem> {
     obj.createdAt = map['createdAt'] as int;
     obj.prettyCreatedAt = map['prettyCreatedAt'] as String;
     obj.priority = map['priority'] as String;
+    obj.createdBy = map['createdBy'] as String;
     obj.prettyDueAt = map['prettyDueAt'] as String;
     obj.notes = map['notes'] as String;
     obj.intake_notes = map['intake_notes'] as String;
-    obj.logs = codeIterable<Log>(
-        map['logs'] as Iterable, (val) => _logSerializer.fromMap(val as Map));
     obj.quantity = map['quantity'] as int;
     obj.length = map['length'] as int;
     obj.width = map['width'] as int;
@@ -106,6 +101,7 @@ abstract class _$ServiceItemSerializer implements Serializer<ServiceItem> {
     obj.hasUrine = map['hasUrine'] as bool;
     obj.dueDateTime =
         dateTimeUtcProcessor.deserialize(map['dueDateTime'] as String);
+    obj.isDone = map['isDone'] as bool;
     return obj;
   }
 }

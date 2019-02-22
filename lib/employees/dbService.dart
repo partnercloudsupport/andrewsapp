@@ -6,6 +6,7 @@ import 'package:firestore_helpers/firestore_helpers.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:device_info/device_info.dart';
+import 'package:dio/dio.dart';
 
 final DeviceInfoPlugin deviceInfo = new DeviceInfoPlugin();
 
@@ -152,6 +153,27 @@ class DatabaseService {
     return null;
   }
 
+//     Future<Post> fetchPost() async {
+//       BaseOptions options = new BaseOptions(
+//         baseUrl: "https://api.servicemonster.net/v1",
+//         connectTimeout: 5000,
+//         receiveTimeout: 3000,
+//         headers: {
+//           'Authorization': 'Basic Sk5wbkZOelhxOnltMWM4cGU4QzNPNHM3bDBBVms=',
+//         });
+//     Dio dio = new Dio(options);
+
+//   final response =
+//       await dio.get('/');
+
+//   if (response.statusCode == 200) {
+//     // If server returns an OK response, parse the JSON
+//     return Post.fromJson(json.decode(response.body));
+//   } else {
+//     // If that response was not OK, throw an error.
+//     throw Exception('Failed to load post');
+//   }
+// }
   // print(data);
 
   Future<bool> punchClock(Employee employee, Device device) async {
@@ -193,6 +215,15 @@ class DatabaseService {
     await updateEmployeeTimesheetStatus(employee, updatedStatus, docId);
 
     return result;
+  }
+
+  Future<Employee> getEmployee(employeeId) async {
+    DocumentSnapshot result = await Firestore.instance
+        .collection('employees')
+        .document(employeeId)
+        .get();
+    var employee = EmployeeSerializer().fromMap(result.data);
+    return employee;
   }
 }
 

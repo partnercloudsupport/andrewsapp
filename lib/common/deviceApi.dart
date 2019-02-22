@@ -31,7 +31,7 @@ Device parseDevice(String responseBody) {
 }
 
 class Devices {
-  Future<Device> checkOutDevice(
+  Future<Map> checkOutDevice(
     String snipeId,
     String deviceId,
   ) async {
@@ -46,10 +46,8 @@ class Devices {
   Future<String> checkInDevice(
     String deviceId,
   ) async {
-    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
     var resp = await snipeit.post('/hardware/' + deviceId + '/checkin');
     // var jresp = json.decode(resp.data);
-    print(resp.data['status']);
     return resp.data['status'];
   }
 
@@ -66,8 +64,10 @@ class Devices {
     return d;
   }
 
-  Future<Map> getDeviceFromSnipeByAndroidId(androidId) async {
-    var resp = await snipeit.get('/hardware/byserial/' + androidId);
+  Future<Map> getDeviceFromSnipe() async {
+    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+
+    var resp = await snipeit.get('/hardware/byserial/' + androidInfo.androidId);
     Map data = resp.data['rows'][0];
     // var jdata = json.decode(data);
     print(data['serial']);
@@ -75,6 +75,20 @@ class Devices {
     // print(_thisDevice.androidId);
     // return _thisDevice;
     return data;
+  }
+
+  Future<Map> setDeviceOwner(String employeeId) async {
+    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+    DocumentReference result = await Firestore.instance
+        .collection('devices')
+        .document(androidInfo.androidId);
+    await result.updateData({'ownerId': employeeId});
+    print(result);
+    var data = await result.get();
+
+    // Device d = fromMap(data.data);
+    print(data.data['ownerId']);
+    return data.data;
   }
 }
 

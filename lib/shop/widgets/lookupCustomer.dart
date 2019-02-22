@@ -76,128 +76,202 @@ class _RegisterFormState extends State<LookupCustomerForm> {
     setState(() {
       _saving = true;
     });
+    var smResponse = await dio.get("/accounts/", queryParameters: {
+      "wValue": listPhoneController.text,
+      "wField": "phone1",
+      "wOperator": "like"
+    });
+    var data = smResponse.data['items'][0];
+    // // print(_data['accountName']);
 
-    QuerySnapshot querySnapshot = await Firestore.instance
-        .collection("accounts_dev")
-        // .where('phones', arrayContains: listPhoneController.text)
-        .where('phones', arrayContains: '(111) 111-1111')
-        .getDocuments();
-    try {
-      if (querySnapshot.documents.length == 1) {
-        print(querySnapshot.documents.first.documentID);
-
-        // if(c2.id == null){
-        //   c2.id = querySnapshot.documents.first.documentID;
-        // }
-        // Account c = new Account.fromJson(querySnapshot.documents.first.data);
-        Account c =
-            // AccountSerializer.fromMap(querySnapshot.documents.first.data);
-            AccountSerializer().fromMap(querySnapshot.documents.first.data);
-        try {
-          String name = c.lastName + ', ' + c.firstName;
-          var smResponse = await dio.get("/accounts/", queryParameters: {
-            "wValue": name,
-            "wField": "accountName",
-            "wOperator": "like"
-          });
-
-          var data = smResponse.data['items'][0];
-          // data.smId = response.data['items'][0].accountId;
-          // querySnapshot.documents.first.data['smId'] = response.data['items'][0]['accountID'];
-          c = AccountSerializer().fromMap(querySnapshot.documents.first.data);
-          c.smId = smResponse.data['items'][0]['accountID'];
-          print(c);
-        } catch (e) {
-          print(e);
-        }
-
-        return showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text(c.firstName + ' ' + c.lastName),
-              content:
-                  Container(child: Container(child: Text('Is this correct?'))),
-              actions: <Widget>[
-                FlatButton(
-                  child: Text('Yes'),
-                  onPressed: () {
-                    _setFoundCustomer(true);
-                    _submit(c);
-                    Navigator.of(context).pop();
-                  },
-                ),
-                FlatButton(
-                  child: Text('No'),
-                  onPressed: () {
-                    setState(() {
-                      // listPhoneController.clear();
-                      // listPhoneController.text = '(903) ';
-                      _saving = false;
-                    });
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            );
-          },
-        );
-      } else {
-        if (querySnapshot.documents.length > 1) {
-          try {
-            // Customer c = new Customer.fromJson(querySnapshot.documents.first.data);
-            List l = new List();
-            String list = "";
-            for (var i = 0; i < querySnapshot.documents.length; i++) {
-              var x = querySnapshot.documents[i];
-              Account c = AccountSerializer().fromMap(x.data);
-              print(c.toString());
-              l.add(c.accountName);
-              list += c.accountName;
-              list += ", ";
-            }
-            print(l.toString());
-            return showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: Text("Accounts with this phone number: " + list),
-                  content: Container(
-                      child: Container(
-                          child: Text(
-                              'Clean up in SM before using this number.'))),
-                  actions: <Widget>[
-                    FlatButton(
-                      child: Text('Ok'),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                  ],
-                );
-              },
-            );
-          } catch (e) {
-            print(e);
-          }
-        } else {
-          Scaffold.of(context).showSnackBar(new SnackBar(
-              content: new Text("Customer not found"),
-              backgroundColor: Colors.blue,
-              duration: Duration(seconds: 3)));
-        }
-      }
-    } catch (e) {
-      print(e);
-      //  const SnackBar snackBar = SnackBar(content: Text('Form submitted'));
-      //  Job.of(context).register(_formData);
-      // Scaffold.of(context).showSnackBar(snackBar);
-      _scaffoldKey.currentState?.removeCurrentSnackBar();
-      Scaffold.of(context).showSnackBar(new SnackBar(
-          content: new Text("Customer not foundy"),
-          backgroundColor: Colors.blue,
-          duration: Duration(seconds: 3)));
+    print(smResponse.data['items'].length);
+    if (smResponse.data['items'].length < 1) {
+      smResponse = await dio.get("/accounts/", queryParameters: {
+        "wValue": listPhoneController.text,
+        "wField": "phone2",
+        "wOperator": "like"
+      });
+      data = smResponse.data['items'][0];
     }
+    print(data['phone1']);
+    print(data['phone2']);
+    print(data['phone3']);
+    List<String> phones = List<String>();
+    if (data['phone1'] != null) {
+      phones.add(data['phone1']);
+    }
+    if (data['phone2'] != null) {
+      phones.add(data['phone2']);
+    }
+    if (data['phone3'] != null) {
+      phones.add(data['phone3']);
+    }
+    data['phones'] = phones;
+    data['smId'] = data['accountID'];
+
+    if (smResponse.data['items'].length == 1) {
+      Account account = AccountSerializer().fromMap(data);
+
+      return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(account.firstName + ' ' + account.lastName),
+            content:
+                Container(child: Container(child: Text('Is this correct?'))),
+            actions: <Widget>[
+              FlatButton(
+                color: Colors.green,
+                child: Text('Yes'),
+                onPressed: () {
+                  _setFoundCustomer(true);
+                  _submit(account);
+                  Navigator.of(context).pop();
+                },
+              ),
+              FlatButton(
+                child: Text('No'),
+                color: Colors.redAccent,
+                onPressed: () {
+                  setState(() {
+                    // listPhoneController.clear();
+                    // listPhoneController.text = '(903) ';
+                    _saving = false;
+                  });
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+    if (data.length > 1) {}
+
+    setState(() {
+      _saving = false;
+    });
+    // QuerySnapshot querySnapshot = await Firestore.instance
+    //     .collection("accounts_dev")
+    //     // .where('phones', arrayContains: listPhoneController.text)
+    //     .where('phones', arrayContains: '(111) 111-1111')
+    //     .getDocuments();
+    // try {
+    //   if (querySnapshot.documents.length == 1) {
+    //     print(querySnapshot.documents.first.documentID);
+
+    //     // if(c2.id == null){
+    //     //   c2.id = querySnapshot.documents.first.documentID;
+    //     // }
+    //     // Account c = new Account.fromJson(querySnapshot.documents.first.data);
+    //     Account c =
+    //         // AccountSerializer.fromMap(querySnapshot.documents.first.data);
+    //         AccountSerializer().fromMap(querySnapshot.documents.first.data);
+    //     try {
+    //       String name = c.lastName + ', ' + c.firstName;
+    //       var smResponse = await dio.get("/accounts/", queryParameters: {
+    //         "wValue": name,
+    //         "wField": "accountName",
+    //         "wOperator": "like"
+    //       });
+
+    //       var data = smResponse.data['items'][0];
+    //       // data.smId = response.data['items'][0].accountId;
+    //       // querySnapshot.documents.first.data['smId'] = response.data['items'][0]['accountID'];
+    //       c = AccountSerializer().fromMap(querySnapshot.documents.first.data);
+    //       c.smId = smResponse.data['items'][0]['accountID'];
+    //       print(c);
+    //     } catch (e) {
+    //       print(e);
+    //     }
+
+    //     return showDialog(
+    //       context: context,
+    //       builder: (BuildContext context) {
+    //         return AlertDialog(
+    //           title: Text(c.firstName + ' ' + c.lastName),
+    //           content:
+    //               Container(child: Container(child: Text('Is this correct?'))),
+    //           actions: <Widget>[
+    //             FlatButton(
+    //               child: Text('Yes'),
+    //               onPressed: () {
+    //                 _setFoundCustomer(true);
+    //                 _submit(c);
+    //                 Navigator.of(context).pop();
+    //               },
+    //             ),
+    //             FlatButton(
+    //               child: Text('No'),
+    //               onPressed: () {
+    //                 setState(() {
+    //                   // listPhoneController.clear();
+    //                   // listPhoneController.text = '(903) ';
+    //                   _saving = false;
+    //                 });
+    //                 Navigator.of(context).pop();
+    //               },
+    //             ),
+    //           ],
+    //         );
+    //       },
+    //     );
+    //   } else {
+    //     if (querySnapshot.documents.length > 1) {
+    //       try {
+    //         // Customer c = new Customer.fromJson(querySnapshot.documents.first.data);
+    //         List l = new List();
+    //         String list = "";
+    //         for (var i = 0; i < querySnapshot.documents.length; i++) {
+    //           var x = querySnapshot.documents[i];
+    //           Account c = AccountSerializer().fromMap(x.data);
+    //           print(c.toString());
+    //           l.add(c.accountName);
+    //           list += c.accountName;
+    //           list += ", ";
+    //         }
+    //         print(l.toString());
+    //         return showDialog(
+    //           context: context,
+    //           builder: (BuildContext context) {
+    //             return AlertDialog(
+    //               title: Text("Accounts with this phone number: " + list),
+    //               content: Container(
+    //                   child: Container(
+    //                       child: Text(
+    //                           'Clean up in SM before using this number.'))),
+    //               actions: <Widget>[
+    //                 FlatButton(
+    //                   child: Text('Ok'),
+    //                   onPressed: () {
+    //                     Navigator.of(context).pop();
+    //                   },
+    //                 ),
+    //               ],
+    //             );
+    //           },
+    //         );
+    //       } catch (e) {
+    //         print(e);
+    //       }
+    //     } else {
+    //       Scaffold.of(context).showSnackBar(new SnackBar(
+    //           content: new Text("Customer not found"),
+    //           backgroundColor: Colors.blue,
+    //           duration: Duration(seconds: 3)));
+    //     }
+    //   }
+    // } catch (e) {
+    //   print(e);
+    //   //  const SnackBar snackBar = SnackBar(content: Text('Form submitted'));
+    //   //  Job.of(context).register(_formData);
+    //   // Scaffold.of(context).showSnackBar(snackBar);
+    //   _scaffoldKey.currentState?.removeCurrentSnackBar();
+    //   Scaffold.of(context).showSnackBar(new SnackBar(
+    //       content: new Text("Customer not foundy"),
+    //       backgroundColor: Colors.blue,
+    //       duration: Duration(seconds: 3)));
+    // }
   }
 
   @override
@@ -224,18 +298,18 @@ class _RegisterFormState extends State<LookupCustomerForm> {
                           ),
                         ),
                         Expanded(
-                            flex: 2,
+                            flex: 3,
                             child: new Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 Text(
-                                  'Customer ',
+                                  'Customer',
                                   style: new TextStyle(
                                       fontSize: 30.0,
                                       fontWeight: FontWeight.bold),
                                 ),
                                 Text(
-                                  _saving ? 'Wait...' : 'Lookup',
+                                  'Lookup',
                                   style: new TextStyle(
                                       fontSize: 28.0, color: Colors.grey),
                                 )

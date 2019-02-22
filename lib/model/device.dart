@@ -8,12 +8,13 @@ class Device {
   Device({
     this.androidId,
     this.employees,
-    this.owner,
+    this.ownerId,
     this.currentPosition,
   });
   final String androidId;
-  final String owner;
+  String ownerId;
   final List<Employee> employees;
+  String distanceToStore;
   @pass
   GeoPoint currentPosition;
 }
@@ -29,7 +30,7 @@ Device fromMap(Map map) {
       androidId: map['androidId'] as String,
       employees: codeIterable<Employee>(map['employees'] as Iterable,
           (val) => _employeeSerializer.fromMap(val as Map)),
-      owner: map['owner'] as String);
+      ownerId: map['owner'] as String);
   obj.currentPosition =
       _passProcessor.deserialize(map['currentPosition']) as GeoPoint;
   return obj;

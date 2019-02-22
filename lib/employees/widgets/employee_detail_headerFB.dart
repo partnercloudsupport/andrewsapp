@@ -67,7 +67,7 @@ class EmployeeDetailHeaderFB extends StatelessWidget {
                                 ),
                                 child: CircleAvatar(
                                   backgroundImage:
-                                      NetworkImage(employee.avatar.large),
+                                      NetworkImage(employee.avatarSmall),
 
                                   // "https://avatars0.githubusercontent.com/u/12619420?s=460&v=4"),
                                   foregroundColor: Colors.white,
@@ -90,6 +90,23 @@ class EmployeeDetailHeaderFB extends StatelessWidget {
                         //   ),
                         // );
                         ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          employee.firstname,
+                          style: new TextStyle(
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
+                        ),
+                        Text(
+                          employee.lastname,
+                          style: new TextStyle(
+                              fontSize: 14.0, color: Colors.grey.shade500),
+                        )
+                      ],
+                    ),
                     // ProfileTile(
                     //   title: employee['name'],
                     //   subtitle: '',

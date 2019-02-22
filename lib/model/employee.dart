@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:meta/meta.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:jaguar_serializer/jaguar_serializer.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 part 'employee.jser.dart';
 
@@ -26,12 +27,14 @@ class Address {
 
 class Employee {
   Employee({
-    @required this.avatar,
+    this.avatar,
     this.id,
-    @required this.name,
-    @required this.work_start_date,
+    this.name,
+    this.fullname,
+    this.work_start_date,
     this.email,
     this.fbemployeeid,
+    this.lastname,
     this.firstname,
     // this.address,
     this.currentDeviceId,
@@ -42,18 +45,24 @@ class Employee {
   String currentTimesheetId;
   int clockTimestamp;
   String city;
+  String avatarSmall;
+  String snipeId;
+  String avatarLarge;
   String state;
+  String fullname;
   String firstname;
+  String lastname;
+
   String fbemployeeid;
   String address;
   String zip;
   // Address address;
-  final String currentDeviceId;
-  final String name;
+  String currentDeviceId;
+  String name;
   String birth_day;
   String birth_month;
-  final String work_start_date;
-  final String email;
+  String work_start_date;
+  String email;
   String cell_phone;
   bool clockedIn;
   getPrettyBirthDay() {

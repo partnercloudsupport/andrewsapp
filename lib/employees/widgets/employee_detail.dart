@@ -30,29 +30,30 @@ class _EmployeeDetailsPageState extends State<EmployeeDetailsPage> {
         ],
       ),
     );
-
-    return new Scaffold(
-      body: new SingleChildScrollView(
-        child: new Container(
-          // decoration: linearGradient,
-          child: new Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              new EmployeeDetailHeaderFB(
-                widget.employee,
-                // avatarTag: widget.avatarTag,
+    return (widget.employee != null)
+        ? new Scaffold(
+            body: new SingleChildScrollView(
+              child: new Container(
+                // decoration: linearGradient,
+                child: new Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    new EmployeeDetailHeaderFB(
+                      widget.employee,
+                      // avatarTag: widget.avatarTag,
+                    ),
+                    EmployeeButtonRow(employee: widget.employee),
+                    new Padding(
+                      padding: const EdgeInsets.all(24.0),
+                      child: new EmployeeDetailBodyFB(widget.employee),
+                    ),
+                    new EmployeeDetailFooter(widget.employee),
+                  ],
+                ),
               ),
-              EmployeeButtonRow(),
-              new Padding(
-                padding: const EdgeInsets.all(24.0),
-                child: new EmployeeDetailBodyFB(widget.employee),
-              ),
-              new EmployeeDetailFooter(widget.employee),
-            ],
-          ),
-        ),
-      ),
-    );
+            ),
+          )
+        : Container();
   }
 }
 // class Style {

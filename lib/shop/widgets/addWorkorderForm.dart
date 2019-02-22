@@ -80,21 +80,32 @@ class _NewJobPageState extends State<AddWorkorderForm> {
     } catch (e) {
       print(e);
     }
+
+    if (smOrderId == null) {
+      showInSnackBar('bad shit');
+      return;
+    }
+    var workorder;
     var customerMap =
         // AccountSerializer.fromMap(querySnapshot.documents.first.data);
         AccountSerializer().toMap(widget.newJob.customer);
 //TODO fix uid setting
+    var newDoc;
+    int now = DateTime.now().millisecondsSinceEpoch;
+
     try {
-      await Firestore.instance.collection("workorders").document().setData({
+      newDoc = await Firestore.instance.collection("workorders").add({
         "notes": jobNotesController.text.toString().trim(),
         "date": DateTime.now().millisecondsSinceEpoch.toString(),
         "customer": customerMap,
-        "author": widget.user.uid,
-        "smId": widget.newJob.customer.smId,
+        "createdBy": widget.user.uid,
+        "isDone": false,
+        "createdAt": now,
         "status": "Active",
         "serviceItems": [],
         "smOrderId": smOrderId.toString()
       });
+      print(newDoc.documentID);
     } catch (e) {
       print(e);
       setState(() {
@@ -105,10 +116,18 @@ class _NewJobPageState extends State<AddWorkorderForm> {
     setState(() {
       _saving = false;
     });
+    workorder = await Firestore.instance
+        .collection("workorders")
+        .document(newDoc.documentID)
+        .get();
+
+    Workorder w = WorkorderSerializer().fromMap(workorder.data);
+    w.id = newDoc.documentID;
+
     Navigator.of(context).push(new PageRouteBuilder(
         pageBuilder: (_, __, ___) => new AddServiceItems(
               user: widget.user,
-              currentJob: widget.newJob,
+              currentJob: w,
             )));
   }
 
@@ -203,11 +222,16 @@ class _NewJobPageState extends State<AddWorkorderForm> {
                                           MainAxisAlignment.spaceBetween,
                                       children: <Widget>[
                                         // Text(  widget.newJob.customer.address.streetAddress + widget.newJob.customer.address.city + widget.newJob.customer.address.state + widget.newJob.customer.address.zipcode),
-                                        (widget.newJob.customer.address
-                                                    .pretty !=
+                                        (widget.newJob.customer.address1 !=
                                                 null)
                                             ? Text(widget
-                                                .newJob.customer.address.pretty)
+                                                    .newJob.customer.address1 +
+                                                ' ' +
+                                                widget.newJob.customer.city +
+                                                ', ' +
+                                                widget.newJob.customer.state +
+                                                ' ' +
+                                                widget.newJob.customer.zip)
                                             : Text(
                                                 "Due 02/25/2019",
                                                 style: TextStyle(

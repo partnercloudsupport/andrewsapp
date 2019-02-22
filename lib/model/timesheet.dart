@@ -5,7 +5,6 @@ import 'package:jaguar_serializer/jaguar_serializer.dart';
 import 'package:taskist/model/employee.dart';
 import 'package:taskist/model/device.dart';
 import 'package:uuid/uuid.dart';
-import 'package:location/location.dart';
 
 part 'timesheet.jser.dart';
 

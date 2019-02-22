@@ -7,9 +7,15 @@ import 'package:taskist/common/uidata.dart';
 import 'package:taskist/common/menu_view_model.dart';
 import 'package:taskist/common/profile_tile.dart';
 import 'package:taskist/model/menu.dart';
+import 'package:taskist/model/device_model.dart';
 import 'package:taskist/model/employee.dart';
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:scoped_model/scoped_model.dart';
+import '../model/current_user_model.dart';
+import '../model/device_model.dart';
+import 'package:latlong/latlong.dart';
+import 'package:latlong/latlong.dart';
 
 class BaseScaffold extends StatelessWidget {
   final appTitle;
@@ -17,12 +23,14 @@ class BaseScaffold extends StatelessWidget {
   final scaffoldKey;
   final showBottomNav;
   Widget bodyData;
+  final DeviceModel deviceModel;
   final Menu menu;
 
   BaseScaffold({
     this.appTitle,
     this.bodyData,
     this.menu,
+    this.deviceModel,
     this.showBottomNav,
     this.scaffoldKey,
     this.currentEmployee,
@@ -79,44 +87,91 @@ class BaseScaffold extends StatelessWidget {
         ],
       );
 
-  Widget header() => Ink(
-        decoration: BoxDecoration(
-            // gradient: LinearGradient(colors: UIData.kitGradients2)
-            color: Colors.blueAccent),
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              new Container(
-                  child: new CircleAvatar(
-                      // child: const Text('C'),
-                      foregroundColor: Colors.yellow,
-                      backgroundImage:
-                          NetworkImage(currentEmployee.avatar.small)),
-                  width: 52.0,
-                  height: 52.0,
-                  padding: const EdgeInsets.all(2.0), // borde width
-                  decoration: new BoxDecoration(
-                    color: const Color(0xFFFFFFFF), // border color
-                    shape: BoxShape.circle,
-                  )),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ProfileTile(
-                  title: "Andrews App",
-                  subtitle: "(903) 926-9768 , (111) 111-1111 , (903) 344-1733 ",
-                  textColor: Colors.white,
-                ),
-              ),
+  Widget header(BuildContext context) {
+    final deviceModelxx =
+        ScopedModel.of<DeviceModel>(context, rebuildOnChange: true);
 
-              // CircleAvatar(
-              //     radius: 25.0,
-              //     backgroundImage: NetworkImage(owner.avatar.small)),
-            ],
-          ),
+    print(deviceModelxx.device.currentPosition);
+    return Ink(
+      decoration: BoxDecoration(
+          // gradient: LinearGradient(colors: UIData.kitGradients2)
+          color: Colors.blueAccent),
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                new Container(
+                    width: 52.0,
+                    height: 52.0,
+                    decoration: new BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Colors.white),
+                      color: Colors.white,
+                      image: new DecorationImage(
+                          // fit: BoxFit.fill,
+                          image: (currentEmployee.avatarSmall != null)
+                              ? NetworkImage(currentEmployee.avatarSmall)
+                              : AssetImage('assets/image/icon.png')),
+                    )),
+                Text(
+                  "Device Owner",
+                  textScaleFactor: .8,
+                  style: TextStyle(fontSize: 14.0, color: Colors.white),
+                )
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ProfileTile(
+                title: "Route 2",
+                subtitle: "",
+                textColor: Colors.white,
+              ),
+            ),
+            new Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  new Container(
+                      width: 52.0,
+                      height: 52.0,
+                      child: CircleAvatar(
+                          child: IconButton(
+                            icon: Icon(Icons.map),
+                            color: Colors.white,
+                            onPressed: () {},
+                          ),
+                          foregroundColor: Colors.white,
+                          backgroundColor: Colors.green.shade600),
+                      // width: 52.0,
+                      // height: 52.0,
+                      padding: const EdgeInsets.all(2.0), // borde width
+                      decoration: new BoxDecoration(
+                        color: const Color(0xFFFFFFFF), // border color
+                        shape: BoxShape.circle,
+                      )),
+                  Text(
+                    (deviceModelxx.device.distanceToStore != null)
+                        ? deviceModelxx.device.distanceToStore + 'm'
+                        : 'no updates',
+                    textScaleFactor: .8,
+                    style: TextStyle(fontSize: 14.0, color: Colors.white),
+                  )
+                ]
+                // CircleAvatar(
+                //     radius: 25.0,
+                //     backgroundImage: NetworkImage(owner.avatar.small)),
+                )
+          ],
         ),
-      );
+      ),
+    );
+  }
 
   void _showModalBottomSheet(BuildContext context, Menu menu) {
     // MenuBloc menuBloc = MenuBloc();
@@ -135,7 +190,7 @@ class BaseScaffold extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
-                header(),
+                header(context),
                 Expanded(
                   child: ListView.builder(
                     shrinkWrap: false,
@@ -212,10 +267,6 @@ class BaseScaffold extends StatelessWidget {
                   ),
                 ),
               ),
-
-              // new SizedBox(
-              //   width: 120.0,
-              // ),
             ],
           ),
         ),
@@ -223,33 +274,15 @@ class BaseScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // ScopedModelDescendant<DeviceModel>(builder: (context, child, device) {
+    final deviceModelx =
+        ScopedModel.of<DeviceModel>(context, rebuildOnChange: true);
     return Scaffold(
       key: scaffoldKey != null ? scaffoldKey : null,
-      // backgroundColor: backGroundColor != null ? backGroundColor : null,
-      // appBar: AppBar(
-      //   elevation: .4,
-      //   toolbarOpacity: .5,
-      //   backgroundColor: Colors.white,
-      //   // title: Image.asset('assets/icon.png', scale: 5,),
-      //   actions: <Widget>[
-      //     SizedBox(
-      //       width: 5.0,
-      //     ),
-      //     IconButton(
-      //       onPressed: () {},
-      //       color: Colors.black,
-      //       icon: Icon(Icons.search),
-      //     ),
-      //     IconButton(
-      //       onPressed: () {},
-      //       color: Colors.black,
-      //       icon: Icon(Icons.exit_to_app),
-      //     )
-      //   ],
-      // ),
       drawer: CommonDrawer(),
       body: bodyData,
       bottomNavigationBar: showBottomNav ? myBottomBar(context) : null,
     );
+    // });
   }
 }
