@@ -1,21 +1,15 @@
-import 'dart:async';
-import 'package:flutter/material.dart';
-import 'package:card_settings/card_settings.dart';
-import '../../model/serviceItem.dart';
-import '../../model/current_user_model.dart';
-import 'package:taskist/model/workorder.dart';
-import '../widgets/imagesListScreen.dart';
-import '../widgets/customerCard.dart';
-import 'dart:async';
-import 'package:flutter/services.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
-import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
-import 'package:intl/intl.dart';
-import 'package:flutter/material.dart';
-import '../page_orders.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:scoped_model/scoped_model.dart';
+
+import '../../model/current_user_model.dart';
+import '../../model/serviceItem.dart';
+import '../page_orders.dart';
+
+Dio dio = new Dio();
 
 class ServiceItemForm extends StatefulWidget {
   final ServiceItem currentItem;
@@ -36,15 +30,32 @@ class _ServiceItemFormState extends State<ServiceItemForm> {
   final GlobalKey<FormState> _hasUrineKey = GlobalKey<FormState>();
   final GlobalKey<FormState> _lengthKey = GlobalKey<FormState>();
   final GlobalKey<FormState> _widthKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _urineKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _repairKey = GlobalKey<FormState>();
   bool _autoValidate = false;
   bool _hasImage = false;
   ServiceItem currentItem;
+  bool isSwitched = false;
+  bool _value1 = false;
+  bool _value2 = false;
 
+  //we omitted the brackets '{}' and are using fat arrow '=>' instead, this is dart syntax
+  void _value1Changed(bool value) => setState(() => _value1 = value);
+  void _value2Changed(bool value) => setState(() => _value2 = value);
   @override
   void initState() {
     String id = DateTime.now().toString();
     super.initState();
     currentItem = widget.currentItem;
+    BaseOptions options = new BaseOptions(
+        baseUrl: "https://api.servicemonster.net/v1",
+        connectTimeout: 8000,
+        receiveTimeout: 5000,
+        headers: {
+          'Authorization': 'Basic Sk5wbkZOelhxOnltMWM4cGU4QzNPNHM3bDBBVms=',
+        });
+
+    dio = new Dio(options);
   }
 
   _siFab(context, CurrentUserModel currentUserModel) {
@@ -54,15 +65,21 @@ class _ServiceItemFormState extends State<ServiceItemForm> {
           if (_formKey.currentState.validate()) {
             var size = int.tryParse(lengthController.text) *
                 int.tryParse(widthController.text);
+            // var formatter = new DateFormat('dd-MM-yyyy');
+            var formatter = new DateFormat('M/d/yy');
+
+            // currentItem.createdAtPretty = formatter.format(DateTime.now());
+            currentItem.primaryPictureUrl = currentItem.pictures[0].url;
             currentItem.quantity = size;
             currentItem.length = int.tryParse(lengthController.text);
             currentItem.width = int.tryParse(widthController.text);
             var now = new DateTime.now();
-            var formatter = new DateFormat('M/d/yy');
             String formatted = formatter.format(now);
             currentItem.prettyCreatedAt = formatted;
+            currentItem.hasUrine = _value1;
+            currentItem.needsRepair = _value2;
             Duration dur = new Duration(days: 21);
-            currentItem.createdBy = currentUserModel.firebaseUser.uid;
+            currentItem.createdById = currentUserModel.firebaseUser.uid;
             var due = now.add(dur);
             String dueFormatted = formatter.format(due);
             currentItem.prettyDueAt = dueFormatted;
@@ -70,9 +87,8 @@ class _ServiceItemFormState extends State<ServiceItemForm> {
             currentItem.status = 'Not Yet Started';
             currentItem.priority = 'Medium';
             currentItem.isDone = false;
-            currentItem.intake_notes = "Rug is highly urinated";
-            currentItem.needsRepair = 'FALSE';
-            print(currentItem.prettyDueAt);
+            // currentItem.intake_notes = "Rug is highly urinated";
+            currentItem.needsRepair = false;
             try {
               Firestore.instance
                   .collection('workorders')
@@ -83,16 +99,21 @@ class _ServiceItemFormState extends State<ServiceItemForm> {
             } catch (e) {
               print(e);
             }
-            // currentItem = null;
-
+// https://script.google.com/macros/s/AKfycbyahgWvy7GHdx3BADRiAVVTkQtuv7ET7ss1abd1RPS62pE6VlM/exec
+            var map = ServiceItemSerializer().toMap(currentItem);
+            var url =
+                'https://script.google.com/macros/s/AKfycbyahgWvy7GHdx3BADRiAVVTkQtuv7ET7ss1abd1RPS62pE6VlM/exec ';
+            var response =
+                await dio.get(url, queryParameters: {"parameter": "ghgfhgfhg"});
+            print(response);
             Scaffold.of(_formKey.currentContext).showSnackBar(SnackBar(
                 content: Text(currentItem.id.toString() +
                     ' ' +
                     currentItem.workorderId)));
+            //TODO put me back
             currentItem = null;
 
-            ;
-
+            https: //script.google.com/macros/s/AKfycbwrOe9OOwgWM5xrIB2c1q1eEsnYsDlictBUohd7XfKXKt-OtWjy/exec
             Navigator.of(context).push(new PageRouteBuilder(
                 pageBuilder: (_, __, ___) => new RugPage()));
           }
@@ -182,7 +203,7 @@ class _ServiceItemFormState extends State<ServiceItemForm> {
 
                 Column(children: <Widget>[
               Padding(
-                  padding: EdgeInsets.only(top: 170.0, left: 18, right: 18),
+                  padding: EdgeInsets.only(top: 190.0, left: 18, right: 18),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -204,6 +225,38 @@ class _ServiceItemFormState extends State<ServiceItemForm> {
                       ),
                     ],
                   )),
+              Padding(
+                padding: EdgeInsets.only(top: 40.0, right: 18, left: 110),
+                child: Transform.scale(
+                    scale: 1.4,
+                    child: Column(
+                        // mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Row(children: <Widget>[
+                            Checkbox(
+                              key: _urineKey,
+                              value: _value1,
+                              onChanged: (bool v) {
+                                _value1Changed(v);
+                              },
+                            ),
+                            Text("Urine"),
+                          ]),
+                          Row(children: <Widget>[
+                            Checkbox(
+                              value: _value2,
+                              key: _repairKey,
+                              onChanged: (bool v) {
+                                _value2Changed(v);
+                              },
+                            ),
+                            Text('Repair'),
+                          ])
+                        ])),
+              ),
+              // ])
+
               Padding(
                 padding: EdgeInsets.only(top: 100.0, right: 18, left: 18),
                 child: Row(
@@ -255,20 +308,6 @@ class _ServiceItemFormState extends State<ServiceItemForm> {
     );
   }
 
-  saveItem(b) async {}
-  // Padding _getToolbar(BuildContext context) {
-  //   return new Padding(
-  //     padding: EdgeInsets.only(top: 50.0, left: 20.0, right: 20.0),
-  //     child: new Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-  //       new Image(
-  //           width: 40.0,
-  //           height: 40.0,
-  //           fit: BoxFit.cover,
-  //           image: new AssetImage('assets/icon.png')),
-  //     ]),
-  //   );
-  // }
-
   TextFormField _buildCardSettingsInt_Notes() {
     return new TextFormField(
       decoration: InputDecoration(
@@ -305,14 +344,6 @@ class _ServiceItemFormState extends State<ServiceItemForm> {
 
       textCapitalization: TextCapitalization.sentences,
     );
-    // return CardSettingsInt(
-    //   key: _sizeKey,
-    //   label: 'Leght',
-    //   unitLabel: 'feet',
-    //   initialValue: _currentItem.length,
-    //   onSaved: (value) => _currentItem.length = value,
-    //   onChanged: (value) => _showSnackBar('Height', value),
-    // );
   }
 
   TextFormField _buildCardSettingsInt_Length() {
@@ -338,11 +369,11 @@ class _ServiceItemFormState extends State<ServiceItemForm> {
 
       // initialValue: '(903) ',
       controller: lengthController,
-      validator: (value) {
-        if (value.isEmpty) {
-          return 'Please enter some text';
-        }
-      },
+      // validator: (value) {
+      //   if (value.isEmpty) {
+      //     return 'Please enter some text';
+      //   }
+      // },
       inputFormatters: <TextInputFormatter>[
         WhitelistingTextInputFormatter.digitsOnly,
         // Fit the validating format.
@@ -357,14 +388,6 @@ class _ServiceItemFormState extends State<ServiceItemForm> {
       key: _lengthKey,
       // textCapitalization: TextCapitalization.none,
     );
-    // return CardSettingsInt(
-    //   key: _sizeKey,
-    //   label: 'Leght',
-    //   unitLabel: 'feet',
-    //   initialValue: _currentItem.length,
-    //   onSaved: (value) => _currentItem.length = value,
-    //   onChanged: (value) => _showSnackBar('Height', value),
-    // );
   }
 
   TextFormField _buildCardSettingsInt_Width() {
@@ -381,11 +404,11 @@ class _ServiceItemFormState extends State<ServiceItemForm> {
               },
               child: new Icon(Icons.clear))),
       keyboardType: TextInputType.phone,
-      validator: (value) {
-        if (value.isEmpty) {
-          return 'Please enter some text';
-        }
-      },
+      // validator: (value) {
+      //   if (value.isEmpty) {
+      //     return 'Please enter some text';
+      //   }
+      // },
       key: _widthKey,
       // initialValue: '(903) 926-9768',
       // onSaved: (String value) {
@@ -409,35 +432,4 @@ class _ServiceItemFormState extends State<ServiceItemForm> {
       // textCapitalization: TextCapitalization.none,
     );
   }
-
-  // CardSettingsButton _buildCardSettingsButton_Save() {
-  //   return CardSettingsButton(
-  //     label: 'SAVE',
-  //     onPressed: _savePressed,
-  //   );
-  // }
-
-  // Future _savePressed() async {
-  //   final form = _formKey.currentState;
-
-  //   if (form.validate()) {
-  //     form.save();
-
-  //     // showResults(context, _serviceItemList);
-  //   } else {
-  //     // setState(() => _autoValidate = true);
-  //   }
-  // }
-
-  // void _showSnackBar(String label, dynamic value) {
-  //   // _scaffoldKey.currentState.removeCurrentSnackBar();
-  //   // _scaffoldKey.currentState.showSnackBar(
-  //   //   SnackBar(
-  //   //     content: Text(label + ' = ' + value.toString()),
-  //   //   ),
-  //   // );
-  // }
-  // void _resetPressed() {
-  //   _formKey.currentState.reset();
-  // }
 }

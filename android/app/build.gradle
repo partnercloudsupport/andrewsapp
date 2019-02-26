@@ -30,7 +30,9 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
      compileSdkVersion 28
-
+configurations {
+    all*.exclude group: 'com.google.guava', module: 'listenablefuture'
+}
     lintOptions {
         disable 'InvalidPackage'
         checkReleaseBuilds false

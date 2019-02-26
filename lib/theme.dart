@@ -4,10 +4,12 @@ import 'package:flutter/services.dart';
 ThemeData buildThemeData() {
   return ThemeData(
     brightness: Brightness.light,
-    primaryColor: Colors.white,
-    accentColor: Colors.white,
+    // primaryColor: Colors.blue.shade700,
+    primaryColor: Colors.black,
+    accentColor: Colors.orange.shade500,
+    // scaffoldBackgroundColor: Colors.blue.shade700,
     scaffoldBackgroundColor: Colors.white,
-    textSelectionHandleColor: Colors.black,
+    textSelectionHandleColor: Colors.white,
     textSelectionColor: Colors.black12,
     cursorColor: Colors.black,
     toggleableActiveColor: Colors.black,

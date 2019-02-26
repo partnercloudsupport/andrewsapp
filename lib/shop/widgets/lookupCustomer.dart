@@ -12,7 +12,106 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:dio/dio.dart';
 
-Dio dio;
+BaseOptions options = new BaseOptions(
+    baseUrl: "https://api.servicemonster.net/v1",
+    connectTimeout: 5000,
+    receiveTimeout: 3000,
+    headers: {
+      'Authorization': 'Basic Sk5wbkZOelhxOnltMWM4cGU4QzNPNHM3bDBBVms=',
+    });
+
+Dio dio = new Dio(options);
+
+class NewCustomerForm extends StatelessWidget {
+  final String phoneNumber;
+  // final List serviceItemsList;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController firstNameController = new TextEditingController();
+  final TextEditingController lastNameController = new TextEditingController();
+  NewCustomerForm(
+    this.phoneNumber,
+    // @required this.serviceItemsList,
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    return new Form(
+        key: _formKey,
+        child: new Stack(children: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(top: 50.0, left: 20.0, right: 20.0),
+            child: new Column(
+              children: <Widget>[
+                new TextFormField(
+                  decoration: InputDecoration(
+                      border: new OutlineInputBorder(
+                          borderSide: new BorderSide(color: Colors.teal)),
+                      filled: true,
+                      icon: Icon(Icons.person_add),
+                      labelText: 'First Name',
+                      suffixIcon: new FlatButton(
+                          onPressed: () {
+                            firstNameController.clear();
+                          },
+                          child: new Icon(Icons.clear))),
+                  keyboardType: TextInputType.text,
+                  controller: firstNameController,
+                  autofocus: true,
+                  style: TextStyle(
+                    fontSize: 22.0,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  textCapitalization: TextCapitalization.words,
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 0.0),
+                  child: new TextFormField(
+                    decoration: InputDecoration(
+                        border: new OutlineInputBorder(
+                            borderSide: new BorderSide(color: Colors.teal)),
+                        filled: true,
+                        icon: Icon(Icons.person_add),
+                        labelText: 'Last Name',
+                        suffixIcon: new FlatButton(
+                            onPressed: () {
+                              lastNameController.clear();
+                            },
+                            child: new Icon(Icons.clear))),
+                    keyboardType: TextInputType.text,
+                    controller: lastNameController,
+                    autofocus: true,
+                    style: TextStyle(
+                      fontSize: 22.0,
+                      color: Colors.black,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    textCapitalization: TextCapitalization.words,
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 0.0),
+                  child: new Column(
+                    children: <Widget>[
+                      new RaisedButton(
+                        child: const Text(
+                          'Submit',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        color: Colors.blue,
+                        elevation: 4.0,
+                        splashColor: Colors.deepPurple,
+                        // onPressed: _saving ? null : searchCustomer,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ]));
+  }
+}
 
 class _UsNumberTextInputFormatter extends TextInputFormatter {
   @override
@@ -59,6 +158,7 @@ class LookupCustomerForm extends StatefulWidget {
 class _RegisterFormState extends State<LookupCustomerForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController listPhoneController = new TextEditingController();
+
   final _UsNumberTextInputFormatter _phoneNumberFormatter =
       _UsNumberTextInputFormatter();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -73,6 +173,20 @@ class _RegisterFormState extends State<LookupCustomerForm> {
 
   void searchCustomer() async {
     Account _customer;
+
+    print(listPhoneController.text.length);
+    if (listPhoneController.text.length != 14) {
+      listPhoneController.text == '';
+      // Navigator.of(context).pop();
+      return showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Invalid number'),
+            );
+          });
+    }
+
     setState(() {
       _saving = true;
     });
@@ -81,21 +195,101 @@ class _RegisterFormState extends State<LookupCustomerForm> {
       "wField": "phone1",
       "wOperator": "like"
     });
-    var data = smResponse.data['items'][0];
-    // // print(_data['accountName']);
-
-    print(smResponse.data['items'].length);
+    var data;
     if (smResponse.data['items'].length < 1) {
       smResponse = await dio.get("/accounts/", queryParameters: {
         "wValue": listPhoneController.text,
         "wField": "phone2",
         "wOperator": "like"
       });
+
+      if (smResponse.data['items'].length < 1) {
+        return showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text("Cannot find an existing customer"),
+              content: Container(
+                  child:
+                      Container(child: Text('Create new one or try again?'))),
+              contentPadding: EdgeInsets.all(20),
+              actions: <Widget>[
+                RaisedButton(
+                  child: Text('New', style: TextStyle(color: Colors.white)),
+                  onPressed: () {
+                    setState(() {
+                      _saving = false;
+                      listPhoneController.text = '';
+                    });
+
+                    Navigator.of(context).push(new PageRouteBuilder(
+                        pageBuilder: (_, __, ___) =>
+                            new NewCustomerForm(listPhoneController.text)));
+                  },
+                ),
+                Container(width: 10),
+                RaisedButton(
+                  child:
+                      Text('Try Again', style: TextStyle(color: Colors.white)),
+                  onPressed: () {
+                    setState(() {
+                      _saving = false;
+                      listPhoneController.text = '';
+                    });
+                    Navigator.of(context).pop();
+                  },
+                )
+              ],
+            );
+          },
+        );
+      }
+    } else {
+      if (smResponse.data['items'].length > 1) {
+        List l = new List();
+        String list = "";
+        for (var i = 0; i < smResponse.data['items'].length; i++) {
+          var x = smResponse.data['items'][i];
+          Account c = AccountSerializer().fromMap(x);
+          print(c.toString());
+          l.add(c.accountName);
+          list += c.accountName;
+          list += ", ";
+        }
+        print(l.toString());
+        return showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text("Accounts with this phone number: " + list),
+              content: Container(
+                  child: Container(
+                      child: Text('Clean up in SM before using this number.'))),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('Ok'),
+                  onPressed: () {
+                    setState(() {
+                      _saving = false;
+                      listPhoneController.text = '';
+                    });
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      }
+
       data = smResponse.data['items'][0];
     }
-    print(data['phone1']);
-    print(data['phone2']);
-    print(data['phone3']);
+
+    // // print(_data['accountName']);
+
+    // print(data['phone1']);
+    // print(data['phone2']);
+    // print(data['phone3']);
     List<String> phones = List<String>();
     if (data['phone1'] != null) {
       phones.add(data['phone1']);
@@ -134,9 +328,8 @@ class _RegisterFormState extends State<LookupCustomerForm> {
                 color: Colors.redAccent,
                 onPressed: () {
                   setState(() {
-                    // listPhoneController.clear();
-                    // listPhoneController.text = '(903) ';
                     _saving = false;
+                    listPhoneController.text = '';
                   });
                   Navigator.of(context).pop();
                 },

@@ -54,7 +54,7 @@ class TimesheetList extends StatelessWidget {
                           return ListTile(
                             leading: new Icon(
                               Icons.access_time,
-                              color: Colors.white,
+                              color: Colors.black,
                               size: 26.0,
                             ),
                             title: Text(

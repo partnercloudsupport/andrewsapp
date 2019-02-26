@@ -12,7 +12,7 @@ import 'package:taskist/shop/page_addServiceItem.dart';
 
 import 'package:connectivity/connectivity.dart';
 
-Dio dio;
+Dio dio = new Dio();
 
 class AddWorkorderForm extends StatefulWidget {
   final FirebaseUser user;
@@ -71,8 +71,8 @@ class _NewJobPageState extends State<AddWorkorderForm> {
     bool isExist = false;
     var smOrderId;
     try {
-      var response = await dio.post("/orders", data: {
-        "accountID": widget.newJob.customer.smId,
+      var response = await dio.post("/orders/", data: {
+        "accountID": widget.newJob.customer.smId
 // 	"siteID":"119ace88-a1f7-11e2-b2c6-00155d467ded"
       });
 
@@ -98,7 +98,8 @@ class _NewJobPageState extends State<AddWorkorderForm> {
         "notes": jobNotesController.text.toString().trim(),
         "date": DateTime.now().millisecondsSinceEpoch.toString(),
         "customer": customerMap,
-        "createdBy": widget.user.uid,
+        "createdById": widget.user.uid,
+        "createdByName": widget.user.displayName,
         "isDone": false,
         "createdAt": now,
         "status": "Active",
@@ -322,14 +323,14 @@ class _NewJobPageState extends State<AddWorkorderForm> {
   @override
   void initState() {
     super.initState();
-
     BaseOptions options = new BaseOptions(
         baseUrl: "https://api.servicemonster.net/v1",
-        connectTimeout: 5000,
-        receiveTimeout: 3000,
+        connectTimeout: 8000,
+        receiveTimeout: 5000,
         headers: {
           'Authorization': 'Basic Sk5wbkZOelhxOnltMWM4cGU4QzNPNHM3bDBBVms=',
         });
+
     dio = new Dio(options);
 
     initConnectivity();
@@ -342,9 +343,9 @@ class _NewJobPageState extends State<AddWorkorderForm> {
   }
 
   void showInSnackBar(String value) {
-    _scaffoldKey.currentState?.removeCurrentSnackBar();
+    _scaffoldKey.currentState.removeCurrentSnackBar();
 
-    _scaffoldKey.currentState?.showSnackBar(new SnackBar(
+    _scaffoldKey.currentState.showSnackBar(new SnackBar(
       content: new Text(value, textAlign: TextAlign.center),
       duration: Duration(seconds: 3),
     ));

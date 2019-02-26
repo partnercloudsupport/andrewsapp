@@ -1,18 +1,19 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:math';
-import 'package:flutter/material.dart';
-import '../model/serviceItem.dart';
-import 'package:taskist/model/workorder.dart';
-import './widgets/serviceItemForm.dart';
-import './widgets/imagesListScreen.dart';
-import './page_orders.dart';
-import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:uuid/uuid.dart';
+import 'dart:math';
+
 import 'package:barcode_scan/barcode_scan.dart';
-import 'package:flutter/services.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:uuid/uuid.dart';
+
+import './page_orders.dart';
+import './widgets/imagesListScreen.dart';
+import './widgets/serviceItemForm.dart';
+import '../model/serviceItem.dart';
+import '../model/workorder.dart';
 
 class AddServiceItems extends StatefulWidget {
   final FirebaseUser user;
@@ -178,8 +179,7 @@ class _AddServiceItemsState extends State<AddServiceItems> {
   var barcode;
 
   void _onImageButtonPressed(ImageSource source) async {
-    // try {
-    // String _barcode = await BarcodeScanner.scan();
+    // String xbarcode = await BarcodeScanner.scan();
     var rng = new Random();
     String _barcode = '{"id":"BCID-1233","tagColor":"yellow"}';
     // setState(() => this.barcode = barcode);
@@ -211,99 +211,5 @@ class _AddServiceItemsState extends State<AddServiceItems> {
               //             // user: widget.user,
               currentItem: this.currentItem,
             )));
-    // }
-    // on PlatformException catch (e) {
-    //   if (e.code == BarcodeScanner.CameraAccessDenied) {
-    //     setState(() {
-    //       this.barcode = 'The user did not grant the camera permission!';
-    //     });
-    //   } else {
-    //     setState(() => this.barcode = 'Unknown error: $e');
-    //   }
-    // } on FormatException {
-    //   setState(() => this.barcode =
-    //       'null (User returned using the "back"-button before scanning anything. Result)');
-    // } catch (e) {
-    //   setState(() => this.barcode = 'Unknown error: $e');
-    // }
   }
-  // Navigator.of(context).push(new PageRouteBuilder(
-  //     pageBuilder: (_, __, ___) => new ItemsListScreen(
-  //           //             // pageBuilder: (_, __, ___) => new ItemsListScreen(
-  //           //             // user: widget.user,
-  //           currentItem: currentItem,
-  //         )));
-
-  // setState(() {
-  //   _imageFile = ImagePicker.pickImage(source: ImageSource.camera);
-  // });
-
-  // Widget customerPanel() {
-  //   return Padding(
-  //     padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 30.0),
-  //     child: Card(
-  //       elevation: 2.0,
-  //       child: Padding(
-  //         padding: const EdgeInsets.all(16.0),
-  //         child: Column(
-  //           crossAxisAlignment: CrossAxisAlignment.stretch,
-  //           children: <Widget>[
-  //             Text(
-  //               widget.currentJob.customer.firstName +
-  //                   ' ' +
-  //                   widget.currentJob.customer.lastName,
-  //               style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20.0),
-  //             ),
-  //             SizedBox(
-  //               height: 10.0,
-  //             ),
-  //             Text(widget.currentJob.customer.phones.first.toString()),
-  //             SizedBox(
-  //               height: 10.0,
-  //             ),
-  //             Row(
-  //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //               children: <Widget>[
-  //                 // Text(  widget.newJob.customer.address.streetAddress + widget.newJob.customer.address.city + widget.newJob.customer.address.state + widget.newJob.customer.address.zipcode),
-  //                 (widget.currentJob.customer.address.pretty != null)
-  //                     ? Text(widget.currentJob.customer.address.pretty)
-  //                     : Text(
-  //                         "Due 02/25/2019",
-  //                         style: TextStyle(
-  //                             color: Colors.orange.shade800,
-  //                             fontWeight: FontWeight.w700,
-  //                             fontSize: 15.0),
-  //                       )
-  //               ],
-  //             )
-  //           ],
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
-
 }
-
-// class Contact {
-//   final String name;
-//   final String email;
-//   final String imageUrl;
-
-//   const Contact(this.name, this.email, this.imageUrl);
-
-//   @override
-//   bool operator ==(Object other) =>
-//       identical(this, other) ||
-//       other is Contact &&
-//           runtimeType == other.runtimeType &&
-//           name == other.name;
-
-//   @override
-//   int get hashCode => name.hashCode;
-
-//   @override
-//   String toString() {
-//     return name;
-//   }
-// }

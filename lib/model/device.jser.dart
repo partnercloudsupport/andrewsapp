@@ -22,6 +22,7 @@ abstract class _$DeviceSerializer implements Serializer<Device> {
         'employees',
         codeIterable(model.employees,
             (val) => _employeeSerializer.toMap(val as Employee)));
+    setMapValue(ret, 'distanceToStore', model.distanceToStore);
     setMapValue(ret, 'currentPosition',
         _passProcessor.serialize(model.currentPosition));
     return ret;
@@ -36,6 +37,7 @@ abstract class _$DeviceSerializer implements Serializer<Device> {
                 (val) => _employeeSerializer.fromMap(val as Map)) ??
             getJserDefault('employees'));
     obj.ownerId = map['ownerId'] as String;
+    obj.distanceToStore = map['distanceToStore'] as String;
     obj.currentPosition =
         _passProcessor.deserialize(map['currentPosition']) as GeoPoint;
     return obj;

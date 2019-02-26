@@ -25,7 +25,7 @@ class CameraScreen extends StatefulWidget {
 class _CameraScreenState extends State<CameraScreen> {
   CameraController controller;
   String imagePath;
-
+  bool cameraActive = false;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   setCameras() async {
@@ -58,7 +58,7 @@ class _CameraScreenState extends State<CameraScreen> {
 
   Padding _getToolbar(BuildContext context) {
     return new Padding(
-      padding: EdgeInsets.only(top: 25.0, left: 20.0, right: 12.0),
+      padding: EdgeInsets.only(top: 45.0, left: 20.0, right: 12.0),
       child:
           new Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
         new Image(
@@ -68,6 +68,9 @@ class _CameraScreenState extends State<CameraScreen> {
             image: new AssetImage('assets/icon.png')),
         GestureDetector(
           onTap: () {
+            setState(() {
+              // widget.currentItem = null;
+            });
             Navigator.of(context).pop();
           },
           child: (widget.currentItem != null)
@@ -92,24 +95,40 @@ class _CameraScreenState extends State<CameraScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldKey,
-      body: Column(
-        children: <Widget>[
-          _getToolbar(context),
-          Expanded(
-            child: Container(
-              child: Padding(
-                padding: const EdgeInsets.all(1.0),
-                child: Center(
-                  child: _cameraPreviewWidget(),
+        key: _scaffoldKey,
+        body: Column(
+          children: <Widget>[
+            _getToolbar(context),
+            Flexible(
+              child: Container(
+                child: Padding(
+                  padding: const EdgeInsets.all(1.0),
+                  child: Center(
+                    child: _cameraPreviewWidget(),
+                  ),
                 ),
               ),
             ),
+            // _captureControlRowWidget(),
+          ],
+        ),
+        floatingActionButton: Center(
+          heightFactor: 2,
+          child: FloatingActionButton(
+            onPressed: () {
+              controller != null && controller.value.isInitialized
+                  ? onTakePictureButtonPressed()
+                  : Container(width: 1);
+            },
+            child: Icon(
+              Icons.camera_alt,
+              color: Colors.blue,
+              size: 30,
+            ),
+            shape: CircleBorder(side: BorderSide()),
+            backgroundColor: Colors.white,
           ),
-          _captureControlRowWidget(),
-        ],
-      ),
-    );
+        ));
   }
 
   /// Display the preview from the camera (or a message if the preview is not available).
@@ -132,21 +151,34 @@ class _CameraScreenState extends State<CameraScreen> {
   }
 
   /// Display the control bar with buttons to take pictures.
-  Widget _captureControlRowWidget() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      mainAxisSize: MainAxisSize.max,
-      children: <Widget>[
-        IconButton(
-          icon: const Icon(Icons.camera_alt),
-          color: Colors.blue,
-          onPressed: controller != null && controller.value.isInitialized
-              ? onTakePictureButtonPressed
-              : null,
-        )
-      ],
-    );
-  }
+  // Widget _captureControlRowWidget() {
+
+  //   return Row(
+  //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //     // mainAxisSize: MainAxisSize.max,
+  //     children: <Widget>[
+  //       new RawMaterialButton(
+  //         onPressed: () {},
+  //         child: new Icon(
+  //           Icons.camera_alt,
+  //           color: Colors.blue,
+  //           size: 55.0,
+  //         ),
+  //         shape: new CircleBorder(),
+  //         elevation: 6.0,
+  //         fillColor: Colors.white,
+  //         padding: const EdgeInsets.all(15.0),
+  //       ),
+  //       // IconButton(
+  //       //   icon: const Icon(Icons.camera_alt),
+  //       //   color: Colors.blue,
+  //       //   onPressed: controller != null && controller.value.isInitialized
+  //       //       ? onTakePictureButtonPressed
+  //       //       : null,
+  //       // )
+  //     ],
+  //   );
+  // }
 
   String timestamp() => DateTime.now().millisecondsSinceEpoch.toString();
 
@@ -155,9 +187,12 @@ class _CameraScreenState extends State<CameraScreen> {
   }
 
   void onTakePictureButtonPressed() {
+    CircularProgressIndicator(key: null);
+
     takePicture().then((String filePath) {
       if (mounted) {
         setState(() {
+          cameraActive = true;
           imagePath = filePath;
         });
         if (filePath != null) {
@@ -401,19 +436,7 @@ class _ItemsListScreenState extends State<ItemsListScreen> {
               },
             ),
           ],
-        )
-
-        // floatingActionButton: FloatingActionButton(
-        //   onPressed: () {
-        //     Navigator.push(
-        //       context,
-        //       MaterialPageRoute(
-        //           builder: (context) => CameraScreen(currentItem: currentItem)),
-        //     );
-        //   },
-        //   child: const Icon(Icons.add),
-        // ),
-        );
+        ));
   }
 
   Padding _getToolbar(BuildContext context) {
@@ -474,130 +497,44 @@ class ItemsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        // crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Flexible(
-            child: StreamBuilder<QuerySnapshot>(
-              stream: firestore
-                  .collection('shop_photos/' + currentItem.id + '/photos')
-                  .snapshots(),
-              builder: (BuildContext context,
-                  AsyncSnapshot<QuerySnapshot> snapshot) {
-                if (!snapshot.hasData) return const Text('Loading...');
-                final int itemsCount = snapshot.data.documents.length;
-                return ListView.builder(
-                    physics: const BouncingScrollPhysics(),
-                    padding: EdgeInsets.only(left: 40.0, right: 40.0),
-                    scrollDirection: Axis.horizontal,
-                    itemCount: itemsCount,
-                    itemBuilder: (context, index) {
-                      final DocumentSnapshot document =
-                          snapshot.data.documents[index];
-                      return Padding(
-                          padding: EdgeInsets.only(left: 20.0),
-                          child: SizedBox(
-                            height: 184.0,
-                            width: 184.0,
-                            child: Stack(
-                              children: <Widget>[
-                                Positioned.fill(
-                                  child: Image.network(document['downloadURL']),
-                                ),
-                              ],
+    return Column(children: <Widget>[
+      Flexible(
+        child: StreamBuilder<QuerySnapshot>(
+          stream: firestore
+              .collection('shop_photos/' + currentItem.id + '/photos')
+              .snapshots(),
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (!snapshot.hasData) return const Text('Loading...');
+            final int itemsCount = snapshot.data.documents.length;
+            return ListView.builder(
+                physics: const BouncingScrollPhysics(),
+                padding: EdgeInsets.only(left: 40.0, right: 40.0),
+                scrollDirection: Axis.horizontal,
+                itemCount: itemsCount,
+                itemBuilder: (context, index) {
+                  final DocumentSnapshot document =
+                      snapshot.data.documents[index];
+                  return Padding(
+                      padding: EdgeInsets.only(left: 20.0),
+                      child: SizedBox(
+                        height: 184.0,
+                        width: 184.0,
+                        child: Stack(
+                          children: <Widget>[
+                            Positioned.fill(
+                              child: Image.network(document['downloadURL']),
                             ),
-                          )
-                          // return ListTile(
-                          //   title: Text('${item.fbId}   (lat:${item.fbId})'),
-                          //   subtitle: Text('distance: ${item.id}'),
-                          // );
-                          );
-                    });
-                // return ListView.builder(
-                //   itemCount: itemsCount,
-                //   itemBuilder: (_, int index) {
-                //     final DocumentSnapshot document =
-                //         snapshot.data.documents[index];
-                //     return SafeArea(
-                //       top: false,
-                //       bottom: false,
-                //       child: Container(
-                //         padding: const EdgeInsets.all(8.0),
-                //         height: 220.0,
-                //         child: Card(
-                //           shape: RoundedRectangleBorder(
-                //             borderRadius: BorderRadius.only(
-                //               topLeft: Radius.circular(16.0),
-                //               topRight: Radius.circular(16.0),
-                //               bottomLeft: Radius.circular(16.0),
-                //               bottomRight: Radius.circular(16.0),
-                //             ),
-                //           ),
-                //           child: Column(
-                //             crossAxisAlignment: CrossAxisAlignment.start,
-                //             children: <Widget>[
-                //               // photo and title
-                //               SizedBox(
-                //                 height: 184.0,
-                //                 child: Stack(
-                //                   children: <Widget>[
-                //                     Positioned.fill(
-                //                       child: Image.network(
-                //                           document['downloadURL']),
-                //                     ),
-                //                   ],
-                //                 ),
-                //               ),
-                //               // Expanded(
-                //               //   child: Padding(
-                //               //     padding: const EdgeInsets.fromLTRB(
-                //               //         16.0, 16.0, 16.0, 0.0),
-                //               //     child: DefaultTextStyle(
-                //               //       softWrap: true,
-                //               //       //overflow: TextOverflow.,
-                //               //       style: Theme.of(context).textTheme.subhead,
-                //               //       child: Column(
-                //               //           crossAxisAlignment:
-                //               //               CrossAxisAlignment.start,
-                //               //           children: <Widget>[
-                //               //             Text(document['labels'].join(', ')),
-                //               //           ]),
-                //               //     ),
-                //               //   ),
-                //               // ),
-                //             ],
-                //           ),
-                //         ),
-                //       ),
-                //     );
-                //   },
-                // );
-              },
-            ),
-          ),
-        ]);
+                          ],
+                        ),
+                      ));
+                });
+          },
+        ),
+      ),
+    ]);
   }
 }
-
-// class FlutterVisionApp extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       home: ItemsListScreen(),
-//     );
-//   }
-// }
-
-// Future<void> main() async {
-//   // Fetch the available cameras before initializing the app.
-//   try {
-//     cameras = await availableCameras();
-//   } on CameraException catch (e) {
-//     logError(e.code, e.description);
-//   }
-//   runApp(FlutterVisionApp());
-// }
 
 void logError(String code, String message) =>
     print('Error: $code\nError Message: $message');

@@ -6,9 +6,7 @@ import 'package:taskist/employees/widgets/employee_detail_headerFB.dart';
 import 'package:taskist/employees/widgets/employeeDetailBodyFB.dart';
 
 class EmployeeDetailsPage extends StatefulWidget {
-  EmployeeDetailsPage({
-    this.employee,
-  });
+  EmployeeDetailsPage({this.employee});
 
   final Employee employee;
   // final Object avatarTag;
@@ -18,8 +16,8 @@ class EmployeeDetailsPage extends StatefulWidget {
 }
 
 class _EmployeeDetailsPageState extends State<EmployeeDetailsPage> {
-  @override
   Widget build(BuildContext context) {
+    @override
     var linearGradient = const BoxDecoration(
       gradient: const LinearGradient(
         begin: FractionalOffset.centerRight,
@@ -42,9 +40,12 @@ class _EmployeeDetailsPageState extends State<EmployeeDetailsPage> {
                       widget.employee,
                       // avatarTag: widget.avatarTag,
                     ),
-                    EmployeeButtonRow(employee: widget.employee),
                     new Padding(
-                      padding: const EdgeInsets.all(24.0),
+                      padding: const EdgeInsets.all(14.0),
+                      child: EmployeeButtonRow(employee: widget.employee),
+                    ),
+                    new Padding(
+                      padding: const EdgeInsets.all(2.0),
                       child: new EmployeeDetailBodyFB(widget.employee),
                     ),
                     new EmployeeDetailFooter(widget.employee),

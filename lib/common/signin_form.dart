@@ -3,18 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:taskist/employees/dbService.dart';
 import '../common/deviceApi.dart';
 import '../model/employee.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import '../model/user.dart';
 import 'package:taskist/model/current_user_model.dart';
 import '../model/current_user_model.dart';
-import 'package:taskist/model/current_user_model.dart';
-import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:taskist/employees/dbService.dart';
-import '../common/deviceApi.dart';
-import '../model/employee.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import '../services/auth_service.dart';
-import 'package:taskist/model/current_user_model.dart';
+import '../model/device_model.dart';
+import '../employees/widgets/employee_detail.dart';
 
 class SiginForm extends StatefulWidget {
   const SiginForm({Key key}) : super(key: key);
@@ -110,15 +103,6 @@ class _SiginFormState extends State<SiginForm> {
     // return _firebaseUser.displayName.split(' ').first;
   }
 
-  // Future<void> _handleSignIn(BuildContext context) async {
-  //   final CurrentEmployeeModel currentUserModel =
-  //       CurrentEmployeeModel.of(context);
-  //   await currentUserModel.signIn();
-  //   if (currentUserModel.status == Status.Authenticated) {
-  //     final Employee user = currentUserModel.employee;
-  //     _showSnackBar(context, 'Welcome ${user.name}');
-  //   }
-  // }
   Future<void> _submit() async {
     DatabaseService serv = new DatabaseService();
 
@@ -130,6 +114,7 @@ class _SiginFormState extends State<SiginForm> {
     var snipeId = '2';
     var updatedDevice;
     var device = await devs.getDeviceFromSnipe();
+
     if (device['assigned_to'] == null) {
       var checkout =
           await devs.checkOutDevice(snipeId, device['id'].toString());
@@ -144,34 +129,36 @@ class _SiginFormState extends State<SiginForm> {
     if (device['assigned_to']['id'] == int.parse(snipeId)) {
       updatedDevice = await devs.setDeviceOwner(employee.id);
     }
-    // SharedPreferences _prefs = await SharedPreferences.getInstance();
-    // await _prefs.setString('deviceOwner', employee.id);
-    // List<String> l = await _prefs.getStringList('deviceEmployeeList');
-    // if (l != null) {
-    //   l.add(employee.id);
-    // } else {
-    //   List<String> l = new List<String>();
-    //   l.add(employee.id);
-    // }
-    // _handleSignIn(context);
-    // await _prefs.setStringList('deviceEmployeeList', l);
 
     _formData['fullName'] = employee.name;
     _formData['photoUrl'] = employee.avatar.small;
     _formData['nickname'] = employee.name;
-    return true;
 
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
-      // _formData['email'] = _formData
-      // _formData['password'] = 'asdfasdf';
       _formData['employeeId'] = '1444044';
 
       try {
-        await CurrentUserModel.of(context).signIn(_formData);
+        // await CurrentUserModel.of(context).signIn(_formData);
+        _handleSignIn(context, _formData);
       } catch (e) {
         _showSnackBar(context, 'Incorrect Login');
       }
+    }
+  }
+
+  Future<void> _handleSignIn(BuildContext context, formData) async {
+    final CurrentUserModel currentUserModel = CurrentUserModel.of(context);
+    final DeviceModel deviceModel = DeviceModel.of(context);
+    await currentUserModel.signIn(formData);
+    await deviceModel.setOwner(formData['employeeId']);
+    if (currentUserModel.status == UserStatus.Unregistered) {
+      _showSnackBar(context, 'ID not found');
+    } else if (currentUserModel.status == UserStatus.Authenticated) {
+      final User user = currentUserModel.user;
+      _showSnackBar(context, 'Welcome ${user.fullName}');
+      Navigator.of(context).push(new PageRouteBuilder(
+          pageBuilder: (_, __, ___) => new EmployeeDetailsPage()));
     }
   }
 

@@ -7,6 +7,11 @@ import 'package:flutter_map/plugin_api.dart';
 import './dialog.dart' as util;
 import './geofence_view.dart';
 import 'package:latlong/latlong.dart';
+import 'package:scoped_model/scoped_model.dart';
+import '../common/base_scaffold.dart';
+import '../model/current_user_model.dart';
+import '../model/device_model.dart';
+import '../common/sign_in_page.dart';
 
 const String MAP_TOKEN =
     'pk.eyJ1IjoiY2hyaXN0b2NyYWN5IiwiYSI6ImVmM2Y2MDA1NzIyMjg1NTdhZGFlYmZiY2QyODVjNzI2In0.htaacx3ZhE5uAWN86-YNAQ';
@@ -31,7 +36,7 @@ class MapViewState extends State<MapView>
   List<CircleMarker> _stationaryMarker = [];
   List<GeofenceMarker> _geofences = [];
 
-  LatLng _center = new LatLng(51.5, -0.09);
+  LatLng _center = new LatLng(32.5, -95.49);
   MapController _mapController;
   MapOptions _mapOptions;
 
@@ -174,35 +179,50 @@ class MapViewState extends State<MapView>
 
   @override
   Widget build(BuildContext context) {
-    return FlutterMap(
-      mapController: _mapController,
-      options: _mapOptions,
-      layers: [
-        new TileLayerOptions(
-          urlTemplate:
-              "https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}@2x.png?access_token={accessToken}",
-          additionalOptions: {
-            'accessToken': MAP_TOKEN,
-            'id': 'mapbox.streets',
-          },
-        ),
-        new PolylineLayerOptions(
-          polylines: [
-            new Polyline(
-              points: _polyline,
-              strokeWidth: 10.0,
-              color: Color.fromRGBO(0, 179, 253, 0.7),
-            ),
-          ],
-        ),
-        new CircleLayerOptions(circles: _geofences),
-        new CircleLayerOptions(circles: _stationaryMarker),
-        new PolylineLayerOptions(polylines: _motionChangePolylines),
-        new CircleLayerOptions(circles: _locations),
-        new CircleLayerOptions(circles: _stopLocations),
-        new LongPressOptions(context: context, onLongPress: _onAddGeofence)
-      ],
-    );
+    final deviceModel =
+        ScopedModel.of<DeviceModel>(context, rebuildOnChange: true);
+    final currentUserModel =
+        ScopedModel.of<CurrentUserModel>(context, rebuildOnChange: true);
+    return currentUserModel.user == null
+        ? const SignInPage()
+        : BaseScaffold(
+            showBottomNav: true,
+            // body: PostsList(_loadPosts(context)),
+            deviceModel: deviceModel,
+            appTitle: '_currentLocation',
+            currentEmployee: currentUserModel.employee,
+            bodyData:
+                // floatingActionButton: _floatingActionButton(),
+                FlutterMap(
+              mapController: _mapController,
+              options: _mapOptions,
+              layers: [
+                new TileLayerOptions(
+                  urlTemplate:
+                      "https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}@2x.png?access_token={accessToken}",
+                  additionalOptions: {
+                    'accessToken': MAP_TOKEN,
+                    'id': 'mapbox.streets',
+                  },
+                ),
+                new PolylineLayerOptions(
+                  polylines: [
+                    new Polyline(
+                      points: _polyline,
+                      strokeWidth: 10.0,
+                      color: Color.fromRGBO(0, 179, 253, 0.7),
+                    ),
+                  ],
+                ),
+                new CircleLayerOptions(circles: _geofences),
+                new CircleLayerOptions(circles: _stationaryMarker),
+                new PolylineLayerOptions(polylines: _motionChangePolylines),
+                new CircleLayerOptions(circles: _locations),
+                new CircleLayerOptions(circles: _stopLocations),
+                new LongPressOptions(
+                    context: context, onLongPress: _onAddGeofence)
+              ],
+            ));
   }
 }
 

@@ -1,21 +1,15 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:taskist/employees/dbService.dart';
 import '../../common/deviceApi.dart';
 import '../../model/employee.dart';
 import '../../model/device.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:taskist/model/current_user_model.dart';
-import '../../model/current_user_model.dart';
-import 'package:taskist/model/current_user_model.dart';
+import 'package:scoped_model/scoped_model.dart';
+import '../../model/device_model.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:taskist/employees/dbService.dart';
 import '../../common/deviceApi.dart';
 import '../../model/employee.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import '../../services/auth_service.dart';
-import 'package:taskist/model/current_user_model.dart';
+import 'package:sms/sms.dart';
 
 class EmployeeButtonRow extends StatefulWidget {
   EmployeeButtonRow({
@@ -29,7 +23,7 @@ class EmployeeButtonRow extends StatefulWidget {
 class _EmployeeButtonState extends State<EmployeeButtonRow> {
   Employee employee;
   Device device;
-  bool _clockedIn;
+  bool _clockedIn = false;
   String text;
   DatabaseService dbService = new DatabaseService();
 
@@ -54,11 +48,13 @@ class _EmployeeButtonState extends State<EmployeeButtonRow> {
 
   @override
   Widget build(BuildContext context) {
+    final deviceModel =
+        ScopedModel.of<DeviceModel>(context, rebuildOnChange: true);
     return (this.device != null)
         ? Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
             _createClockButton(),
             Container(width: 8),
-            _createCheckOutButton(),
+            _createCheckOutButton(deviceModel: deviceModel),
           ])
         : CircularProgressIndicator(
             valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
@@ -66,6 +62,7 @@ class _EmployeeButtonState extends State<EmployeeButtonRow> {
   }
 
   Widget _createCheckOutButton({
+    DeviceModel deviceModel,
     Color backgroundColor = Colors.transparent,
     Color textColor = Colors.green,
     String text,
@@ -80,18 +77,18 @@ class _EmployeeButtonState extends State<EmployeeButtonRow> {
               textColor: Colors.white,
               onPressed: () {
                 (employee.id == device.ownerId)
-                    ? checkInDevice()
+                    ? checkInDevice(deviceModel)
                     : checkOutDevice();
               },
               child: new Text((employee.id == device.ownerId)
-                  ? 'CHECK IN DEVICE'
-                  : 'CHECK OUT DEVICE'),
+                  ? 'SIGN IN DEVICE'
+                  : 'SIGN OUT DEVICE'),
             ),
           )
         : Container();
   }
 
-  void checkInDevice() async {
+  void checkInDevice(DeviceModel deviceModel) async {
     DatabaseService serv = new DatabaseService();
 
     // serv.getEmployee("employeeId");
@@ -102,9 +99,13 @@ class _EmployeeButtonState extends State<EmployeeButtonRow> {
     var snipeId = '2';
     var updatedDevice;
     var device = await devs.getDeviceFromSnipe();
-    if (device['assigned_to']['id'] == int.parse(employee.snipeId)) {
-      var checkin = await devs.checkInDevice(device['id'].toString());
-      updatedDevice = await devs.setDeviceOwner(null);
+    if (deviceModel.owner == int.parse(employee.id)) {
+      (int.parse(deviceModel.device.distanceToStore) < 200)
+          ? await devs.checkInDevice(device['id'].toString())
+          : Scaffold.of(context).showSnackBar(new SnackBar(
+              content:
+                  new Text("You need to be at the store to checkin a tablet")));
+      updatedDevice = await devs.setDeviceOwner('STORE');
       Scaffold.of(context).showSnackBar(
           new SnackBar(content: new Text("Device successfully checked in")));
     } else {
@@ -157,12 +158,11 @@ class _EmployeeButtonState extends State<EmployeeButtonRow> {
     });
     // final ts = createNewTimesheet(employee, device);
     await dbService.punchClock(employee, device);
-    setState(() {
-      _clockButtonState = 0;
-    });
+    employee = await dbService.getEmployee(employee.id);
 
     setState(() {
-      _clockedIn = !_clockedIn;
+      _clockButtonState = 0;
+      _clockedIn = employee.clockedIn;
     });
 
     employee.clockedIn = !employee.clockedIn;

@@ -1,5 +1,4 @@
 import 'package:meta/meta.dart';
-import 'package:meta/meta.dart';
 import 'package:jaguar_serializer/jaguar_serializer.dart';
 part 'serviceItem.jser.dart';
 
@@ -8,16 +7,18 @@ class ServiceItem {
   String status;
   String id;
   String smServiceItemId;
-  String needsRepair;
+  bool needsRepair;
   int createdAt;
   String prettyCreatedAt;
   String priority;
-  String createdBy;
+  String createdById;
+  String createdByName;
   String prettyDueAt;
   String notes;
   final String serviceName;
   final String tagId;
   final String tagColor;
+  String primaryPictureUrl;
   String intake_notes;
   final String workorderId;
   int quantity;
@@ -28,13 +29,13 @@ class ServiceItem {
   bool hasUrine;
   DateTime dueDateTime;
   bool isDone;
+
   final List<Picture> pictures;
 
   ServiceItem({
     this.id,
     @required this.smGUID,
     @required this.status,
-    @required this.createdBy,
     @required this.createdAt,
     @required this.priority,
     @required this.prettyCreatedAt,

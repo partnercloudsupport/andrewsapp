@@ -33,10 +33,12 @@ class DeviceModel extends Model {
     return mile.toStringAsFixed(2);
   }
 
-  DeviceModel.instance() : deviceService = DeviceService.instance() {}
+  DeviceModel.instance() : deviceService = DeviceService.instance();
+
+  DeviceService deviceService;
 
   Status _status = Status.NotMoving;
-  DeviceService deviceService;
+  // DeviceService deviceService;
   Device _device;
   String _owner;
   String _platformVersion = 'Unknown';
@@ -59,6 +61,8 @@ class DeviceModel extends Model {
     if (success) {
       _owner = employee;
     }
+    bool success2 = await deviceService.addEmployee(employee);
+
     _device = new Device();
     _device.currentPosition = GeoPoint(0.0, 0.0);
     notifyListeners();
@@ -75,7 +79,7 @@ class DeviceModel extends Model {
   void start() {
     _device = new Device();
     // 1.  Listen to events (See docs for all 12 available events).
-    print('[location] inited');
+    // print('[location] inited');
     LatLng center = new LatLng(32.317315, -95.247462);
 
     String _identifier = 'asdf';
@@ -99,12 +103,12 @@ class DeviceModel extends Model {
           'center': {'latitude': center.latitude, 'longitude': center.longitude}
         } // meta-data for tracker.transistorsoft.com
         )).then((bool success) {
-      print('[geofence]  added');
+      // print('[geofence]  added');
     }).catchError((error) {
       print('[addGeofence] ERROR: $error');
     });
     bg.BackgroundGeolocation.onGeofence((geofence) {
-      print('[geofence] ' + geofence.identifier + ' ' + geofence.action);
+      // print('[geofence] ' + geofence.identifier + ' ' + geofence.action);
     });
 
     // Fired whenever a location is recorded
@@ -115,7 +119,7 @@ class DeviceModel extends Model {
       _device.distanceToStore =
           dis(new LatLng(location.coords.latitude, location.coords.longitude));
 
-      print('[location] - $location');
+      // print('[location] - $location');
       notifyListeners();
     });
     bg.BackgroundGeolocation.onHeartbeat((bg.HeartbeatEvent event) async {
@@ -125,56 +129,56 @@ class DeviceModel extends Model {
           dis(new LatLng(l.coords.latitude, l.coords.longitude));
       _device.currentPosition =
           new GeoPoint(l.coords.latitude, l.coords.longitude);
-      print('[location] - $event');
+      // print('[location] - $event');
       notifyListeners();
     });
     bg.BackgroundGeolocation.onHttp((bg.HttpEvent event) {
-      print('[location] - $event');
+      // print('[location] - $event');
       notifyListeners();
     });
     // Fired whenever the plugin changes motion-state (stationary->moving and vice-versa)
     bg.BackgroundGeolocation.onMotionChange((bg.Location location) {
-      print('[motionchange] - $location');
+      // print('[motionchange] - $location');
       notifyListeners();
     });
 
     // Fired whenever the state of location-services changes.  Always fired at boot
     bg.BackgroundGeolocation.onProviderChange((bg.ProviderChangeEvent event) {
-      print('[providerchange] - $event');
+      // print('[providerchange] - $event');
       notifyListeners();
     });
 
     ////
     // 2.  Configure the plugin
     //
-    bg.BackgroundGeolocation.ready(bg.Config(
-            desiredAccuracy: bg.Config.DESIRED_ACCURACY_HIGH,
-            distanceFilter: 0,
-            autoSync: true,
-            activityRecognitionInterval: 5000,
-            heartbeatInterval: 5,
-            locationUpdateInterval: 6000,
-            stopOnTerminate: false,
-            startOnBoot: true,
-            url: 'http://requestbin.fullcontact.com/1mufdvq1',
-            params: {
-              'deviceId': _device.androidId,
-              'owner': _device.ownerId,
-              'employeeList': _device.employees
-            },
-            debug: true,
-            logLevel: bg.Config.LOG_LEVEL_VERBOSE,
-            reset: true))
-        .then((bg.State state) {
-      if (!state.enabled) {
-        ////
-        // 3.  Start the plugin.
-        //
-        bg.BackgroundGeolocation.start();
-        print('[location] started');
-        initComplete = true;
-        notifyListeners();
-      }
-    });
+    // bg.BackgroundGeolocation.ready(bg.Config(
+    //         desiredAccuracy: bg.Config.DESIRED_ACCURACY_HIGH,
+    //         distanceFilter: 0,
+    //         autoSync: true,
+    //         activityRecognitionInterval: 5000,
+    //         heartbeatInterval: 5,
+    //         locationUpdateInterval: 6000,
+    //         stopOnTerminate: false,
+    //         startOnBoot: true,
+    //         url: 'http://requestbin.fullcontact.com/1mufdvq1',
+    //         params: {
+    //           'deviceId': _device.androidId,
+    //           'owner': _device.ownerId,
+    //           'employeeList': _device.employees
+    //         },
+    //         debug: false,
+    //         logLevel: bg.Config.LOG_LEVEL_VERBOSE,
+    //         reset: true))
+    //     .then((bg.State state) {
+    //   if (!state.enabled) {
+    //     ////
+    //     // 3.  Start the plugin.
+    //     //
+    //     // bg.BackgroundGeolocation.start();
+    //     // print('[location] started');
+    //     // initComplete = true;
+    //     // notifyListeners();
+    //   }
+    // });
   }
 }

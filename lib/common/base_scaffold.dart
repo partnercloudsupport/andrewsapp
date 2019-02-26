@@ -16,6 +16,7 @@ import '../model/current_user_model.dart';
 import '../model/device_model.dart';
 import 'package:latlong/latlong.dart';
 import 'package:latlong/latlong.dart';
+import '../employees/widgets/employee_detail.dart';
 
 class BaseScaffold extends StatelessWidget {
   final appTitle;
@@ -25,13 +26,22 @@ class BaseScaffold extends StatelessWidget {
   Widget bodyData;
   final DeviceModel deviceModel;
   final Menu menu;
-
+  final qrCallback;
+  bool alerts;
+  final bool centerDocked;
+  final IconData floatingIcon;
+  bool showFAB;
   BaseScaffold({
     this.appTitle,
     this.bodyData,
+    this.alerts,
     this.menu,
     this.deviceModel,
+    this.qrCallback,
     this.showBottomNav,
+    this.centerDocked,
+    this.floatingIcon,
+    this.showFAB,
     this.scaffoldKey,
     this.currentEmployee,
   });
@@ -105,19 +115,32 @@ class BaseScaffold extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                new Container(
-                    width: 52.0,
-                    height: 52.0,
-                    decoration: new BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(color: Colors.white),
-                      color: Colors.white,
-                      image: new DecorationImage(
-                          // fit: BoxFit.fill,
-                          image: (currentEmployee.avatarSmall != null)
-                              ? NetworkImage(currentEmployee.avatarSmall)
-                              : AssetImage('assets/image/icon.png')),
-                    )),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.of(context).push(
+                      new MaterialPageRoute(
+                        builder: (c) {
+                          return new EmployeeDetailsPage(
+                              employee: CurrentUserModel.instance().employee);
+                        },
+                      ),
+                    );
+                  },
+                  child: new Container(
+                      width: 52.0,
+                      height: 52.0,
+                      decoration: new BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(color: Colors.white),
+                        color: Colors.white,
+                        image: new DecorationImage(
+                            // fit: BoxFit.fill,
+                            image: (currentEmployee.avatarSmall != null)
+                                ? NetworkImage(currentEmployee.avatarSmall)
+                                : AssetImage('assets/image/icon.png')),
+                      )),
+                ),
                 Text(
                   "Device Owner",
                   textScaleFactor: .8,
@@ -282,6 +305,21 @@ class BaseScaffold extends StatelessWidget {
       drawer: CommonDrawer(),
       body: bodyData,
       bottomNavigationBar: showBottomNav ? myBottomBar(context) : null,
+      floatingActionButton: showFAB
+          ? CustomFloat(
+              builder: alerts
+                  ? Text(
+                      "5",
+                      style: TextStyle(color: Colors.white, fontSize: 10.0),
+                    )
+                  : null,
+              icon: floatingIcon,
+              // qrCallback: () => callback(),
+            )
+          : null,
+      floatingActionButtonLocation: centerDocked
+          ? FloatingActionButtonLocation.endDocked
+          : FloatingActionButtonLocation.endFloat,
     );
     // });
   }

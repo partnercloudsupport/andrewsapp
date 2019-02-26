@@ -15,12 +15,13 @@ class MenuViewModel {
           icon: Icons.dashboard,
           image: UIData.dashboardImage,
           items: ["Dashboard 1", "Dashboard 2", "Dashboard 3", "Dashboard 4"]),
+      Menu(title: "Assets", menuColor: Color(0xffc7d8f4), icon: Icons.send),
       Menu(
-          title: "Job List",
-          menuColor: Color(0xffc7d8f4),
-          icon: Icons.send,
-          image: UIData.loginImage,
-          items: ["Login With OTP", "Login 2", "Sign Up", "Login 4"]),
+        title: "MapView",
+        menuColor: Color(0xffc7d8f4),
+        icon: Icons.map,
+        // image: UIData.loginImage
+      ),
       Menu(
           title: "RugPage",
 

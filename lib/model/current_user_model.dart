@@ -11,7 +11,7 @@ import 'user.dart';
 import 'employee.dart';
 import 'device.dart';
 
-enum Status {
+enum UserStatus {
   Unauthenticated,
   Unregistered,
   Authenticated,
@@ -29,17 +29,17 @@ class CurrentUserModel extends Model {
         firebaseAuth = FirebaseAuth.instance,
         userService = UserService.instance(),
         employeeService = EmployeeService.instance(),
-        deviceService = DeviceService.instance(),
+        // deviceService = DeviceService.instance(),
         authService = AuthService.instance() {
     firebaseAuth.onAuthStateChanged.listen(_onAuthStateChanged);
   }
 
-  Status _status = Status.Unauthenticated;
+  UserStatus _status = UserStatus.Unauthenticated;
   Firestore firestore;
   FirebaseAuth firebaseAuth;
   UserService userService;
   EmployeeService employeeService;
-  DeviceService deviceService;
+  // DeviceService deviceService;
   User _user;
   Employee _employee;
   Device _device;
@@ -52,7 +52,7 @@ class CurrentUserModel extends Model {
   User get user => _user;
   Employee get employee => _employee;
   Device get device => _device;
-  Status get status => _status;
+  UserStatus get status => _status;
   FirebaseUser get firebaseUser => _firebaseUser;
 
   Future<void> signIn(Map _formData) {
@@ -72,18 +72,18 @@ class CurrentUserModel extends Model {
       _firebaseUser = null;
       _user = null;
       _employee = null;
-      _device = null;
-      _status = Status.Unauthenticated;
+      // _device = null;
+      _status = UserStatus.Unauthenticated;
     } else {
       if (firebaseUser.uid != _firebaseUser?.uid) {
         _firebaseUser = firebaseUser;
       }
-      _status = Status.Unregistered;
+      _status = UserStatus.Unregistered;
       if (firebaseUser.uid != _user?.id) {
         _user = await userService.getById(_firebaseUser.uid);
       }
       if (_user != null) {
-        _status = Status.Authenticated;
+        _status = UserStatus.Authenticated;
       }
     }
 
@@ -95,14 +95,14 @@ class CurrentUserModel extends Model {
     if (snapshot.exists) {
       _user = User.fromDocumentSnapshot(snapshot.documentID, snapshot.data);
       _employee = await employeeService.getById(snapshot.data['employeeId']);
-      await deviceService.addEmployee(snapshot.data['employeeId']);
+      // await deviceService.addEmployee(snapshot.data['employeeId']);
 
-      _device = await deviceService.getById();
+      // _device = await deviceService.getById();
 
-      _status = Status.Authenticated;
+      _status = UserStatus.Authenticated;
     } else {
       _user = null;
-      _status = Status.Unregistered;
+      _status = UserStatus.Unregistered;
     }
     notifyListeners();
   }

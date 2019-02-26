@@ -1,0 +1,87 @@
+{
+  "id": 2,
+  "name": "afafd",
+  "asset_tag": "575106630",
+  "serial": "f09f4e79-6d92-35bc-b070-8d1e7e377ccb",
+  "model": {
+    "id": 1,
+    "name": "model_peter"
+  },
+  "model_number": "6011346061482478",
+  "eol": {
+    "date": "2021-09-09",
+    "formatted": "2021-09-09"
+  },
+  "status_label": {
+    "id": 5,
+    "name": "Out for Repair",
+    "status_type": "undeployable",
+    "status_meta": "deployed"
+  },
+  "category": {
+    "id": 1,
+    "name": "Laptops"
+  },
+  "manufacturer": {
+    "id": 1,
+    "name": "Apple"
+  },
+  "supplier": {
+    "id": 1,
+    "name": "Schimmel-Keebler"
+  },
+  "notes": "update from API",
+  "order_number": "31032579",
+  "company": "NULL",
+  "location": "NULL",
+  "rtd_location": {
+    "id": 3,
+    "name": "New Ansel"
+  },
+  "image": "https://snipe-local-test.s3.amazonaws.com/mah-bucket/snipe-dev-demo/assetmodels/mbp.jpg",
+  "assigned_to": {
+    "id": 44,
+    "username": "runolfsdottir.laisha",
+    "name": "Shakira Bahringer",
+    "first_name": "Shakira",
+    "last_name": "Bahringer",
+    "employee_number": "28282",
+    "type": "user"
+  },
+  "warranty_months": "NULL",
+  "warranty_expires": "NULL",
+  "created_at": {
+    "datetime": "2018-09-29 22:42:47",
+    "formatted": "2018-09-29 22:42"
+  },
+  "updated_at": {
+    "datetime": "2018-11-14 06:49:45",
+    "formatted": "2018-11-14 06:49"
+  },
+  "last_audit_date": "NULL",
+  "next_audit_date": "NULL",
+  "deleted_at": "NULL",
+  "purchase_date": {
+    "date": "2018-09-09",
+    "formatted": "2018-09-09"
+  },
+  "last_checkout": {
+    "datetime": "2018-11-03 08:37:40",
+    "formatted": "2018-11-03 08:37"
+  },
+  "expected_checkin": "na",
+  "purchase_cost": "1259.06",
+  "checkin_counter": 2,
+  "checkout_counter": 3,
+  "requests_counter": 0,
+  "user_can_checkout": false,
+  "custom_fields": [],
+  "available_actions": {
+    "checkout": true,
+    "checkin": true,
+    "clone": true,
+    "restore": false,
+    "update": true,
+    "delete": false
+  }
+}

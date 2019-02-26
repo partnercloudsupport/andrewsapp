@@ -1,18 +1,18 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:scoped_model/scoped_model.dart';
 import 'package:flutter/services.dart';
-import 'package:taskist/model/workorder.dart';
-import 'package:taskist/model/serviceItem.dart';
-import 'package:taskist/shop/page_detail.dart';
-import 'package:taskist/common/base_scaffold.dart';
-import 'page_addWorkorder.dart';
-import 'package:taskist/shop/widgets/workorderCard.dart';
-import 'package:taskist/shop/shopService.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:scoped_model/scoped_model.dart';
+
+import '../common/base_scaffold.dart';
+import '../common/sign_in_page.dart';
 import '../model/current_user_model.dart';
-import '../home/sign_in_page.dart';
+import '../model/serviceItem.dart';
+import '../model/workorder.dart';
+import 'page_addWorkorder.dart';
+import 'page_detail.dart';
+import 'shopService.dart';
 
 class RugPage extends StatefulWidget {
   final FirebaseUser user;
@@ -26,7 +26,7 @@ class RugPage extends StatefulWidget {
 class _TaskPageState extends State<RugPage>
     with SingleTickerProviderStateMixin {
   int index = 1;
-  FirebaseUser currentUser;
+  // FirebaseUser currentUser;
   ShopService shopService = new ShopService();
   final _scaffoldState = GlobalKey<ScaffoldState>();
 
@@ -42,7 +42,9 @@ class _TaskPageState extends State<RugPage>
             // actionFirstIcon: null,
             appTitle: "Product Detail",
             currentEmployee: currentUserModel.employee,
-
+            showFAB: true,
+            alerts: false,
+            centerDocked: true,
             // showFAB: true,
             scaffoldKey: _scaffoldState,
             // callback: () => _addTaskPressed(),
@@ -378,7 +380,7 @@ class _TaskPageState extends State<RugPage>
   @override
   void initState() {
     super.initState();
-    this.currentUser = widget.user;
+    // this.currentUser = widget.user;
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
@@ -441,203 +443,3 @@ class _TaskPageState extends State<RugPage>
     );
   }
 }
-// class RugPage extends StatefulWidget {
-//   final FirebaseUser user;
-
-//   RugPage({Key key, this.user}) : super(key: key);
-
-//   @override
-//   State<StatefulWidget> createState() => _TaskPageState();
-// }
-
-// class _TaskPageState extends State<RugPage>
-//     with SingleTickerProviderStateMixin {
-//   int index = 1;
-//   final _scaffoldState = GlobalKey<ScaffoldState>();
-//   ShopService shopService = new ShopService();
-//   @override
-//   Widget build(BuildContext context) {
-//     return CommonScaffold(
-//         backGroundColor: Colors.white,
-//         actionFirstIcon: null,
-//         appTitle: "Product Detail",
-//         showFAB: true,
-//         scaffoldKey: _scaffoldState,
-//         showDrawer: false,
-//         centerDocked: true,
-//         floatingIcon: Icons.add,
-//         showBottomNav: true,
-//         bodyData: Center(
-//           child: Column(
-//               mainAxisAlignment: MainAxisAlignment.start,
-//               crossAxisAlignment: CrossAxisAlignment.stretch,
-//               children: <Widget>[
-//                 Padding(
-//                   padding: EdgeInsets.only(top: 50.0),
-//                   child: Row(
-//                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                     crossAxisAlignment: CrossAxisAlignment.center,
-//                     children: <Widget>[
-//                       Expanded(
-//                         flex: 1,
-//                         child: Container(
-//                           color: Colors.grey,
-//                           height: 1.5,
-//                         ),
-//                       ),
-//                       Expanded(
-//                           flex: 2,
-//                           child: new Row(
-//                             mainAxisAlignment: MainAxisAlignment.center,
-//                             children: <Widget>[
-//                               Text(
-//                                 'Rug',
-//                                 style: new TextStyle(
-//                                     fontSize: 30.0,
-//                                     fontWeight: FontWeight.bold),
-//                               ),
-//                               Text(
-//                                 'List',
-//                                 style: new TextStyle(
-//                                     fontSize: 28.0, color: Colors.grey),
-//                               )
-//                             ],
-//                           )),
-//                       Expanded(
-//                         flex: 1,
-//                         child: Container(
-//                           color: Colors.grey,
-//                           height: 1.5,
-//                         ),
-//                       ),
-//                     ],
-//                   ),
-//                 ),
-//                 Padding(
-//                   padding: EdgeInsets.only(
-//                     top: 50.0,
-//                   ),
-//                   child: new Column(
-//                     children: <Widget>[
-//                       new Container(
-//                         width: 50.0,
-//                         height: 50.0,
-//                         decoration: new BoxDecoration(
-//                             border: new Border.all(color: Colors.black38),
-//                             borderRadius:
-//                                 BorderRadius.all(Radius.circular(7.0))),
-//                         child: new IconButton(
-//                           icon: new Icon(Icons.add),
-//                           onPressed: _addTaskPressed,
-//                           iconSize: 30.0,
-//                         ),
-//                       ),
-//                       Padding(
-//                         padding: EdgeInsets.only(top: 10.0),
-//                         child: Text('Add Job',
-//                             style: TextStyle(color: Colors.black45)),
-//                       ),
-//                     ],
-//                   ),
-//                 ),
-//                 Expanded(
-//                   child: StreamBuilder<List<Workorder>>(
-//                     stream: shopService.getWorkorders(),
-//                     builder: (context, snapShot) {
-//                       if (!snapShot.hasData)
-//                         return new Center(
-//                             child: CircularProgressIndicator(
-//                           backgroundColor: Colors.blue,
-//                         ));
-
-//                       return ListView.builder(
-//                           physics: const BouncingScrollPhysics(),
-//                           padding: EdgeInsets.only(left: 40.0, right: 40.0),
-//                           scrollDirection: Axis.horizontal,
-//                           itemCount: snapShot.data.length,
-//                           itemBuilder: (context, index) {
-//                             var item = snapShot.data[index];
-//                             return WorkorderCard(item);
-//                             // return ListTile(
-//                             //   title: Text('${item.fbId}   (lat:${item.fbId})'),
-//                             //   subtitle: Text('distance: ${item.id}'),
-//                             // );
-//                           });
-//                     },
-//                   ),
-//                 ),
-//               ]),
-//         ));
-//   }
-
-//   @override
-//   void dispose() {
-//     super.dispose();
-//   }
-
-//   @override
-//   void initState() {
-//     super.initState();
-
-//     SystemChrome.setPreferredOrientations([
-//       DeviceOrientation.portraitUp,
-//       DeviceOrientation.portraitDown,
-//     ]);
-//   }
-
-//   void _addTaskPressed() async {
-//     Navigator.of(context).push(
-//       new PageRouteBuilder(
-//         pageBuilder: (_, __, ___) => new NewTaskPage(
-//               user: widget.user,
-//             ),
-//         transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-//             new ScaleTransition(
-//               scale: new Tween<double>(
-//                 begin: 1.5,
-//                 end: 1.0,
-//               ).animate(
-//                 CurvedAnimation(
-//                   parent: animation,
-//                   curve: Interval(
-//                     0.50,
-//                     1.00,
-//                     curve: Curves.linear,
-//                   ),
-//                 ),
-//               ),
-//               child: ScaleTransition(
-//                 scale: Tween<double>(
-//                   begin: 0.0,
-//                   end: 1.0,
-//                 ).animate(
-//                   CurvedAnimation(
-//                     parent: animation,
-//                     curve: Interval(
-//                       0.00,
-//                       0.50,
-//                       curve: Curves.linear,
-//                     ),
-//                   ),
-//                 ),
-//                 child: child,
-//               ),
-//             ),
-//       ),
-//     );
-//     //Navigator.of(context).pushNamed('/new');
-//   }
-
-//   Padding _getToolbar(BuildContext context) {
-//     return new Padding(
-//       padding: EdgeInsets.only(top: 50.0, left: 20.0, right: 20.0),
-//       child: new Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-//         new Image(
-//             width: 40.0,
-//             height: 40.0,
-//             fit: BoxFit.cover,
-//             image: new AssetImage('assets/icon.png')),
-//       ]),
-//     );
-//   }
-// }

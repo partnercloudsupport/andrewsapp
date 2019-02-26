@@ -94,15 +94,15 @@ class _DetailPageState extends State<DetailPage> {
   }
 
   void _callRestAPI(workorder) async {
-    BaseOptions options = new BaseOptions(
-      baseUrl: "https://ashdevtools.com/",
-      connectTimeout: 5000,
-      receiveTimeout: 3000,
-      // headers: {
-      //   'Authorization': 'Basic Sk5wbkZOelhxOnltMWM4cGU4QzNPNHM3bDBBVms=',
-      // }
-    );
-    dio = new Dio(options);
+    // BaseOptions options = new BaseOptions(
+    //   baseUrl: "https://ashdevtools.com/",
+    //   connectTimeout: 5000,
+    //   receiveTimeout: 3000,
+    //   // headers: {
+    //   //   'Authorization': 'Basic Sk5wbkZOelhxOnltMWM4cGU4QzNPNHM3bDBBVms=',
+    //   // }
+    // );
+    dio = new Dio();
     var serviceItem =
         ServiceItemSerializer().toMap(_currentWorkorder.serviceItems[0]);
     var ord = WorkorderSerializer().toMap(_currentWorkorder);

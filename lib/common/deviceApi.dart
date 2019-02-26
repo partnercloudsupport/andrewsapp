@@ -18,9 +18,10 @@ BaseOptions options = new BaseOptions(
     receiveTimeout: 3000,
     headers: {
       'Authorization':
-          'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImQ1M2U1YmFhYjQ2MDJmNTJjNDEyNjJkZGFlZWU1YTk2YTk4OTMwNGFjYTczMGE4MjZkZmI2ZDcyYjdhYzA1YTgxM2I2YzA5MzA1NDIxZDQyIn0.eyJhdWQiOiIzIiwianRpIjoiZDUzZTViYWFiNDYwMmY1MmM0MTI2MmRkYWVlZTVhOTZhOTg5MzA0YWNhNzMwYTgyNmRmYjZkNzJiN2FjMDVhODEzYjZjMDkzMDU0MjFkNDIiLCJpYXQiOjE1NDkzMjc0NzcsIm5iZiI6MTU0OTMyNzQ3NywiZXhwIjoxNTgwODYzNDc3LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.cy4j4xQ-p380SHktKJ87Bi3BIWUDxOb1jztb5CFSJgfZfDP7TalT2CRp4X8OP9EF1ZsmxwxiLfnqT0D9ZY639rYkOugQqVJfVQsucxF8DmguT8Xyo7GN9JfyAEvd6w1I47W9nPJkEGQ4mffiqYSiKrpHxBU1wh7Pdhxwd18OQtLTvXHtmYXH_csM928O8xzfGzn9AbkptqAs3i0c_t0JraAfjC7U8jTBZMwGUk8GdiU60VVPC_TXk8pcsdCyj1iVEOx1q8brx2KzdyXD6Jn1P7zfLj76O12az0sck7RYuOs38h4HIRj4QOZ5rRepyPiDS8Y5NdCipwxcW22iq9Ue35LCf1_H15pSuedV5UjO3APCLdXrNkAU5SVwI7sxi0OJsUOUPaePgOwdk8QonxycePKGSkbTBSskwNaUn26wci19rqSSiC1Uo5nq_lPNVl1MeNmtAesPzsDn3dUl4eajJfC8nV_AzJyWzHPevn5lNEBEUezeHDyBQ7lxJ_bLGMZUyIZCUZHp-5NY4MbfglYmW9ORPKswZUyN18PiljAGkjnVq1DOpmDhLzRN4OMWD5UKIH3-lcTbFrEmLJQ2o9YhWrDARY0rSdSoIOLL2l3E2chR9wI09ws9VHqySh9VoS1kkpXGIIFyXfE4e9mYrX5NJsP_152fTJU6ondg0dNek-0',
+          'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImNjMmU5OTQxOTk5ZjFkYjQ1MzA5ZmVlOTAyNDU2N2Y1NTY5MTk0ZDM1NGU2MDUzZTljNDA2ZjM0MzlkODc0YWFjMTdjYmZlMmZkM2FkNjFjIn0.eyJhdWQiOiIzIiwianRpIjoiY2MyZTk5NDE5OTlmMWRiNDUzMDlmZWU5MDI0NTY3ZjU1NjkxOTRkMzU0ZTYwNTNlOWM0MDZmMzQzOWQ4NzRhYWMxN2NiZmUyZmQzYWQ2MWMiLCJpYXQiOjE1NTEwNTM2MzgsIm5iZiI6MTU1MTA1MzYzOCwiZXhwIjoxNTgyNTg5NjM4LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.w0qiAvMMalP-pJ7oQYxHvihh9AXzgtQSBZnsDYvl2gZAKU3k4g2ti-LWQpYPvgv0Cg0NZhKX4BXuAavI9ufdY4-2oJfk0F-h7JUBDiKq89euVYHmlxLRi_UDT18YSqLhB2jfl5anyn-VsFOzmIKu4RCgYIiar3v6Dd3RA4QIr3Bsy3WdH9SH1-_4FYwNydWB7ljyzKrxR4sJoll_HwcSISNyoaI8eHs9x18QUUChvTU1NeCg3I0o7FPr_DCqKewgFEPo9iUGVnOxQYH1xiRTQMFJDn_67KbdXs6ytB5RZRZPUgWsT_QjEwllZffriYvFdt4JcFKkK0I0-XMu9EXKSXrkif1zPYn0hKRFGif1bRPbyZtE3GKBiLLpv1Y4aSDRfVqa0-yVjxJD2bU1rEo_BqyOXp4GeK8MClytILnD9_UucSZe3-ewaMZZWWgMvOTzlApuDlvEDBAezSf2wEWsfp9STlASIBDtNLybH-SvbubCsGWhCQ2Pqivw3AeLc1EZoWPSLYDPu0Fc2akQKTC68NswvygcIWd5GW_DtNCDuPkv8GIhA2ElL42z0cpyNnERnAfa6jL4djnaTsCyAQO5QzWB-szUiYkkjGomx1U3dhaa4cY6Lx6lQ1QFBDi0ZWCQJCh2Ku3W9sGjTuR7uXU5G4qEHm1l-FLP2igxhA_SDjQ'
     });
 
+// Dio snipeit = new Dio(options);
 Dio snipeit = new Dio(options);
 
 Device parseDevice(String responseBody) {
@@ -36,8 +37,13 @@ class Devices {
     String deviceId,
   ) async {
     AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-    var resp = await snipeit.post('/hardware/' + deviceId + '/checkout',
-        data: {'assigned_user': snipeId, 'checkout_to_type': 'user'});
+    var resp;
+    try {
+      resp = await snipeit.post('/hardware/' + deviceId + '/checkout',
+          data: {'assigned_user': snipeId, 'checkout_to_type': 'user'});
+    } catch (e) {
+      print(e);
+    }
     // var jresp = json.decode(resp.data);
     // print(resp.data['status']);
     return resp.data;
@@ -66,8 +72,21 @@ class Devices {
 
   Future<Map> getDeviceFromSnipe() async {
     AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+    BaseOptions x = new BaseOptions(
+        baseUrl: "http://47.219.174.153:8085/api/v1",
+        connectTimeout: 5000,
+        receiveTimeout: 3000,
+        headers: {
+          'Authorization':
+              'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImNjMmU5OTQxOTk5ZjFkYjQ1MzA5ZmVlOTAyNDU2N2Y1NTY5MTk0ZDM1NGU2MDUzZTljNDA2ZjM0MzlkODc0YWFjMTdjYmZlMmZkM2FkNjFjIn0.eyJhdWQiOiIzIiwianRpIjoiY2MyZTk5NDE5OTlmMWRiNDUzMDlmZWU5MDI0NTY3ZjU1NjkxOTRkMzU0ZTYwNTNlOWM0MDZmMzQzOWQ4NzRhYWMxN2NiZmUyZmQzYWQ2MWMiLCJpYXQiOjE1NTEwNTM2MzgsIm5iZiI6MTU1MTA1MzYzOCwiZXhwIjoxNTgyNTg5NjM4LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.w0qiAvMMalP-pJ7oQYxHvihh9AXzgtQSBZnsDYvl2gZAKU3k4g2ti-LWQpYPvgv0Cg0NZhKX4BXuAavI9ufdY4-2oJfk0F-h7JUBDiKq89euVYHmlxLRi_UDT18YSqLhB2jfl5anyn-VsFOzmIKu4RCgYIiar3v6Dd3RA4QIr3Bsy3WdH9SH1-_4FYwNydWB7ljyzKrxR4sJoll_HwcSISNyoaI8eHs9x18QUUChvTU1NeCg3I0o7FPr_DCqKewgFEPo9iUGVnOxQYH1xiRTQMFJDn_67KbdXs6ytB5RZRZPUgWsT_QjEwllZffriYvFdt4JcFKkK0I0-XMu9EXKSXrkif1zPYn0hKRFGif1bRPbyZtE3GKBiLLpv1Y4aSDRfVqa0-yVjxJD2bU1rEo_BqyOXp4GeK8MClytILnD9_UucSZe3-ewaMZZWWgMvOTzlApuDlvEDBAezSf2wEWsfp9STlASIBDtNLybH-SvbubCsGWhCQ2Pqivw3AeLc1EZoWPSLYDPu0Fc2akQKTC68NswvygcIWd5GW_DtNCDuPkv8GIhA2ElL42z0cpyNnERnAfa6jL4djnaTsCyAQO5QzWB-szUiYkkjGomx1U3dhaa4cY6Lx6lQ1QFBDi0ZWCQJCh2Ku3W9sGjTuR7uXU5G4qEHm1l-FLP2igxhA_SDjQ'
+        });
 
-    var resp = await snipeit.get('/hardware/byserial/' + androidInfo.androidId);
+// Dio snipeit = new Dio(options);
+    Dio z = new Dio(x);
+
+    var resp = await z.get('/hardware/byserial/' + androidInfo.androidId);
+
+    print(resp);
     Map data = resp.data['rows'][0];
     // var jdata = json.decode(data);
     print(data['serial']);

@@ -44,6 +44,7 @@ class DatabaseService {
     });
     print(_clockResponse.body);
     var result = json.decode(_clockResponse.body);
+    print(result['access_token']);
     return result['access_token'];
   }
 
@@ -180,6 +181,13 @@ class DatabaseService {
     bool result = false;
     String tokenx = await getHumanityToken();
     http.Response _clockResponse;
+    _clockResponse = await http.get(
+        'https://www.humanity.com/api/v2/timeclocks/status/${employee.id}/1?clockout?access_token=${tokenx}');
+    var decodedResponse =
+        json.decode(_clockResponse.body).cast<String, dynamic>();
+    print(_clockResponse);
+    print(decodedResponse);
+    return false;
     (employee.clockedIn == null) ? employee.clockedIn = false : null;
     if (employee.clockedIn) {
       _clockResponse = await http.put(
@@ -191,8 +199,7 @@ class DatabaseService {
               tokenx);
     }
 
-    var decodedResponse =
-        json.decode(_clockResponse.body).cast<String, dynamic>();
+    decodedResponse = json.decode(_clockResponse.body).cast<String, dynamic>();
 
     bool updatedStatus;
 
@@ -226,56 +233,3 @@ class DatabaseService {
     return employee;
   }
 }
-
-//  void _punchClock() async {
-//     // print(currentStatus);
-//     http.Response _clockResponse;
-
-//     // if (employee.clockedIn) {
-//     //   _clockResponse = await http.put(
-//     //       'https://www.humanity.com/api/v2/employees/${employee.id}/clockout?access_token=b490958e4890f89ae444334283874c487aab419f');
-//     // } else {
-//     //   _clockResponse = await http.post(
-//     //       'https://www.humanity.com/api/v2/employees/${employee.id}/clockin?access_token=b490958e4890f89ae444334283874c487aab419f');
-//     // }
-//     // print(_clockResponse.body);
-//     var decodedResponse =
-//         json.decode(_clockResponse.body).cast<String, dynamic>();
-
-//     print(decodedResponse['data']['out_timestamp']);
-
-//     DocumentReference employeeRef =
-//         Firestore.instance.document('employees/' + employee.id);
-
-//     if (decodedResponse['data']['out_timestamp'] == '0') {
-//       // employee['clockedIn'] = false;
-//       Firestore.instance.runTransaction((Transaction tx) async {
-//         DocumentSnapshot postSnapshot = await tx.get(employeeRef);
-//         if (postSnapshot.exists) {
-//           await tx.update(employeeRef, <String, dynamic>{'clockedIn': false});
-//         }
-//       });
-//     } else {
-//       Firestore.instance.runTransaction((Transaction tx) async {
-//         DocumentSnapshot postSnapshot = await tx.get(employeeRef);
-//         if (postSnapshot.exists) {
-//           await tx.update(employeeRef, <String, dynamic>{'clockedIn': true});
-//         }
-//       });
-//       // this.currentStatus = new CurrentStatus(
-//       //     is_on_break: 'false',
-//       //     clockin_time: decodedResponse['data']['in_time']['time'],
-//       //     clockin_date: decodedResponse['data']['in_time']['day']);
-//     }
-//     // var status = decodedResponse['data']
-//     //     .cast<Map<String, dynamic>>()
-//     //     // .map((obj) => Object.fromMap(obj))
-//     //     .toList()
-//     //     .cast<Object>();
-//     // print(status);
-//     // var data = decodedJsonEmployees['data']
-//     //     .cast<Map<String, dynamic>>()
-//     //     // .map((obj) => Object.fromMap(obj))
-//     //     .toList()
-//     //     .cast<Object>();
-//  }

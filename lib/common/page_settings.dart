@@ -2,8 +2,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:taskist/common/common_scaffold.dart';
+import 'package:scoped_model/scoped_model.dart';
 import 'package:share/share.dart';
+
+import '../common/sign_in_page.dart';
+import '../model/current_user_model.dart';
+import 'base_scaffold.dart';
 
 class SettingsPage extends StatefulWidget {
   final FirebaseUser user;
@@ -38,118 +42,129 @@ class _SettingsPageState extends State<SettingsPage>
 
   @override
   Widget build(BuildContext context) {
-    return CommonScaffold(
-      backGroundColor: Colors.grey.shade100,
-      actionFirstIcon: null,
-      appTitle: "Employee List",
-      showFAB: true,
-      scaffoldKey: _scaffoldState,
-      showDrawer: false,
-      centerDocked: true,
-      floatingIcon: Icons.add,
-      showBottomNav: true,
-      bodyData: ListView(
-        children: <Widget>[
-          new Column(
-            children: <Widget>[
-              _getToolbar(context),
-              Padding(
-                padding: EdgeInsets.only(top: 50.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+    final currentUserModel =
+        ScopedModel.of<CurrentUserModel>(context, rebuildOnChange: true);
+    return (currentUserModel.user == null)
+        ? const SignInPage()
+        : BaseScaffold(
+            // backGroundColor: Colors.grey.shade100,
+            // backGroundColor: Colors.grey.shade200,
+            // actionFirstIcon: null,
+            appTitle: "Product Detail",
+            currentEmployee: currentUserModel.employee,
+            showFAB: true,
+            alerts: false,
+            centerDocked: true,
+            // showFAB: true,
+            scaffoldKey: _scaffoldState,
+            // callback: () => _addTaskPressed(),
+            // showDrawer: false,
+            // centerDocked: true,
+            // floatingIcon: Icons.add,
+            showBottomNav: true,
+            bodyData: ListView(
+              children: <Widget>[
+                new Column(
                   children: <Widget>[
-                    Expanded(
-                      flex: 1,
-                      child: Container(
-                        color: Colors.grey,
-                        height: 1.5,
-                      ),
-                    ),
-                    Expanded(
-                        flex: 2,
-                        child: new Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Text(
-                              '',
-                              style: new TextStyle(
-                                  fontSize: 30.0, fontWeight: FontWeight.bold),
+                    _getToolbar(context),
+                    Padding(
+                      padding: EdgeInsets.only(top: 50.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Expanded(
+                            flex: 1,
+                            child: Container(
+                              color: Colors.grey,
+                              height: 1.5,
                             ),
-                            Text(
-                              'Settings',
-                              style: new TextStyle(
-                                  fontSize: 28.0, color: Colors.grey),
+                          ),
+                          Expanded(
+                              flex: 2,
+                              child: new Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Text(
+                                    '',
+                                    style: new TextStyle(
+                                        fontSize: 30.0,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                    'Settings',
+                                    style: new TextStyle(
+                                        fontSize: 28.0, color: Colors.grey),
+                                  ),
+                                ],
+                              )),
+                          Expanded(
+                            flex: 1,
+                            child: Container(
+                              color: Colors.grey,
+                              height: 1.5,
                             ),
-                          ],
-                        )),
-                    Expanded(
-                      flex: 1,
-                      child: Container(
-                        color: Colors.grey,
-                        height: 1.5,
+                          ),
+                        ],
                       ),
                     ),
                   ],
                 ),
-              ),
-            ],
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 50.0),
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              Card(
-                color: Colors.white,
-                elevation: 2.0,
-                child: Column(
+                Padding(
+                  padding: EdgeInsets.only(top: 50.0),
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
-                    ListTile(
-                      leading: Icon(
-                        FontAwesomeIcons.cogs,
-                        color: Colors.grey,
+                    Card(
+                      color: Colors.white,
+                      elevation: 2.0,
+                      child: Column(
+                        children: <Widget>[
+                          ListTile(
+                            leading: Icon(
+                              FontAwesomeIcons.cogs,
+                              color: Colors.grey,
+                            ),
+                            title: Text("Version"),
+                            trailing: Text("0.9.2"),
+                          ),
+                          // ListTile(
+                          //   onTap: _launchURL,
+                          //   leading: Icon(
+                          //     FontAwesomeIcons.twitter,
+                          //     color: Colors.blue,
+                          //   ),
+                          //   title: Text("Twitter"),
+                          //   trailing: Icon(Icons.arrow_right),
+                          // ),
+                          // ListTile(
+                          //   onTap: rateApp,
+                          //   leading: Icon(
+                          //     FontAwesomeIcons.star,
+                          //     color: Colors.blue,
+                          //   ),
+                          //   title: Text("Rate Taskist"),
+                          //   trailing: Icon(Icons.arrow_right),
+                          // ),
+                          // ListTile(
+                          //   onTap: sharePage,
+                          //   leading: Icon(
+                          //     FontAwesomeIcons.shareAlt,
+                          //     color: Colors.blue,
+                          //   ),
+                          //   title: Text("Share Taskist"),
+                          //   trailing: Icon(Icons.arrow_right),
+                          // ),
+                        ],
                       ),
-                      title: Text("Version"),
-                      trailing: Text("0.9.2"),
                     ),
-                    // ListTile(
-                    //   onTap: _launchURL,
-                    //   leading: Icon(
-                    //     FontAwesomeIcons.twitter,
-                    //     color: Colors.blue,
-                    //   ),
-                    //   title: Text("Twitter"),
-                    //   trailing: Icon(Icons.arrow_right),
-                    // ),
-                    // ListTile(
-                    //   onTap: rateApp,
-                    //   leading: Icon(
-                    //     FontAwesomeIcons.star,
-                    //     color: Colors.blue,
-                    //   ),
-                    //   title: Text("Rate Taskist"),
-                    //   trailing: Icon(Icons.arrow_right),
-                    // ),
-                    // ListTile(
-                    //   onTap: sharePage,
-                    //   leading: Icon(
-                    //     FontAwesomeIcons.shareAlt,
-                    //     color: Colors.blue,
-                    //   ),
-                    //   title: Text("Share Taskist"),
-                    //   trailing: Icon(Icons.arrow_right),
-                    // ),
                   ],
                 ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
+              ],
+            ),
+          );
   }
 
   @override

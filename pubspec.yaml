@@ -19,6 +19,14 @@ dependencies:
   image:
   cloud_firestore: 0.9.0
   strings:
+  frideos:
+  flutter_webview_plugin:
+  sqflite:
+  call_number:
+  fluttertoast:
+  event_bus:
+  fluro:
+
   uuid:
   flutter_stetho: ^0.2.2
   flutter_background_geolocation:
@@ -28,7 +36,11 @@ dependencies:
   carousel_slider:
   cloud_functions:
   firestore_helpers:
-
+  firebase_messaging:
+  google_maps_flutter:
+  sms:
+  # dio: ^1.0.14
+  dio:
   jaguar_serializer:
   flutter_sparkline:
   flutter_staggered_grid_view:
@@ -39,10 +51,10 @@ dependencies:
   flutter_slidable: ^0.4.5
   url_launcher: ^3.0.3
   image_picker:
-  dio:
   share: ^0.5.3
   latlong:
   flutter_map:
+  dotenv:
   datetime_picker_formfield:
   unicorndial: ^1.1.5
   launch_review: ^1.0.1

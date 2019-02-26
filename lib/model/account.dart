@@ -1,9 +1,4 @@
-import 'dart:convert';
-import 'package:meta/meta.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:jaguar_serializer/jaguar_serializer.dart';
-import 'package:flutter/material.dart';
-import './account.dart';
 
 part 'account.jser.dart';
 

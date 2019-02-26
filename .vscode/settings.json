@@ -20,7 +20,7 @@
     ".gitignore": true,
     ".flutter-plugins": true,
     ".packages": true,
-
+    "*.jser.dart": true,
     "**/.dart_tool": true,
     "**/unit.js": true,
     "/platforms": true
